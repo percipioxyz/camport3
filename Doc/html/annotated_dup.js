@@ -1,0 +1,25 @@
+var annotated_dup =
+[
+    [ "DepthEnhenceParameters", "a00102.html", "a00102" ],
+    [ "DepthSpeckleFilterParameters", "a00098.html", "a00098" ],
+    [ "TY_CAMERA_CALIB_INFO", "a00070.html", "a00070" ],
+    [ "TY_CAMERA_DISTORTION", "a00066.html", "a00066" ],
+    [ "TY_CAMERA_EXTRINSIC", "a00062.html", "a00062" ],
+    [ "TY_CAMERA_INTRINSIC", "a00058.html", "a00058" ],
+    [ "TY_CAMERA_STATISTICS", "a00078.html", "a00078" ],
+    [ "TY_DEVICE_BASE_INFO", "a00030.html", "a00030" ],
+    [ "TY_DEVICE_NET_INFO", "a00018.html", "a00018" ],
+    [ "TY_DEVICE_USB_INFO", "a00022.html", "a00022" ],
+    [ "TY_ENUM_ENTRY", "a00050.html", "a00050" ],
+    [ "TY_EVENT_INFO", "a00090.html", "a00090" ],
+    [ "TY_FEATURE_INFO", "a00038.html", "a00038" ],
+    [ "TY_FLOAT_RANGE", "a00046.html", "a00046" ],
+    [ "TY_FRAME_DATA", "a00086.html", "a00086" ],
+    [ "TY_IMAGE_DATA", "a00082.html", "a00082" ],
+    [ "TY_INT_RANGE", "a00042.html", "a00042" ],
+    [ "TY_INTERFACE_INFO", "a00026.html", "a00026" ],
+    [ "TY_PIXEL_DESC", "a00094.html", "a00094" ],
+    [ "TY_TRIGGER_PARAM", "a00074.html", "a00074" ],
+    [ "TY_VECT_3F", "a00054.html", "a00054" ],
+    [ "TY_VERSION_INFO", "a00014.html", "a00014" ]
+];
