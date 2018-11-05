@@ -23,7 +23,9 @@ for the JavaScript code in this file
 */
 var NAVTREE =
 [
-  [ "Camport2 Project", "index.html", [
+  [ "TYCamport3", "index.html", [
+    [ "compare to V2:", "index.html#Changes", null ],
+    [ "Note", "index.html#Note", null ],
     [ "Classes", "annotated.html", [
       [ "Class List", "annotated.html", "annotated_dup" ],
       [ "Class Index", "classes.html", null ],
@@ -48,7 +50,7 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "a00002.html",
-"a00014.html"
+"a00002.html#aec99fa7be38751f1b7d34fd8115ceefeaf168b0e8e0e841a14b5e12c23d8f167d"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

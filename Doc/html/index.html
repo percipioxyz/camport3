@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.14"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Camport2 Project: Main Page</title>
+<title>TYCamport3: Main Page</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -29,8 +29,8 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">Camport2 Project
-   &#160;<span id="projectnumber">2</span>
+   <div id="projectname">TYCamport3
+   &#160;<span id="projectnumber">3</span>
    </div>
   </td>
  </tr>
@@ -87,10 +87,25 @@ $(document).ready(function(){initNavTree('index.html','');});
 
 <div class="header">
   <div class="headertitle">
-<div class="title">Camport2 Project Documentation</div>  </div>
+<div class="title">TYCamport3 Documentation</div>  </div>
 </div><!--header-->
 <div class="contents">
-</div><!-- contents -->
+<div class="textblock"><h1><a class="anchor" id="Changes"></a>
+compare to V2:</h1>
+<ol type="1">
+<li>New Interface Layer Add this layer to specify local network interface to open network camera, solving the problem that someone wants to connect to a network camera with ethernet rather than WIFI. Users have to call interface APIs before openning devices.</li>
+<li>New Image Processing Library The new library which has header file <a class="el" href="a00008.html">TYImageProc.h</a> collects all image processing functions we provided.</li>
+<li>New Coordinate Mapper New <a class="el" href="a00005.html" title="Coordinate Conversion API. ">TYCoordinateMapper.h</a> handles various convertions, including depth &lt;-&gt; point3D, point3D &lt;-&gt; point3D.</li>
+<li>Components: Removed Point3D component(TY_COMPONENT_POINT3D). Point3D is a virtual component in V2, and the points are calculated from depth image. We put the calculation outside tycam library to increase flexibility.</li>
+<li>Features: Removed TY_BOOL_TRIGGER_MODE , covered by TY_STRUCT_TRIGGER_PARAM Added TY_STRUCT_CAM_CALIB_DATA , for easy use in image processing library TY_INT_IMAGE_MODE , covered by new added TY_ENUM_IMAGE_MODE Modified TY_ENUM_IMAGE_MODE , means resolution mode in V2, combind resolution and pixel format in V3 Added some network camera's feature, such as TY_INT_PERSISTENT_IP, TY_INT_PERSISTENT_SUBMASK, TY_INT_PACKET_DELAY, etc.</li>
+</ol>
+<p>Copyright(C)2016-2018 Percipio All Rights Reserved</p>
+<h1><a class="anchor" id="Note"></a>
+Note</h1>
+<p>Depth camera, called "device", consists of several components. Each component is a hardware module or virtual module, such as RGB sensor, depth sensor. Each component has its own features, such as image width, exposure time, etc..</p>
+<p>NOTE: The component TY_COMPONENT_DEVICE is a virtual component that contains all features related to the whole device, such as trigger mode, device IP.</p>
+<p>Each frame consists of several images. Normally, all the images have identical timestamp, means they are captured at the same time. </p>
+</div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->

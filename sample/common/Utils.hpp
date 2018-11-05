@@ -37,7 +37,7 @@
 #ifdef _WIN32
 # include <windows.h>
 # include <time.h>
-  static inline int32_t getSystemTime()
+  static inline uint32_t getSystemTime()
   {
       SYSTEMTIME wtm;
       struct tm tm;
@@ -58,7 +58,7 @@
 #else
 # include <sys/time.h>
 # include <unistd.h>
-  inline int32_t getSystemTime()
+  static inline uint32_t getSystemTime()
   {
       struct timeval tv;
       gettimeofday(&tv, NULL);
@@ -71,10 +71,10 @@
 #endif
 
 
-#define LOGD(fmt,...)  printf("%d " fmt "\n", getSystemTime(), ##__VA_ARGS__)
-#define LOGI(fmt,...)  printf("%d " fmt "\n", getSystemTime(), ##__VA_ARGS__)
-#define LOGW(fmt,...)  printf("%d " fmt "\n", getSystemTime(), ##__VA_ARGS__)
-#define LOGE(fmt,...)  printf("%d Error: " fmt "\n", getSystemTime(), ##__VA_ARGS__)
+#define LOGD(fmt,...)  printf("%u " fmt "\n", getSystemTime(), ##__VA_ARGS__)
+#define LOGI(fmt,...)  printf("%u " fmt "\n", getSystemTime(), ##__VA_ARGS__)
+#define LOGW(fmt,...)  printf("%u " fmt "\n", getSystemTime(), ##__VA_ARGS__)
+#define LOGE(fmt,...)  printf("%u Error: " fmt "\n", getSystemTime(), ##__VA_ARGS__)
 #define xLOGD(fmt,...)
 #define xLOGI(fmt,...)
 #define xLOGW(fmt,...)
@@ -201,6 +201,22 @@ static inline TY_STATUS selectDevice(TY_INTERFACE_TYPE iface
       return TY_STATUS_ERROR;
     }
 
+    return TY_STATUS_OK;
+}
+
+static TY_STATUS get_feature_enum_list(TY_DEV_HANDLE handle,
+                                       TY_COMPONENT_ID compID,
+                                       TY_FEATURE_ID featID,
+                                       std::vector<TY_ENUM_ENTRY> &feature_info){
+    uint32_t n = 0;
+    ASSERT_OK(TYGetEnumEntryCount(handle, compID, featID, &n));
+    LOGD("===         %14s: entry count %d", "", n);
+    feature_info.clear();
+    if (n == 0){
+        return TY_STATUS_ERROR;
+    }
+    feature_info.resize(n);
+    ASSERT_OK(TYGetEnumEntryInfo(handle, compID, featID, &feature_info[0], n, &n));
     return TY_STATUS_OK;
 }
 

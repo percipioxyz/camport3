@@ -1,50 +1,52 @@
 /**@file      TYApi.h
-* @brief      TYApi.h includes camera control and data receiving interface, 
+ * @brief     TYApi.h includes camera control and data receiving interface, 
  *            which supports configuration for image resolution,  frame rate, exposure  
  *            time, gain, working mode,etc.
  *
- * CHANGES compare to V2:
- * 1. New Interface Layer
- *      Add this layer to specify local network interface to open network camera,
- *      solving the problem that someone wants to connect to a network camera with
- *      ethernet rather than WIFI. Users have to call interface APIs before openning
- *      devices.
- * 2. New Image Processing Library
- *      The new library which has header file TYImageProc.h collects all image
- *      processing functions we provided.
- * 3. New Coordinate Mapper
- *      New TYCoordinateMapper.h handles various convertions, including
- *      depth <-> point3D, point3D <-> point3D.
- * 4. Components:
- *      Removed Point3D component(TY_COMPONENT_POINT3D). Point3D is a virtual component
- *      in V2, and the points are calculated from depth image. We put the calculation
- *      outside tycam library to increase flexibility.
- * 5. Features:
- *      Removed   TY_BOOL_TRIGGER_MODE        , covered by TY_STRUCT_TRIGGER_PARAM
- *      Added     TY_STRUCT_CAM_CALIB_DATA    , for easy use in image processing library
- *                TY_INT_IMAGE_MODE           , covered by new added TY_ENUM_IMAGE_MODE
- *      Modified  TY_ENUM_IMAGE_MODE          , means resolution mode in V2, combind
- *                                              resolution and pixel format in V3
- *      Added some network camera's feature, such as TY_INT_PERSISTENT_IP,
- *      TY_INT_PERSISTENT_SUBMASK, TY_INT_PACKET_DELAY, etc.
- *
- * Copyright(C)2016-2018 Percipio All Rights Reserved
  */
 
-// README:
-//------------------------------------------------------------------------------
-//
-// Depth camera, called "device", consists of several components. Each component
-// is a hardware module or virtual module, such as RGB sensor, depth sensor.
-// Each component has its own features, such as image width, exposure time, etc..
-//
-// NOTE: The component TY_COMPONENT_DEVICE is a virtual component that contains
-//       all features related to the whole device, such as trigger mode, device IP.
-//
-// Each frame consists of several images. Normally, all the images have identical
-// timestamp, means they are captured at the same time.
-//
-//------------------------------------------------------------------------------
+/**@mainpage 
+*  @section Changes compare to V2:
+*  1. New Interface Layer
+*       Add this layer to specify local network interface to open network camera,
+*       solving the problem that someone wants to connect to a network camera with
+*       ethernet rather than WIFI. Users have to call interface APIs before openning
+*       devices.
+*  2. New Image Processing Library
+*       The new library which has header file TYImageProc.h collects all image
+*       processing functions we provided.
+*  3. New Coordinate Mapper
+*       New TYCoordinateMapper.h handles various convertions, including
+*       depth <-> point3D, point3D <-> point3D.
+*  4. Components:
+*       Removed Point3D component(TY_COMPONENT_POINT3D). Point3D is a virtual component
+*       in V2, and the points are calculated from depth image. We put the calculation
+*       outside tycam library to increase flexibility.
+*  5. Features:
+*       Removed   TY_BOOL_TRIGGER_MODE        , covered by TY_STRUCT_TRIGGER_PARAM
+*       Added     TY_STRUCT_CAM_CALIB_DATA    , for easy use in image processing library
+*                 TY_INT_IMAGE_MODE           , covered by new added TY_ENUM_IMAGE_MODE
+*       Modified  TY_ENUM_IMAGE_MODE          , means resolution mode in V2, combind
+*                                               resolution and pixel format in V3
+*       Added some network camera's feature, such as TY_INT_PERSISTENT_IP,
+*       TY_INT_PERSISTENT_SUBMASK, TY_INT_PACKET_DELAY, etc.
+* 
+* Copyright(C)2016-2018 Percipio All Rights Reserved
+*
+*
+*
+* @section Note
+*   Depth camera, called "device", consists of several components. Each component
+*   is a hardware module or virtual module, such as RGB sensor, depth sensor.
+*   Each component has its own features, such as image width, exposure time, etc..
+* 
+*   NOTE: The component TY_COMPONENT_DEVICE is a virtual component that contains
+*         all features related to the whole device, such as trigger mode, device IP.
+* 
+*   Each frame consists of several images. Normally, all the images have identical
+*   timestamp, means they are captured at the same time.
+* 
+* */
 
 #ifndef TY_API_H_
 #define TY_API_H_
@@ -130,17 +132,13 @@
 #endif
 
 
-//------------------------------------------------------------------------------
-//  Definitions
-//------------------------------------------------------------------------------
 #define TY_LIB_VERSION_MAJOR       3
-#define TY_LIB_VERSION_MINOR       0
-#define TY_LIB_VERSION_PATCH       8 
+#define TY_LIB_VERSION_MINOR       1 
+#define TY_LIB_VERSION_PATCH       0 
 
 
 //------------------------------------------------------------------------------
-//  Status
-//------------------------------------------------------------------------------
+///@brief API call return status
 typedef enum TY_STATUS_LIST
 {
     TY_STATUS_OK                = 0,
@@ -180,16 +178,14 @@ typedef enum TY_EVENT_LIST
 typedef int32_t TY_EVENT;
 
 
-//------------------------------------------------------------------------------
-//  Interface & Device Handle
-//------------------------------------------------------------------------------
-typedef void* TY_INTERFACE_HANDLE;
-typedef void* TY_DEV_HANDLE;
+typedef void* TY_INTERFACE_HANDLE; ///<Interface handle 
+typedef void* TY_DEV_HANDLE;///<Device Handle
 
 
-//------------------------------------------------------------------------------
-//  Device Component
-//------------------------------------------------------------------------------
+///@breif  Device Component list
+/// A device contains several component. 
+/// Each component can be controlled by its own features, such as image width, exposure time, etc..
+///@see To Know how to get feature information please refer to sample code DumpAllFeatures
 typedef enum TY_DEVICE_COMPONENT_LIST
 {
     TY_COMPONENT_DEVICE         = 0x80000000, ///< Abstract component stands for whole device, always enabled
@@ -202,14 +198,13 @@ typedef enum TY_DEVICE_COMPONENT_LIST
     TY_COMPONENT_IMU            = 0x00800000, ///< Inertial Measurement Unit
     TY_COMPONENT_BRIGHT_HISTO   = 0x01000000, ///< virtual component for brightness histogram of ir
 
-    TY_COMPONENT_RGB_CAM        = TY_COMPONENT_RGB_CAM_LEFT /// Some device has only one RGB camera, map it to left
+    TY_COMPONENT_RGB_CAM        = TY_COMPONENT_RGB_CAM_LEFT ///< Some device has only one RGB camera, map it to left
 }TY_DEVICE_COMPONENT_LIST;
-typedef int32_t TY_COMPONENT_ID;
+typedef int32_t TY_COMPONENT_ID;///< component unique  id @see TY_DEVICE_COMPONENT_LIST
 
 
 //------------------------------------------------------------------------------
-//  Feature
-//------------------------------------------------------------------------------
+///Feature Format Type definitions
 typedef enum TY_FEATURE_TYPE_LIST
 {
     TY_FEATURE_INT              = 0x1000,
@@ -223,6 +218,7 @@ typedef enum TY_FEATURE_TYPE_LIST
 typedef int32_t TY_FEATURE_TYPE;
 
 
+///feature for component definitions 
 typedef enum TY_FEATURE_ID_LIST
 {
     TY_STRUCT_CAM_INTRINSIC         = 0x0000 | TY_FEATURE_STRUCT, ///< see TY_CAMERA_INTRINSIC
@@ -242,9 +238,14 @@ typedef enum TY_FEATURE_ID_LIST
     TY_INT_HEIGHT_MAX               = 0x0101 | TY_FEATURE_INT,
     TY_INT_OFFSET_X                 = 0x0102 | TY_FEATURE_INT,
     TY_INT_OFFSET_Y                 = 0x0103 | TY_FEATURE_INT,
-    TY_INT_WIDTH                    = 0x0104 | TY_FEATURE_INT,
-    TY_INT_HEIGHT                   = 0x0105 | TY_FEATURE_INT,
+    TY_INT_WIDTH                    = 0x0104 | TY_FEATURE_INT,  ///< Image width
+    TY_INT_HEIGHT                   = 0x0105 | TY_FEATURE_INT,  ///< Image height
     TY_ENUM_IMAGE_MODE              = 0x0109 | TY_FEATURE_ENUM, ///< Resolution-PixelFromat mode, see TY_IMAGE_MODE_LIST
+
+    //@breif scale unit
+    //depth image is uint16 pixel format with default millimeter unit ,for some device  can output Sub-millimeter accuracy data
+    //the acutal depth (mm)= PxielValue * ScaleUnit 
+    TY_FLOAT_SCALE_UNIT             = 0x010a | TY_FEATURE_FLOAT, 
 
     TY_ENUM_TRIGGER_ACTIVATION      = 0x0201 | TY_FEATURE_ENUM, ///< Trigger activation, see TY_TRIGGER_ACTIVATION_LIST
     TY_INT_FRAME_PER_TRIGGER        = 0x0202 | TY_FEATURE_INT,  ///< Number of frames captured per trigger
@@ -253,11 +254,12 @@ typedef enum TY_FEATURE_ID_LIST
     TY_INT_KEEP_ALIVE_TIMEOUT       = 0x0204 | TY_FEATURE_INT,  ///< Keep Alive timeout
     TY_BOOL_CMOS_SYNC               = 0x0205 | TY_FEATURE_BOOL, ///< Cmos sync switch
     TY_INT_TRIGGER_DELAY_US         = 0x0206 | TY_FEATURE_INT,  ///< Trigger delay time, in microseconds
+    TY_BOOL_TRIGGER_OUT_IO          = 0x0207 | TY_FEATURE_BOOL, ///< Trigger out IO
 
     TY_BOOL_AUTO_EXPOSURE           = 0x0300 | TY_FEATURE_BOOL, ///< Auto exposure switch
     TY_INT_EXPOSURE_TIME            = 0x0301 | TY_FEATURE_INT,  ///< Exposure time in percentage
     TY_BOOL_AUTO_GAIN               = 0x0302 | TY_FEATURE_BOOL, ///< Auto gain switch
-    TY_INT_GAIN                     = 0x0303 | TY_FEATURE_INT,  ///< Gain
+    TY_INT_GAIN                     = 0x0303 | TY_FEATURE_INT,  ///< Sensor Gain
     TY_BOOL_AUTO_AWB                = 0x0304 | TY_FEATURE_BOOL, ///< Auto white balance
 
     TY_INT_LASER_POWER              = 0x0500 | TY_FEATURE_INT,  ///< Laser power level
@@ -273,9 +275,11 @@ typedef enum TY_FEATURE_ID_LIST
 
     TY_INT_ANALOG_GAIN              = 0x0524 | TY_FEATURE_INT,  ///< Analog gain
 }TY_FEATURE_ID_LIST;
-typedef int32_t TY_FEATURE_ID;
+typedef int32_t TY_FEATURE_ID;///< feature unique id @see TY_FEATURE_ID_LIST
 
 
+///@brief set external trigger signal edge
+///@see refer to sample SimpleView_TriggerMode for detail usage
 typedef enum TY_TRIGGER_ACTIVATION_LIST
 {
     TY_TRIGGER_ACTIVATION_FALLINGEDGE = 0,
@@ -284,6 +288,7 @@ typedef enum TY_TRIGGER_ACTIVATION_LIST
 typedef int32_t TY_TRIGGER_ACTIVATION;
 
 
+///interface type definition
 typedef enum TY_INTERFACE_TYPE_LIST
 {
     TY_INTERFACE_UNKNOWN        = 0,
@@ -295,7 +300,7 @@ typedef enum TY_INTERFACE_TYPE_LIST
 }TY_INTERFACE_TYPE_LIST;
 typedef int32_t TY_INTERFACE_TYPE;
 
-
+///a feature is readable or writable
 typedef enum TY_ACCESS_MODE_LIST
 {
     TY_ACCESS_READABLE          = 0x1,
@@ -305,8 +310,7 @@ typedef int8_t TY_ACCESS_MODE;
 
 
 //------------------------------------------------------------------------------
-//  Pixel
-//------------------------------------------------------------------------------
+///Pixel size type definitions 
 typedef enum TY_PIXEL_BITS_LIST{
     TY_PIXEL_8BIT               = 0x1 << 28,
     TY_PIXEL_16BIT              = 0x2 << 28,
@@ -315,6 +319,7 @@ typedef enum TY_PIXEL_BITS_LIST{
 }TY_PIXEL_BITS_LIST;
 
 
+///pixel format definitions
 typedef enum TY_PIXEL_FORMAT_LIST{
     TY_PIXEL_FORMAT_UNDEFINED   = 0,
     TY_PIXEL_FORMAT_MONO        = (TY_PIXEL_8BIT  | (0x0 << 24)), ///< 0x10000000
@@ -330,12 +335,21 @@ typedef enum TY_PIXEL_FORMAT_LIST{
 typedef int32_t TY_PIXEL_FORMAT;
 
 
+///predefined resolution list
 typedef enum TY_RESOLUTION_MODE_LIST
 {
     TY_RESOLUTION_MODE_160x120      = (160<<12)+120,    ///< 0x000a0078 
+    TY_RESOLUTION_MODE_240x320      = (240<<12)+320,    ///< 0x000f0140 
+    TY_RESOLUTION_MODE_320x180      = (320<<12)+180,    ///< 0x001400b4
+    TY_RESOLUTION_MODE_320x200      = (320<<12)+200,    ///< 0x001400c8
     TY_RESOLUTION_MODE_320x240      = (320<<12)+240,    ///< 0x001400f0
+    TY_RESOLUTION_MODE_480x640      = (480<<12)+640,    ///< 0x001e0280
+    TY_RESOLUTION_MODE_640x360      = (640<<12)+360,    ///< 0x00280168
+    TY_RESOLUTION_MODE_640x400      = (640<<12)+400,    ///< 0x00280190
     TY_RESOLUTION_MODE_640x480      = (640<<12)+480,    ///< 0x002801e0
+    TY_RESOLUTION_MODE_960x1280      = (960<<12)+1280,    ///< 0x003c0500
     TY_RESOLUTION_MODE_1280x720     = (1280<<12)+720,   ///< 0x005002d0
+    TY_RESOLUTION_MODE_1280x800     = (1280<<12)+800,   ///< 0x00500320
     TY_RESOLUTION_MODE_1280x960     = (1280<<12)+960,   ///< 0x005003c0
     TY_RESOLUTION_MODE_2592x1944    = (2592<<12)+1944,  ///< 0x00a20798
 }TY_RESOLUTION_MODE_LIST;
@@ -346,31 +360,44 @@ typedef int32_t TY_RESOLUTION_MODE;
             TY_IMAGE_MODE_##pix##_##res = TY_PIXEL_FORMAT_##pix | TY_RESOLUTION_MODE_##res
 #define TY_DECLARE_IMAGE_MODE1(pix) \
             TY_DECLARE_IMAGE_MODE0(pix, 160x120), \
+            TY_DECLARE_IMAGE_MODE0(pix, 320x180), \
+            TY_DECLARE_IMAGE_MODE0(pix, 320x200), \
             TY_DECLARE_IMAGE_MODE0(pix, 320x240), \
+            TY_DECLARE_IMAGE_MODE0(pix, 480x640), \
+            TY_DECLARE_IMAGE_MODE0(pix, 640x360), \
+            TY_DECLARE_IMAGE_MODE0(pix, 640x400), \
             TY_DECLARE_IMAGE_MODE0(pix, 640x480), \
+            TY_DECLARE_IMAGE_MODE0(pix, 960x1280), \
+            TY_DECLARE_IMAGE_MODE0(pix, 1280x720), \
             TY_DECLARE_IMAGE_MODE0(pix, 1280x960), \
-            TY_DECLARE_IMAGE_MODE0(pix, 2592x1944),
+            TY_DECLARE_IMAGE_MODE0(pix, 1280x800), \
+            TY_DECLARE_IMAGE_MODE0(pix, 2592x1944)
+
+
+///@brief Predefined Image Mode List
+/// image mode controls image resolution & format
+/// named like TY_IMAGE_MODE_MONO_160x120
 typedef enum TY_IMAGE_MODE_LIST
 {
-    // named like TY_IMAGE_MODE_MONO_160x120
-    TY_DECLARE_IMAGE_MODE1(MONO)
-    TY_DECLARE_IMAGE_MODE1(DEPTH16)
-    TY_DECLARE_IMAGE_MODE1(YVYU)
-    TY_DECLARE_IMAGE_MODE1(YUYV)
-    TY_DECLARE_IMAGE_MODE1(RGB)
-    TY_DECLARE_IMAGE_MODE1(JPEG)
+    TY_DECLARE_IMAGE_MODE1(MONO),
+    TY_DECLARE_IMAGE_MODE1(DEPTH16),
+    TY_DECLARE_IMAGE_MODE1(YVYU),
+    TY_DECLARE_IMAGE_MODE1(YUYV),
+    TY_DECLARE_IMAGE_MODE1(RGB),
+    TY_DECLARE_IMAGE_MODE1(JPEG),
+    TY_DECLARE_IMAGE_MODE1(BAYER8GB)
 }TY_IMAGE_MODE_LIST;
 typedef int32_t TY_IMAGE_MODE;
 #undef TY_DECLARE_IMAGE_MODE0
 #undef TY_DECLARE_IMAGE_MODE1
 
-
+///@see refer to sample SimpleView_TriggerMode for detail usage
 typedef enum TY_TRIGGER_MODE_LIST
 {
-    TY_TRIGGER_MODE_OFF         = 0, //not trigger mode, continuous mode
-    TY_TRIGGER_MODE_SLAVE       = 1, //slave mode, receive soft/hardware triggers
-    TY_TRIGGER_MODE_M_SIG       = 2, //master mode 1, sending one trigger signal once received a soft/hardware trigger
-    TY_TRIGGER_MODE_M_PER       = 3, //master mode 2, periodic sending one trigger signals, 'fps' param should be set
+    TY_TRIGGER_MODE_OFF         = 0, ///<not trigger mode, continuous mode
+    TY_TRIGGER_MODE_SLAVE       = 1, ///<slave mode, receive soft/hardware triggers
+    TY_TRIGGER_MODE_M_SIG       = 2, ///<master mode 1, sending one trigger signal once received a soft/hardware trigger
+    TY_TRIGGER_MODE_M_PER       = 3, ///<master mode 2, periodic sending one trigger signals, 'fps' param should be set
 }TY_TRIGGER_MODE_LIST;
 typedef int16_t TY_TRIGGER_MODE;
 
@@ -402,6 +429,7 @@ typedef struct TY_DEVICE_USB_INFO
     char    reserved[248];
 }TY_DEVICE_USB_INFO;
 
+///@see TYGetInterfaceList
 typedef struct TY_INTERFACE_INFO
 {
     char                name[32];
@@ -411,14 +439,15 @@ typedef struct TY_INTERFACE_INFO
     TY_DEVICE_NET_INFO  netInfo; // only meaningful when TYIsNetworkInterface(type)
 }TY_INTERFACE_INFO;
 
+///@see TYGetDeviceList
 typedef struct TY_DEVICE_BASE_INFO
 {
     TY_INTERFACE_INFO   iface;
-    char                id[32];
+    char                id[32];///<device serial number
     char                vendorName[32];     
-    char                modelName[32];
-    TY_VERSION_INFO     hardwareVersion;
-    TY_VERSION_INFO     firmwareVersion;
+    char                modelName[32];///<device model name
+    TY_VERSION_INFO     hardwareVersion; ///<deprecated
+    TY_VERSION_INFO     firmwareVersion;///<deprecated
     union {
       TY_DEVICE_NET_INFO netInfo;
       TY_DEVICE_USB_INFO usbInfo;
@@ -429,12 +458,12 @@ typedef struct TY_DEVICE_BASE_INFO
 typedef struct TY_FEATURE_INFO
 {
     bool            isValid;            ///< true if feature exists, false otherwise
-    TY_ACCESS_MODE  accessMode;         ///< feature access mode
+    TY_ACCESS_MODE  accessMode;         ///< feature access privilege
     bool            writableAtRun;      ///< feature can be written while capturing
     char            reserved0[1];
-    TY_COMPONENT_ID componentID;
-    TY_FEATURE_ID   featureID;
-    char            name[32];
+    TY_COMPONENT_ID componentID;        ///< owner of this feature
+    TY_FEATURE_ID   featureID;          ///< feature unique id
+    char            name[32];           ///< describe string
     int32_t         bindComponentID;    ///< component ID current feature bind to
     int32_t         bindFeatureID;      ///< feature ID current feature bind to
     char            reserved[252];
@@ -444,7 +473,7 @@ typedef struct TY_INT_RANGE
 {
     int32_t min;
     int32_t max;
-    int32_t inc;
+    int32_t inc;   ///<increaing step
     int32_t reserved[1];
 }TY_INT_RANGE;
 
@@ -452,10 +481,12 @@ typedef struct TY_FLOAT_RANGE
 {
     float   min;
     float   max;
-    float   inc;
+    float   inc;   ///<increaing step
     float   reserved[1];
 }TY_FLOAT_RANGE;
 
+///enum feature entry information
+///@see TYGetEnumEntryInfo
 typedef struct TY_ENUM_ENTRY
 {
     char    description[64];
@@ -470,18 +501,24 @@ typedef struct TY_VECT_3F
     float   z;
 }TY_VECT_3F;
 
-/// [fx,  0, cx,
-///   0, fy, cy,
-///   0,  0,  1]
+///  a 3x3 matrix  
+/// |.|.|.|
+/// | --|---|---|
+/// | fx|  0| cx|
+/// |  0| fy| cy|
+/// |  0|  0|  1|
 typedef struct TY_CAMERA_INTRINSIC
 {
     float data[3*3];
 }TY_CAMERA_INTRINSIC;
 
-/// [r11, r12, r13, t1,
-///  r21, r22, r23, t2,
-///  r31, r32, r33, t3,
-///    0,   0,   0,  1]
+/// a 4x4 matrix
+///  |.|.|.|.|
+///  |---|----|----|---|
+///  |r11| r12| r13| t1|
+///  |r21| r22| r23| t2|
+///  |r31| r32| r33| t3|
+///  | 0 |   0|   0|  1|
 typedef struct TY_CAMERA_EXTRINSIC
 {
     float data[4*4];
@@ -490,10 +527,12 @@ typedef struct TY_CAMERA_EXTRINSIC
 ///camera distortion parameters
 typedef struct TY_CAMERA_DISTORTION
 {
-    float data[12];///<k1,k2,p1,p2,k3,k4,k5,k6,s1,s2,s3,s4
+    float data[12];///<Definition is compatible with opencv3.0+ :k1,k2,p1,p2,k3,k4,k5,k6,s1,s2,s3,s4
 }TY_CAMERA_DISTORTION;
 
 
+///camera 's cailbration data
+///@see TYGetStruct
 typedef struct TY_CAMERA_CALIB_INFO
 {
   int32_t intrinsicWidth;
@@ -504,6 +543,7 @@ typedef struct TY_CAMERA_CALIB_INFO
 }TY_CAMERA_CALIB_INFO;
 
 
+//@see sample SimpleView_TriggerMode  
 typedef struct TY_TRIGGER_PARAM
 {
     TY_TRIGGER_MODE   mode;
@@ -582,6 +622,7 @@ static inline uint32_t TYIPv4ToInt(uint8_t ip[4])
   return (ip[0] << 24) | (ip[1] << 16) | (ip[2] << 8) | ip[3];
 }
 
+///init a TY_IMAGE_DATA struct
 static inline TY_IMAGE_DATA TYInitImageData(size_t size, void* buffer
     , size_t width, size_t height)
 {
@@ -598,36 +639,54 @@ static inline TY_IMAGE_DATA TYInitImageData(size_t size, void* buffer
   return out;
 }
 
+///get feature format type from feature id
 static inline TY_FEATURE_TYPE TYFeatureType(TY_FEATURE_ID id)
 {
     return id & 0xf000;
 }
 
+///get pixel size in byte 
 static inline int32_t TYPixelSize(TY_IMAGE_MODE imageMode)
 {
     return ((imageMode >> 28) & 0xf);
 }
 
+///make a image mode from pixel format & resolution mode
 static inline TY_IMAGE_MODE TYImageMode(TY_PIXEL_FORMAT pix, TY_RESOLUTION_MODE res)
 {
     return pix | res;
 }
 
+///get a resoltuion mode from width & height
+static inline TY_RESOLUTION_MODE TYResolutionMode2(int width, int height){
+    return (TY_RESOLUTION_MODE)((width << 12) + height);
+}
+
+///create a image mode from pixel format , width & height  
+static inline TY_IMAGE_MODE TYImageMode2(TY_PIXEL_FORMAT pix, int width,int height)
+{
+    return pix | TYResolutionMode2(width, height);
+}
+
+///get pixel format from image mode
 static inline TY_PIXEL_FORMAT TYPixelFormat(TY_IMAGE_MODE imageMode)
 {
     return imageMode & 0xff000000;
 }
 
+///get a resoltuion mode from image mode 
 static inline TY_RESOLUTION_MODE TYResolutionMode(TY_IMAGE_MODE imageMode)
 {
     return imageMode & 0x00ffffff;
 }
 
+///get image width from image mode
 static inline int32_t TYImageWidth(TY_IMAGE_MODE imageMode)
 {
     return TYResolutionMode(imageMode) >> 12;
 }
 
+///get image height from image mode
 static inline int32_t TYImageHeight(TY_IMAGE_MODE imageMode)
 {
     return TYResolutionMode(imageMode) & 0x0fff;
@@ -667,6 +726,7 @@ TY_CAPI TYLibVersion              (TY_VERSION_INFO* version);
 
 
 /// @brief Update current interfaces.
+/// call before TYGetInterfaceList
 /// @retval TY_STATUS_OK        Succeed.
 /// @retval TY_STATUS_NOT_INITED        TYInitLib not called.
 TY_CAPI TYUpdateInterfaceList     ();
@@ -693,6 +753,7 @@ TY_CAPI TYGetInterfaceList        (TY_INTERFACE_INFO* pIfaceInfos, uint32_t buff
 /// @retval TY_STATUS_OK        Succeed.
 /// @retval TY_STATUS_NOT_INITED        TYInitLib not called.
 /// @retval TY_STATUS_NULL_POINTER      ifaceID or outHandle is NULL.
+/// @see TYGetInterfaceList
 TY_CAPI TYHasInterface            (const char* ifaceID, bool* value);
 
 /// @brief Open specified interface.
@@ -702,6 +763,7 @@ TY_CAPI TYHasInterface            (const char* ifaceID, bool* value);
 /// @retval TY_STATUS_NOT_INITED        TYInitLib not called.
 /// @retval TY_STATUS_NULL_POINTER      ifaceID or outHandle is NULL.
 /// @retval TY_STATUS_INVALID_INTERFACE Interface not found.
+/// @see TYGetInterfaceList
 TY_CAPI TYOpenInterface           (const char* ifaceID, TY_INTERFACE_HANDLE* outHandle);
 
 /// @brief Close interface.
@@ -762,7 +824,7 @@ TY_CAPI TYHasDevice               (TY_INTERFACE_HANDLE ifaceHandle, const char* 
 /// @retval TY_STATUS_DEVICE_ERROR      Open device failed.
 TY_CAPI TYOpenDevice              (TY_INTERFACE_HANDLE ifaceHandle, const char* deviceID, TY_DEV_HANDLE* outDeviceHandle);
 
-/// @brief Open device by device IP, useful when device not listed.
+/// @brief Open device by device IP, useful when a device is not listed.
 /// @param  [in]  ifaceHandle   Interface handle.
 /// @param  [in]  IP            Device IP.
 /// @param  [out] deviceHandle  Handle of opened device.
@@ -783,7 +845,7 @@ TY_CAPI TYOpenDeviceWithIP        (TY_INTERFACE_HANDLE ifaceHandle, const char* 
 /// @retval TY_STATUS_NULL_POINTER      pIface is NULL.
 TY_CAPI TYGetDeviceInterface      (TY_DEV_HANDLE hDevice, TY_INTERFACE_HANDLE* pIface);
 
-/// @brief Force device to use new IP address, useful when device use persistent IP and cannot be found.
+/// @brief Force a ethernet device to use new IP address, useful when device use persistent IP and cannot be found.
 /// @param  [in]  ifaceHandle   Interface handle.
 /// @param  [in]  MAC           Device MAC, should be "xx:xx:xx:xx:xx:xx".
 /// @param  [in]  newIP         New IP.
@@ -817,18 +879,20 @@ TY_CAPI TYGetDeviceInfo           (TY_DEV_HANDLE hDevice, TY_DEVICE_BASE_INFO* i
 
 /// @brief Get all components IDs.
 /// @param  [in]  hDevice       Device handle.
-/// @param  [out] componentIDs  All component IDs this device has.
+/// @param  [out] componentIDs  All component IDs this device has. (bit flag).
 /// @retval TY_STATUS_OK        Succeed.
 /// @retval TY_STATUS_INVALID_HANDLE    Invalid device handle.
 /// @retval TY_STATUS_NULL_POINTER      componentIDs is NULL.
+/// @see TY_DEVICE_COMPONENT_LIST
 TY_CAPI TYGetComponentIDs         (TY_DEV_HANDLE hDevice, int32_t* componentIDs);
 
 /// @brief Get all enabled components IDs.
 /// @param  [in]  hDevice       Device handle.
-/// @param  [out] componentIDs  Enabled component IDs.
+/// @param  [out] componentIDs  Enabled component IDs.(bit flag)
 /// @retval TY_STATUS_OK        Succeed.
 /// @retval TY_STATUS_INVALID_HANDLE    Invalid device handle.
 /// @retval TY_STATUS_NULL_POINTER      componentIDs is NULL.
+/// @see TY_DEVICE_COMPONENT_LIST
 TY_CAPI TYGetEnabledComponents    (TY_DEV_HANDLE hDevice, int32_t* componentIDs);
 
 /// @brief Enable components.
@@ -847,6 +911,7 @@ TY_CAPI TYEnableComponents        (TY_DEV_HANDLE hDevice, int32_t componentIDs);
 /// @retval TY_STATUS_INVALID_HANDLE    Invalid device handle.
 /// @retval TY_STATUS_INVALID_COMPONENT Some components specified by componentIDs are invalid.
 /// @retval TY_STATUS_BUSY      Device is capturing.
+/// @see TY_DEVICE_COMPONENT_LIST
 TY_CAPI TYDisableComponents       (TY_DEV_HANDLE hDevice, int32_t componentIDs);
 
 
@@ -895,7 +960,7 @@ TY_CAPI TYStartCapture            (TY_DEV_HANDLE hDevice);
 /// @retval TY_STATUS_DEVICE_ERROR      Stop capture failed.
 TY_CAPI TYStopCapture             (TY_DEV_HANDLE hDevice);
 
-/// @brief Send a software trigger when device works in trigger mode.
+/// @brief Send a software trigger to capture a frame when device works in trigger mode.
 /// @param  [in]  hDevice       Device handle.
 /// @retval TY_STATUS_OK        Succeed.
 /// @retval TY_STATUS_INVALID_HANDLE    Invalid device handle.
@@ -903,8 +968,6 @@ TY_CAPI TYStopCapture             (TY_DEV_HANDLE hDevice);
 /// @retval TY_STATUS_IDLE              Device has not started capture.
 /// @retval TY_STATUS_WRONG_MODE        Not in trigger mode.
 TY_CAPI TYSendSoftTrigger         (TY_DEV_HANDLE hDevice);
-
-
 
 /// @brief Register device status callback. Register NULL to clean callback.
 /// @param  [in]  hDevice       Device handle.
@@ -928,7 +991,7 @@ TY_CAPI TYRegisterEventCallback   (TY_DEV_HANDLE hDevice, TY_EVENT_CALLBACK call
 TY_CAPI TYFetchFrame              (TY_DEV_HANDLE hDevice, TY_FRAME_DATA* frame, int32_t timeout);
 
 
-/// @brief Get whether has feature.
+/// @brief Check  whether a component has a specific feature.
 /// @param  [in]  hDevice       Device handle.
 /// @param  [in]  componentID   Component ID.
 /// @param  [in]  featureID     Feature ID.
@@ -1128,6 +1191,7 @@ TY_CAPI TYSetBool                 (TY_DEV_HANDLE hDevice, TY_COMPONENT_ID compon
 /// @retval TY_STATUS_INVALID_FEATURE   Invalid feature ID.
 /// @retval TY_STATUS_WRONG_TYPE        The feature's type is not TY_FEATURE_STRING.
 /// @retval TY_STATUS_NULL_POINTER      size is NULL.
+/// @see TYGetString
 TY_CAPI TYGetStringLength         (TY_DEV_HANDLE hDevice, TY_COMPONENT_ID componentID, TY_FEATURE_ID featureID, uint32_t* size);
 
 /// @brief Get value of string feature.
@@ -1142,6 +1206,7 @@ TY_CAPI TYGetStringLength         (TY_DEV_HANDLE hDevice, TY_COMPONENT_ID compon
 /// @retval TY_STATUS_INVALID_FEATURE   Invalid feature ID.
 /// @retval TY_STATUS_WRONG_TYPE        The feature's type is not TY_FEATURE_STRING.
 /// @retval TY_STATUS_NULL_POINTER      buffer is NULL.
+/// @see TYGetStringLength
 TY_CAPI TYGetString               (TY_DEV_HANDLE hDevice, TY_COMPONENT_ID componentID, TY_FEATURE_ID featureID, char* buffer, uint32_t bufferSize);
 
 /// @brief Set value of string feature.

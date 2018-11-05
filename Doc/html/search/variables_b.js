@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['validcount',['validCount',['../a00086.html#a8e3a508ddd5eec680fc5c114dd297fe3',1,'TY_FRAME_DATA']]]
+  ['reserved',['reserved',['../a00082.html#ab9490e29d33407f16f25bfa8f1e3da99',1,'TY_IMAGE_DATA::reserved()'],['../a00086.html#a69f7bd4ad45a0700f4e53159230e0cc9',1,'TY_FRAME_DATA::reserved()']]]
 ];

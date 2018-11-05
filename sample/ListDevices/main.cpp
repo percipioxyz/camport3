@@ -1,7 +1,15 @@
 #include "../common/common.hpp"
+#include <fstream>
 
 int main(int argc, char* argv[])
 {
+    bool save = false; 
+    for(int i = 1; i < argc; i++) {
+        if(strcmp(argv[i], "-s") == 0){
+            save = true;
+        }
+    }
+
     // Init lib
     ASSERT_OK(TYInitLib());
     TY_VERSION_INFO ver;
@@ -60,19 +68,15 @@ int main(int argc, char* argv[])
             LOGD("    - device %s:", devs[j].id);
             LOGD("          vendor     : %s", devs[j].vendorName);
             LOGD("          model      : %s", devs[j].modelName);
-            LOGD("          HW version : %d.%d.%d"
-                , devs[j].hardwareVersion.major
-                , devs[j].hardwareVersion.minor
-                , devs[j].hardwareVersion.patch
-            );
-            LOGD("          FW version : %d.%d.%d"
-                , devs[j].firmwareVersion.major
-                , devs[j].firmwareVersion.minor
-                , devs[j].firmwareVersion.patch
-            );
             if (TYIsNetworkInterface(devs[j].iface.type)) {
                 LOGD("          device MAC : %s", devs[j].netInfo.mac);
                 LOGD("          device IP  : %s", devs[j].netInfo.ip);
+
+                if (save) {
+                    std::ofstream output("device_list.txt");
+                    output << devs[j].netInfo.ip <<" ";
+                    output << devs[j].id <<" "<<std::endl;
+                }
             }
         }
         TYCloseInterface(hIface);

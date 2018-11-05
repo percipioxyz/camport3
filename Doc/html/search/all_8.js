@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['size',['size',['../a00082.html#a982cff954ca09f781d9e7dd005ddf22d',1,'TY_IMAGE_DATA']]],
-  ['status',['status',['../a00082.html#a53474a38966b0f8267248f6bcbae8cbb',1,'TY_IMAGE_DATA']]]
+  ['name',['name',['../a00038.html#afd6fedc67adc75e494b3ae4a394c8541',1,'TY_FEATURE_INFO']]]
 ];

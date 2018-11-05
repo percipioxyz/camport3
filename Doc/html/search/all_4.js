@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['height',['height',['../a00082.html#adb0eed2a5679c1b3467d947593bf343b',1,'TY_IMAGE_DATA']]]
+  ['featureid',['featureID',['../a00038.html#a42bc9dd85f75d13ed508965da9053fdc',1,'TY_FEATURE_INFO']]],
+  ['firmwareversion',['firmwareVersion',['../a00030.html#a2570cb515298d3174ab2028af340fe76',1,'TY_DEVICE_BASE_INFO']]]
 ];

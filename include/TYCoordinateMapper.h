@@ -1,16 +1,13 @@
+/**@file TYCoordinateMapper.h
+ * @brief Coordinate Conversion API
+ * @note  Considering performance, we leave the responsibility of parameters check to users.
+ * @copyright  Copyright(C)2016-2018 Percipio All Rights Reserved
+ **/
 #ifndef TY_COORDINATE_MAPPER_H_
 #define TY_COORDINATE_MAPPER_H_
 
-
 #include <stdlib.h>
 #include "TYApi.h"
-
-
-// ------------------------------------------------------------------
-//  NOTE: Considering performance, we leave the responsibility of
-//        parameters check to users.
-// ------------------------------------------------------------------
-
 
 typedef struct TY_PIXEL_DESC
 {

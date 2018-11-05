@@ -112,10 +112,19 @@ int main(int argc, char* argv[])
 
     LOGD("Configure components, open depth cam");
     if (allComps & TY_COMPONENT_DEPTH_CAM && depth) {
-        LOGD("Configure feature, set resolution to 640x480.");
-        int err = TYSetEnum(hDevice, TY_COMPONENT_DEPTH_CAM, TY_ENUM_IMAGE_MODE, TY_IMAGE_MODE_DEPTH16_640x480);
-        ASSERT(err == TY_STATUS_OK || err == TY_STATUS_NOT_PERMITTED);
-        ASSERT_OK( TYEnableComponents(hDevice, TY_COMPONENT_DEPTH_CAM) );
+        std::vector<TY_ENUM_ENTRY> image_mode_list;
+        ASSERT_OK(get_feature_enum_list(hDevice, TY_COMPONENT_DEPTH_CAM, TY_ENUM_IMAGE_MODE, image_mode_list));
+        for (int idx = 0; idx < image_mode_list.size(); idx++){
+            TY_ENUM_ENTRY &entry = image_mode_list[idx];
+            //try to select a vga resolution
+            if (TYImageWidth(entry.value) == 640 || TYImageHeight(entry.value) == 640){
+                LOGD("Select Depth Image Mode: %s", entry.description);
+                int err = TYSetEnum(hDevice, TY_COMPONENT_DEPTH_CAM, TY_ENUM_IMAGE_MODE, entry.value);
+                ASSERT(err == TY_STATUS_OK || err == TY_STATUS_NOT_PERMITTED);
+                break;
+            }
+        }
+        ASSERT_OK(TYEnableComponents(hDevice, TY_COMPONENT_DEPTH_CAM));
     }
 
 

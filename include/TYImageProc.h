@@ -1,3 +1,8 @@
+/**@file TYImageProc.h
+ * @breif Image post-process API
+ * @copyright  Copyright(C)2016-2018 Percipio All Rights Reserved
+ **/
+
 #ifndef TY_IMAGE_PROC_H_
 #define TY_IMAGE_PROC_H_
 
@@ -9,7 +14,7 @@
 /// @brief Do image undistortion, only support TY_PIXEL_FORMAT_MONO ,TY_PIXEL_FORMAT_RGB,TY_PIXEL_FORMAT_BGR.
 /// @param  [in]  srcCalibInfo          Image calibration data.
 /// @param  [in]  srcImage              Source image.
-/// @param  [in]  cameraNewIntrinsic    Expected new image intrinsic, input NULL will use original intrinsic.
+/// @param  [in]  cameraNewIntrinsic    Expected new image intrinsic, will use srcCalibInfo for new image intrinsic if set to NULL.
 /// @param  [out] dstImage              Output image.
 /// @retval TY_STATUS_OK        Succeed.
 /// @retval TY_STATUS_NULL_POINTER      Any srcCalibInfo, srcImage, dstImage, srcImage->buffer, dstImage->buffer is NULL.
@@ -26,6 +31,8 @@ struct DepthSpeckleFilterParameters {
     int max_speckle_size; // blob size smaller than this will be removed
     int max_speckle_diff; // Maximum difference between neighbor disparity pixels
 };
+
+///<default parameter value definition
 #define DepthSpeckleFilterParameters_Initializer {150, 64}
 
 /// @brief Remove speckles on depth image.
@@ -41,11 +48,13 @@ TY_CAPI TYDepthSpeckleFilter (TY_IMAGE_DATA* depthImage
 
 // -----------------------------------------------------------
 struct DepthEnhenceParameters{
-    float sigma_s;          // filter param on space
-    float sigma_r;          // filter param on range
-    int   outlier_win_sz;   // outlier filter windows ize
+    float sigma_s;          ///< filter param on space
+    float sigma_r;          ///< filter param on range
+    int   outlier_win_sz;   ///< outlier filter windows ize
     float outlier_rate;
 };
+
+///<default parameter value definition
 #define DepthEnhenceParameters_Initializer {10, 20, 10, 0.1f}
 
 /// @brief Remove speckles on depth image.
