@@ -129,6 +129,9 @@ void dumpComponentFeatures(TY_DEV_HANDLE handle, TY_COMPONENT_ID compID)
     DUMP_FEATURE(handle, compID, TY_INT_B_GAIN);
 
     DUMP_FEATURE(handle, compID, TY_INT_ANALOG_GAIN);
+
+    DUMP_FEATURE(handle, compID, TY_INT_ACCEPTABLE_PERCENT);
+    DUMP_FEATURE(handle, compID, TY_INT_NTP_SERVER_IP);
 }
 
 #define DUMP_COMPONENT(handle,compIds,id) \
@@ -182,7 +185,7 @@ int main(int argc, char* argv[])
 
     ASSERT_OK( TYOpenInterface(selectedDev.iface.id, &hIface) );
     ASSERT_OK( TYOpenDevice(hIface, selectedDev.id, &handle) );
-
+    ASSERT_OK( TYGetDeviceInfo(handle, &selectedDev) );
     {
         LOGD("===   selected interface %s:", selectedDev.iface.id);
         LOGD("===   selected device %s:", selectedDev.id);

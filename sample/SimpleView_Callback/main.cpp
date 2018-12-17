@@ -9,6 +9,12 @@ class CallbackWrapper
 public:
   typedef void (*TY_FRAME_CALLBACK) (TY_FRAME_DATA*, void* userdata);
 
+  CallbackWrapper(){
+      _hDevice = NULL;
+      _cb = NULL;
+      _userdata = NULL;
+  }
+
   TY_STATUS TYRegisterCallback(TY_DEV_HANDLE hDevice, TY_FRAME_CALLBACK v, void* userdata)
   {
     _hDevice = hDevice;
@@ -87,6 +93,7 @@ static int get_fps() {
 struct CallbackData {
     int             index;
     TY_DEV_HANDLE   hDevice;
+    TY_ISP_HANDLE   hIspHandle;
     bool            exit;
     cv::Mat         depth;
     cv::Mat         leftIR;
@@ -209,7 +216,6 @@ int main(int argc, char* argv[])
   uint32_t frameSize;
   ASSERT_OK(TYGetFrameBufferSize(hDevice, &frameSize));
   LOGD("     - Get size of framebuffer, %d", frameSize);
-  ASSERT(frameSize >= 640 * 480 * 2);
 
   LOGD("     - Allocate & enqueue buffers");
   char* frameBuffer[2];
@@ -237,9 +243,15 @@ int main(int argc, char* argv[])
   cb_data.index = 0;
   cb_data.hDevice = hDevice;
   cb_data.exit = false;
+  cb_data.hIspHandle = NULL;
   // Register Callback
   CallbackWrapper cbWrapper;
   cbWrapper.TYRegisterCallback(hDevice, frameCallback, &cb_data);
+
+  ASSERT_OK(TYGetEnabledComponents(hDevice, &componentIDs));
+  if (allComps & TY_COMPONENT_RGB_CAM & componentIDs){
+      ASSERT_OK(TYISPCreate(&cb_data.hIspHandle));
+  }
 
   LOGD("Start capture");
   ASSERT_OK(TYStartCapture(hDevice));
@@ -279,6 +291,7 @@ int main(int argc, char* argv[])
   ASSERT_OK(TYStopCapture(hDevice));
   ASSERT_OK(TYCloseDevice(hDevice));
   ASSERT_OK(TYCloseInterface(hIface));
+  ASSERT_OK(TYISPRelease(&cb_data.hIspHandle));
   ASSERT_OK(TYDeinitLib());
   delete frameBuffer[0];
   delete frameBuffer[1];

@@ -62,6 +62,8 @@ void eventCallback(TY_EVENT_INFO *event_info, void *userdata)
 
 int main(int argc, char* argv[])
 {
+    int32_t resend = 1;
+
     for(int i = 1; i < argc; i++) {
         if(strcmp(argv[i], "-h") == 0) {
             LOGI("Usage: %s [-h]", argv[0]);
@@ -97,7 +99,6 @@ int main(int argc, char* argv[])
         uint32_t frameSize;
         ASSERT_OK( TYGetFrameBufferSize(cams[i].hDev, &frameSize) );
         LOGD("     - Get size of framebuffer, %d", frameSize);
-        ASSERT( frameSize >= 640 * 480 * 2 );
 
         LOGD("     - Allocate & enqueue buffers");
         cams[i].fb[0] = new char[frameSize];
@@ -121,6 +122,19 @@ int main(int argc, char* argv[])
             TY_TRIGGER_PARAM param;
             param.mode = TY_TRIGGER_MODE_SLAVE;
             ASSERT_OK(TYSetStruct(cams[i].hDev, TY_COMPONENT_DEVICE, TY_STRUCT_TRIGGER_PARAM, (void*)&param, sizeof(param)));
+        }
+
+        //for network only
+        LOGD("=== resend: %d", resend);
+        if (resend) {
+            bool hasResend;
+            ASSERT_OK(TYHasFeature(cams[i].hDev, TY_COMPONENT_DEVICE, TY_BOOL_GVSP_RESEND, &hasResend));
+            if (hasResend) {
+                LOGD("=== Open resend");
+                ASSERT_OK(TYSetBool(cams[i].hDev, TY_COMPONENT_DEVICE, TY_BOOL_GVSP_RESEND, true));
+            } else {
+                LOGD("=== Not support feature TY_BOOL_GVSP_RESEND");
+            }
         }
 
         LOGD("=== Start capture");

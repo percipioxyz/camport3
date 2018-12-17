@@ -6,60 +6,13 @@
 #include <opencv2/opencv.hpp>
 #include "DepthRender.hpp"
 #include "MatViewer.hpp"
-#include "PointCloudViewer.hpp"
 #include "TYThread.hpp"
+#include "TyIsp.h"
 
-#define HISTOPT
-#define HDIM    (256)
-#define SRC     (0)
-#define DST     (1)
-
-static void histogramOPT(unsigned char* pImgData, int width, int height)
-{
-        int n[] = { HDIM, HDIM, HDIM };
-        int r[256] = { 0 }, g[256] = { 0 }, b[256] = { 0 };
-        int y[256] = { 0 }, u[256] = { 0 }, v[256] = { 0 };
-
-        int sum = width * height;
-        int i, j;
-
-        for (i = 0; i<height; i++){
-	    for (j = 0; j<width; j++){
-	        int R = pImgData[3 * i*width + 3 * j + 2];
-	        int G = pImgData[3 * i*width + 3 * j + 1];
-	        int B = pImgData[3 * i*width + 3 * j + 0];
-	        b[B]++;
-	        g[G]++;
-	        r[R]++;
-	    }
-	}
-
-        double val[3] = { 0 };
-        for (i = 0; i<HDIM; i++){
-            val[0] += b[i];
-            val[1] += g[i];
-            val[2] += r[i];
-            b[i] = val[0] * 255 / sum;
-            g[i] = val[1] * 255 / sum;
-            r[i] = val[2] * 255 / sum;
-	}
-
-        for (i = 0; i<height; i++){
-            for (j = 0; j<width; j++){
-                int R = pImgData[3 * i*width + 3 * j + 2];
-                int G = pImgData[3 * i*width + 3 * j + 1];
-                int B = pImgData[3 * i*width + 3 * j + 0];
-
-                pImgData[3 * i*width + 3 * j + 2] = r[R];
-                pImgData[3 * i*width + 3 * j + 1] = g[G];
-                pImgData[3 * i*width + 3 * j + 0] = b[B];
-            }
-        }
-}
 
 static inline int parseFrame(const TY_FRAME_DATA& frame, cv::Mat* pDepth
         , cv::Mat* pLeftIR, cv::Mat* pRightIR
-        , cv::Mat* pColor)
+        , cv::Mat* pColor, TY_ISP_HANDLE color_isp_handle = NULL)
 {
     for( int i = 0; i < frame.validCount; i++ ){
         // get depth image
@@ -101,12 +54,27 @@ static inline int parseFrame(const TY_FRAME_DATA& frame, cv::Mat* pDepth
                 *pColor = cv::Mat(frame.image[i].height, frame.image[i].width
                         , CV_8UC3, frame.image[i].buffer);
             } else if(frame.image[i].pixelFormat == TY_PIXEL_FORMAT_BAYER8GB){
-                cv::Mat raw(frame.image[i].height, frame.image[i].width
-                        , CV_8U, frame.image[i].buffer);
-                cv::cvtColor(raw, *pColor, cv::COLOR_BayerGB2BGR);
-#ifdef HISTOPT
-                histogramOPT(pColor->data, pColor->rows, pColor->cols);
-#endif
+                if (!color_isp_handle){
+                    cv::Mat raw(frame.image[i].height, frame.image[i].width
+                                , CV_8U, frame.image[i].buffer);
+                    cv::cvtColor(raw, *pColor, cv::COLOR_BayerGB2BGR);
+                }
+                else{
+                    cv::Mat raw(frame.image[i].height, frame.image[i].width
+                                , CV_8U, frame.image[i].buffer);
+                    TY_IMAGE_DATA _img = frame.image[i];
+                    pColor->create(_img.height, _img.width, CV_8UC3);
+                    int sz = _img.height* _img.width * 3;
+                    TY_IMAGE_DATA out_buff = TYInitImageData(sz, pColor->data, _img.width, _img.height);
+                    out_buff.pixelFormat = TY_PIXEL_FORMAT_BGR;
+                    int res = TYISPProcessImage(color_isp_handle, &_img, &out_buff);
+                    if (res != TY_STATUS_OK){
+                        //fall back to  using opencv api
+                        cv::Mat raw(frame.image[i].height, frame.image[i].width
+                                    , CV_8U, frame.image[i].buffer);
+                        cv::cvtColor(raw, *pColor, cv::COLOR_BayerGB2BGR);
+                    }
+                }
             } else if(frame.image[i].pixelFormat == TY_PIXEL_FORMAT_MONO){
                 cv::Mat gray(frame.image[i].height, frame.image[i].width
                         , CV_8U, frame.image[i].buffer);
@@ -118,5 +86,44 @@ static inline int parseFrame(const TY_FRAME_DATA& frame, cv::Mat* pDepth
     return 0;
 }
 
+enum{
+    PC_FILE_FORMAT_XYZ = 0,
+};
+
+static void writePC_XYZ(const cv::Point3f* pnts,const cv::Vec3b *color, size_t n, FILE* fp)
+{
+    if (color){
+        for (size_t i = 0; i < n; i++){
+            if (!std::isnan(pnts[i].x)){
+                fprintf(fp, "%f %f %f %d %d %d\n", pnts[i].x, pnts[i].y, pnts[i].z, color[i][0], color[i][1], color[i][2]);
+            }
+        }
+    }
+    else{
+        for (size_t i = 0; i < n; i++){
+            if (!std::isnan(pnts[i].x)){
+                fprintf(fp, "%f %f %f 0 0 0\n", pnts[i].x, pnts[i].y, pnts[i].z);
+            }
+        }
+    }
+}
+
+static void writePointCloud(const cv::Point3f* pnts,const cv::Vec3b *color, size_t n, const char* file, int format)
+{
+    FILE* fp = fopen(file, "w");
+    if (!fp){
+        return;
+    }
+
+    switch (format){
+    case PC_FILE_FORMAT_XYZ:
+        writePC_XYZ(pnts, color, n, fp);
+        break;
+    default:
+        break;
+    }
+
+    fclose(fp);
+}
 
 #endif

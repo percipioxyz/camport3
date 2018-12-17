@@ -27,10 +27,20 @@ int main(int argc, char* argv[])
         return TY_STATUS_ERROR;
     }
 
+    std::string device_list = "device_list";
+    std::ofstream* output;
+    if (save){
+        output = new std::ofstream(device_list.data());
+    }
+
     std::vector<TY_INTERFACE_INFO> ifaces(n);
     ASSERT_OK(TYGetInterfaceList(&ifaces[0], n, &n));
     ASSERT(n == ifaces.size());
     for (uint32_t i = 0; i < n; i++) {
+        if (save) {
+            *output << "Interface: " << i <<std::endl;
+        }
+
         LOGI("Found interface %u:", i);
         LOGI("    name: %s", ifaces[i].name);
         LOGI("    id:   %s", ifaces[i].id);
@@ -49,37 +59,46 @@ int main(int argc, char* argv[])
         uint32_t n = 0;
         TYGetDeviceNumber(hIface, &n);
         if (n == 0) continue;
-        
+
         std::vector<TY_DEVICE_BASE_INFO> devs(n);
         TYGetDeviceList(hIface, &devs[0], n, &n);
         ASSERT(n == devs.size());
         for (uint32_t j = 0; j < n; j++) {
-            /*
-            TY_DEV_HANDLE handle;
-            int32_t ret = TYOpenDevice(hIface, devs[j].id, &handle);
-            if (ret == 0) {
-                TYGetDeviceInfo(handle, &devs[j]);
-                TYCloseDevice(handle);
+           if (TYIsNetworkInterface(devs[j].iface.type)) {
                 LOGD("    - device %s:", devs[j].id);
-            } else {
-                LOGD("    - device %s(open failed, error: %d)", devs[j].id, ret);
-            }
-            */
-            LOGD("    - device %s:", devs[j].id);
-            LOGD("          vendor     : %s", devs[j].vendorName);
-            LOGD("          model      : %s", devs[j].modelName);
-            if (TYIsNetworkInterface(devs[j].iface.type)) {
+                LOGD("          vendor     : %s", devs[j].vendorName);
+                LOGD("          model      : %s", devs[j].modelName);
+
                 LOGD("          device MAC : %s", devs[j].netInfo.mac);
                 LOGD("          device IP  : %s", devs[j].netInfo.ip);
 
                 if (save) {
-                    std::ofstream output("device_list.txt");
-                    output << devs[j].netInfo.ip <<" ";
-                    output << devs[j].id <<" "<<std::endl;
+                    *output << devs[j].id <<" ";
+                    *output << devs[j].netInfo.ip <<" "<<std::endl;
+                }
+            } else {
+                TY_DEV_HANDLE handle;
+                int32_t ret = TYOpenDevice(hIface, devs[j].id, &handle);
+                if (ret == 0) {
+                    TYGetDeviceInfo(handle, &devs[j]);
+                    TYCloseDevice(handle);
+                    LOGD("    - device %s:", devs[j].id);
+                } else {
+                    LOGD("    - device %s(open failed, error: %d)", devs[j].id, ret);
+                }
+
+                LOGD("          vendor     : %s", devs[j].vendorName);
+                LOGD("          model      : %s", devs[j].modelName);
+
+                if (save) {
+                    *output << devs[j].id <<" "<<std::endl;
                 }
             }
         }
         TYCloseInterface(hIface);
+        if (save) {
+            *output << " " <<std::endl;
+        }
     }
     ASSERT_OK(TYDeinitLib());
     LOGD("Done!");

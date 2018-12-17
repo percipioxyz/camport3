@@ -121,7 +121,7 @@ This graph shows which files directly or indirectly include this file:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00094.html">TY_PIXEL_DESC</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00097.html">TY_PIXEL_DESC</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
@@ -132,27 +132,27 @@ Macros</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
 <tr class="memitem:a002acf43ed000ada08b17692452033c8"><td class="memItemLeft" align="right" valign="top"><a id="a002acf43ed000ada08b17692452033c8"></a>
-typedef struct <a class="el" href="a00094.html">TY_PIXEL_DESC</a>&#160;</td><td class="memItemRight" valign="bottom"><b>TY_PIXEL_DESC</b></td></tr>
+typedef struct <a class="el" href="a00097.html">TY_PIXEL_DESC</a>&#160;</td><td class="memItemRight" valign="bottom"><b>TY_PIXEL_DESC</b></td></tr>
 <tr class="separator:a002acf43ed000ada08b17692452033c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a466f1f9ecdb947607c5da179d1826c19"><td class="memItemLeft" align="right" valign="top">TY_CAPI&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00005.html#a466f1f9ecdb947607c5da179d1826c19">TYInvertExtrinsic</a> (const <a class="el" href="a00062.html">TY_CAMERA_EXTRINSIC</a> *orgExtrinsic, <a class="el" href="a00062.html">TY_CAMERA_EXTRINSIC</a> *invExtrinsic)</td></tr>
+<tr class="memitem:a466f1f9ecdb947607c5da179d1826c19"><td class="memItemLeft" align="right" valign="top">TY_CAPI&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00005.html#a466f1f9ecdb947607c5da179d1826c19">TYInvertExtrinsic</a> (const <a class="el" href="a00065.html">TY_CAMERA_EXTRINSIC</a> *orgExtrinsic, <a class="el" href="a00065.html">TY_CAMERA_EXTRINSIC</a> *invExtrinsic)</td></tr>
 <tr class="memdesc:a466f1f9ecdb947607c5da179d1826c19"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate 4x4 extrinsic matrix's inverse matrix.  <a href="#a466f1f9ecdb947607c5da179d1826c19">More...</a><br /></td></tr>
 <tr class="separator:a466f1f9ecdb947607c5da179d1826c19"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9885a09350a0f87a29ce1347ffb22357"><td class="memItemLeft" align="right" valign="top">TY_CAPI&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00005.html#a9885a09350a0f87a29ce1347ffb22357">TYMapDepthToPoint3d</a> (const <a class="el" href="a00070.html">TY_CAMERA_CALIB_INFO</a> *src_calib, uint32_t depthW, uint32_t depthH, const <a class="el" href="a00094.html">TY_PIXEL_DESC</a> *depthPixels, uint32_t count, <a class="el" href="a00054.html">TY_VECT_3F</a> *point3d)</td></tr>
+<tr class="memitem:a9885a09350a0f87a29ce1347ffb22357"><td class="memItemLeft" align="right" valign="top">TY_CAPI&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00005.html#a9885a09350a0f87a29ce1347ffb22357">TYMapDepthToPoint3d</a> (const <a class="el" href="a00073.html">TY_CAMERA_CALIB_INFO</a> *src_calib, uint32_t depthW, uint32_t depthH, const <a class="el" href="a00097.html">TY_PIXEL_DESC</a> *depthPixels, uint32_t count, <a class="el" href="a00057.html">TY_VECT_3F</a> *point3d)</td></tr>
 <tr class="memdesc:a9885a09350a0f87a29ce1347ffb22357"><td class="mdescLeft">&#160;</td><td class="mdescRight">Map pixels on depth image to 3D points.  <a href="#a9885a09350a0f87a29ce1347ffb22357">More...</a><br /></td></tr>
 <tr class="separator:a9885a09350a0f87a29ce1347ffb22357"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a32faf6be5df30fc39e58f135e0fe41a0"><td class="memItemLeft" align="right" valign="top">TY_CAPI&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00005.html#a32faf6be5df30fc39e58f135e0fe41a0">TYMapPoint3dToDepth</a> (const <a class="el" href="a00070.html">TY_CAMERA_CALIB_INFO</a> *dst_calib, const <a class="el" href="a00054.html">TY_VECT_3F</a> *point3d, uint32_t count, uint32_t depthW, uint32_t depthH, <a class="el" href="a00094.html">TY_PIXEL_DESC</a> *depth)</td></tr>
+<tr class="memitem:a32faf6be5df30fc39e58f135e0fe41a0"><td class="memItemLeft" align="right" valign="top">TY_CAPI&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00005.html#a32faf6be5df30fc39e58f135e0fe41a0">TYMapPoint3dToDepth</a> (const <a class="el" href="a00073.html">TY_CAMERA_CALIB_INFO</a> *dst_calib, const <a class="el" href="a00057.html">TY_VECT_3F</a> *point3d, uint32_t count, uint32_t depthW, uint32_t depthH, <a class="el" href="a00097.html">TY_PIXEL_DESC</a> *depth)</td></tr>
 <tr class="memdesc:a32faf6be5df30fc39e58f135e0fe41a0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Map 3D points to pixels on depth image. Reverse operation of TYMapDepthToPoint3d.  <a href="#a32faf6be5df30fc39e58f135e0fe41a0">More...</a><br /></td></tr>
 <tr class="separator:a32faf6be5df30fc39e58f135e0fe41a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae4c2bc7bdf3e7abd1081433f9ce57501"><td class="memItemLeft" align="right" valign="top">TY_CAPI&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00005.html#ae4c2bc7bdf3e7abd1081433f9ce57501">TYMapDepthImageToPoint3d</a> (const <a class="el" href="a00070.html">TY_CAMERA_CALIB_INFO</a> *src_calib, uint32_t imageW, uint32_t imageH, const uint16_t *depth, <a class="el" href="a00054.html">TY_VECT_3F</a> *point3d)</td></tr>
+<tr class="memitem:ae4c2bc7bdf3e7abd1081433f9ce57501"><td class="memItemLeft" align="right" valign="top">TY_CAPI&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00005.html#ae4c2bc7bdf3e7abd1081433f9ce57501">TYMapDepthImageToPoint3d</a> (const <a class="el" href="a00073.html">TY_CAMERA_CALIB_INFO</a> *src_calib, uint32_t imageW, uint32_t imageH, const uint16_t *depth, <a class="el" href="a00057.html">TY_VECT_3F</a> *point3d)</td></tr>
 <tr class="memdesc:ae4c2bc7bdf3e7abd1081433f9ce57501"><td class="mdescLeft">&#160;</td><td class="mdescRight">Map depth image to 3D points. 0 depth pixels maps to (NAN, NAN, NAN).  <a href="#ae4c2bc7bdf3e7abd1081433f9ce57501">More...</a><br /></td></tr>
 <tr class="separator:ae4c2bc7bdf3e7abd1081433f9ce57501"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa8a7439648a50e28e3c83d5db528c5f6"><td class="memItemLeft" align="right" valign="top">TY_CAPI&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00005.html#aa8a7439648a50e28e3c83d5db528c5f6">TYMapPoint3dToDepthImage</a> (const <a class="el" href="a00070.html">TY_CAMERA_CALIB_INFO</a> *dst_calib, const <a class="el" href="a00054.html">TY_VECT_3F</a> *point3d, uint32_t count, uint32_t depthW, uint32_t depthH, uint16_t *depth)</td></tr>
+<tr class="memitem:aa8a7439648a50e28e3c83d5db528c5f6"><td class="memItemLeft" align="right" valign="top">TY_CAPI&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00005.html#aa8a7439648a50e28e3c83d5db528c5f6">TYMapPoint3dToDepthImage</a> (const <a class="el" href="a00073.html">TY_CAMERA_CALIB_INFO</a> *dst_calib, const <a class="el" href="a00057.html">TY_VECT_3F</a> *point3d, uint32_t count, uint32_t depthW, uint32_t depthH, uint16_t *depth)</td></tr>
 <tr class="memdesc:aa8a7439648a50e28e3c83d5db528c5f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Map 3D points to depth image. (NAN, NAN, NAN) will be skipped.  <a href="#aa8a7439648a50e28e3c83d5db528c5f6">More...</a><br /></td></tr>
 <tr class="separator:aa8a7439648a50e28e3c83d5db528c5f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a26e5ea44e79626621a287c2810e70197"><td class="memItemLeft" align="right" valign="top">TY_CAPI&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00005.html#a26e5ea44e79626621a287c2810e70197">TYMapPoint3dToPoint3d</a> (const <a class="el" href="a00062.html">TY_CAMERA_EXTRINSIC</a> *extrinsic, const <a class="el" href="a00054.html">TY_VECT_3F</a> *point3dFrom, uint32_t count, <a class="el" href="a00054.html">TY_VECT_3F</a> *point3dTo)</td></tr>
+<tr class="memitem:a26e5ea44e79626621a287c2810e70197"><td class="memItemLeft" align="right" valign="top">TY_CAPI&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00005.html#a26e5ea44e79626621a287c2810e70197">TYMapPoint3dToPoint3d</a> (const <a class="el" href="a00065.html">TY_CAMERA_EXTRINSIC</a> *extrinsic, const <a class="el" href="a00057.html">TY_VECT_3F</a> *point3dFrom, uint32_t count, <a class="el" href="a00057.html">TY_VECT_3F</a> *point3dTo)</td></tr>
 <tr class="memdesc:a26e5ea44e79626621a287c2810e70197"><td class="mdescLeft">&#160;</td><td class="mdescRight">Map 3D points to another coordinate.  <a href="#a26e5ea44e79626621a287c2810e70197">More...</a><br /></td></tr>
 <tr class="separator:a26e5ea44e79626621a287c2810e70197"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -203,13 +203,13 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">TY_CAPI TYInvertExtrinsic </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="a00062.html">TY_CAMERA_EXTRINSIC</a> *&#160;</td>
+          <td class="paramtype">const <a class="el" href="a00065.html">TY_CAMERA_EXTRINSIC</a> *&#160;</td>
           <td class="paramname"><em>orgExtrinsic</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="a00062.html">TY_CAMERA_EXTRINSIC</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="a00065.html">TY_CAMERA_EXTRINSIC</a> *&#160;</td>
           <td class="paramname"><em>invExtrinsic</em>&#160;</td>
         </tr>
         <tr>
@@ -247,7 +247,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">TY_CAPI TYMapDepthImageToPoint3d </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="a00070.html">TY_CAMERA_CALIB_INFO</a> *&#160;</td>
+          <td class="paramtype">const <a class="el" href="a00073.html">TY_CAMERA_CALIB_INFO</a> *&#160;</td>
           <td class="paramname"><em>src_calib</em>, </td>
         </tr>
         <tr>
@@ -271,7 +271,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="a00054.html">TY_VECT_3F</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="a00057.html">TY_VECT_3F</a> *&#160;</td>
           <td class="paramname"><em>point3d</em>&#160;</td>
         </tr>
         <tr>
@@ -311,7 +311,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">TY_CAPI TYMapDepthToPoint3d </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="a00070.html">TY_CAMERA_CALIB_INFO</a> *&#160;</td>
+          <td class="paramtype">const <a class="el" href="a00073.html">TY_CAMERA_CALIB_INFO</a> *&#160;</td>
           <td class="paramname"><em>src_calib</em>, </td>
         </tr>
         <tr>
@@ -329,7 +329,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="a00094.html">TY_PIXEL_DESC</a> *&#160;</td>
+          <td class="paramtype">const <a class="el" href="a00097.html">TY_PIXEL_DESC</a> *&#160;</td>
           <td class="paramname"><em>depthPixels</em>, </td>
         </tr>
         <tr>
@@ -341,7 +341,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="a00054.html">TY_VECT_3F</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="a00057.html">TY_VECT_3F</a> *&#160;</td>
           <td class="paramname"><em>point3d</em>&#160;</td>
         </tr>
         <tr>
@@ -382,13 +382,13 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">TY_CAPI TYMapPoint3dToDepth </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="a00070.html">TY_CAMERA_CALIB_INFO</a> *&#160;</td>
+          <td class="paramtype">const <a class="el" href="a00073.html">TY_CAMERA_CALIB_INFO</a> *&#160;</td>
           <td class="paramname"><em>dst_calib</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="a00054.html">TY_VECT_3F</a> *&#160;</td>
+          <td class="paramtype">const <a class="el" href="a00057.html">TY_VECT_3F</a> *&#160;</td>
           <td class="paramname"><em>point3d</em>, </td>
         </tr>
         <tr>
@@ -412,7 +412,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="a00094.html">TY_PIXEL_DESC</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="a00097.html">TY_PIXEL_DESC</a> *&#160;</td>
           <td class="paramname"><em>depth</em>&#160;</td>
         </tr>
         <tr>
@@ -453,13 +453,13 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">TY_CAPI TYMapPoint3dToDepthImage </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="a00070.html">TY_CAMERA_CALIB_INFO</a> *&#160;</td>
+          <td class="paramtype">const <a class="el" href="a00073.html">TY_CAMERA_CALIB_INFO</a> *&#160;</td>
           <td class="paramname"><em>dst_calib</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="a00054.html">TY_VECT_3F</a> *&#160;</td>
+          <td class="paramtype">const <a class="el" href="a00057.html">TY_VECT_3F</a> *&#160;</td>
           <td class="paramname"><em>point3d</em>, </td>
         </tr>
         <tr>
@@ -524,13 +524,13 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">TY_CAPI TYMapPoint3dToPoint3d </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="a00062.html">TY_CAMERA_EXTRINSIC</a> *&#160;</td>
+          <td class="paramtype">const <a class="el" href="a00065.html">TY_CAMERA_EXTRINSIC</a> *&#160;</td>
           <td class="paramname"><em>extrinsic</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="a00054.html">TY_VECT_3F</a> *&#160;</td>
+          <td class="paramtype">const <a class="el" href="a00057.html">TY_VECT_3F</a> *&#160;</td>
           <td class="paramname"><em>point3dFrom</em>, </td>
         </tr>
         <tr>
@@ -542,7 +542,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="a00054.html">TY_VECT_3F</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="a00057.html">TY_VECT_3F</a> *&#160;</td>
           <td class="paramname"><em>point3dTo</em>&#160;</td>
         </tr>
         <tr>

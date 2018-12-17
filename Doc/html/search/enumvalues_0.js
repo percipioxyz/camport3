@@ -31,6 +31,7 @@ var searchData=
   ['ty_5fint_5fheight',['TY_INT_HEIGHT',['../a00002.html#ad106ea6dcff8f708ca26b57c430f9124a9c2d4bbee1e06ec9d19c0b8d0374051e',1,'TYApi.h']]],
   ['ty_5fint_5fkeep_5falive_5ftimeout',['TY_INT_KEEP_ALIVE_TIMEOUT',['../a00002.html#ad106ea6dcff8f708ca26b57c430f9124aca08314da8146be2239c8fd8b8608d5a',1,'TYApi.h']]],
   ['ty_5fint_5flaser_5fpower',['TY_INT_LASER_POWER',['../a00002.html#ad106ea6dcff8f708ca26b57c430f9124a39f1bae0a509f8b917f3d2e46ac66446',1,'TYApi.h']]],
+  ['ty_5fint_5fntp_5fserver_5fip',['TY_INT_NTP_SERVER_IP',['../a00002.html#ad106ea6dcff8f708ca26b57c430f9124ac7562e117a75e3cfd2af160e524580f6',1,'TYApi.h']]],
   ['ty_5fint_5fpacket_5fdelay',['TY_INT_PACKET_DELAY',['../a00002.html#ad106ea6dcff8f708ca26b57c430f9124a42c416088b87f1f2b05253eb73ac89af',1,'TYApi.h']]],
   ['ty_5fint_5fr_5fgain',['TY_INT_R_GAIN',['../a00002.html#ad106ea6dcff8f708ca26b57c430f9124af959400781d55f751ad6d9b433713b45',1,'TYApi.h']]],
   ['ty_5fint_5ftrigger_5fdelay_5fus',['TY_INT_TRIGGER_DELAY_US',['../a00002.html#ad106ea6dcff8f708ca26b57c430f9124ab9cafffcac1298fe0d3c175300f49b1e',1,'TYApi.h']]],

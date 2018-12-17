@@ -2,70 +2,96 @@
 #include <cassert>
 #include <cmath>
 #include "../common/common.hpp"
+#include "../common/cloud_viewer/cloud_viewer.hpp"
 #include "TYImageProc.h"
 
 
 struct CallbackData {
     int             index;
     TY_DEV_HANDLE   hDevice;
-    DepthViewer*    depthViewer;
-    PointCloudViewer* pcviewer;
-    TY_CAMERA_CALIB_INFO* pDepthIntri; 
+    TY_CAMERA_CALIB_INFO depth_calib; 
+    TY_CAMERA_CALIB_INFO color_calib;
 
     bool saveOneFramePoint3d;
     bool exit_main;
     int  fileIndex;
 };
 
-static void handleFrame(TY_FRAME_DATA* frame, void* userdata)
+CallbackData cb_data;
+TY_ISP_HANDLE isp_handle = NULL;
+
+//////////////////////////////////////////////////
+
+
+///Align rgb to depth image
+static void doRgbRegister(const TY_CAMERA_CALIB_INFO& depth_calib
+                       , const TY_CAMERA_CALIB_INFO& color_calib
+                       , const cv::Mat& depth
+                       , const cv::Mat& color
+                       , cv::Mat& out
+                       )
 {
+    // do rgb undistortion
+    TY_IMAGE_DATA src;
+    src.width = color.cols;
+    src.height = color.rows;
+    src.size = color.size().area() * 3;
+    src.pixelFormat = TY_PIXEL_FORMAT_RGB;
+    src.buffer = color.data;
+
+    cv::Mat  undistort_color = cv::Mat(color.size(), CV_8UC3);
+    TY_IMAGE_DATA dst;
+    dst.width = color.cols;
+    dst.height = color.rows;
+    dst.size = undistort_color.size().area() * 3;
+    dst.buffer = undistort_color.data;
+    dst.pixelFormat = TY_PIXEL_FORMAT_RGB;
+    ASSERT_OK(TYUndistortImage(&color_calib, &src, NULL, &dst));
+
+    // do register
+    out.create(depth.size(), CV_8UC3);
+    ASSERT_OK(
+        TYMapRGBImageToDepthCoordinate(
+        &depth_calib,
+        depth.cols, depth.rows, depth.ptr<uint16_t>(),
+        &color_calib,
+        undistort_color.cols, undistort_color.rows, undistort_color.ptr<uint8_t>(),
+        out.ptr<uint8_t>()));
+}
+
+static void handleFrame(TY_FRAME_DATA* frame, void* userdata) {
+    //we only using Opencv Mat as data container.
+    //you can allocate memory by yourself.
     CallbackData* pData = (CallbackData*) userdata;
     LOGD("=== Get frame %d", ++pData->index);
 
     cv::Mat depth, color;
-    parseFrame(*frame, &depth, 0, 0, &color);
-
+    parseFrame(*frame, &depth, NULL, NULL, &color, isp_handle);
     if(!depth.empty()){
-        pData->depthViewer->show(depth);
-
-        cv::Mat p3d(depth.size(), CV_32FC3);
-        ASSERT_OK( TYMapDepthImageToPoint3d(pData->pDepthIntri, depth.cols, depth.rows
-                  , depth.ptr<uint16_t>(), p3d.ptr<TY_VECT_3F>()) );
-
-        pData->pcviewer->show(p3d, "Point3D");
-        if(pData->pcviewer->isStopped("Point3D")){
-            pData->exit_main = true;
-            return;
+        std::vector<TY_VECT_3F> p3d;
+        p3d.resize(depth.size().area());
+        ASSERT_OK(TYMapDepthImageToPoint3d(&pData->depth_calib, depth.cols, depth.rows
+            , (uint16_t*)depth.data, &p3d[0]));
+        for (int idx = 0; idx < p3d.size(); idx++){
+            p3d[idx].y = -p3d[idx].y;
+            p3d[idx].z = -p3d[idx].z;
         }
+        uint8_t *color_data = NULL;
+        cv::Mat color_data_mat;
+        if (!color.empty()){
+            doRgbRegister(pData->depth_calib, pData->color_calib, depth, color, color_data_mat);
+            cv::cvtColor(color_data_mat, color_data_mat, CV_BGR2RGB);
+            color_data = color_data_mat.ptr<uint8_t>();
+        }
+        GLPointCloudViewer::Update(p3d.size(), &p3d[0], color_data);
 
-        if(pData->saveOneFramePoint3d){
+        if (pData->saveOneFramePoint3d){
             char file[32];
             sprintf(file, "points-%d.xyz", pData->fileIndex++);
-            writePointCloud((cv::Point3f*)p3d.data, p3d.total(), file, PC_FILE_FORMAT_XYZ);
+            writePointCloud((cv::Point3f*)&p3d[0], (const cv::Vec3b*)color_data_mat.data, p3d.size(), file, PC_FILE_FORMAT_XYZ);
             pData->saveOneFramePoint3d = false;
         }
     }
-
-    if(!color.empty()){
-        imshow("Color", color);
-    }
-
-    int key = cv::waitKey(100);
-    switch(key & 0xff){
-        case 0xff:
-            break;
-        case 'q':
-            pData->exit_main = true;
-            break;
-        case 's':
-            pData->saveOneFramePoint3d = true;
-            break;
-        default:
-            LOGD("Pressed key %d", key);
-    }
-
-    LOGD("=== Re-enqueue buffer(%p, %d)", frame->userBuffer, frame->bufferSize);
-    ASSERT_OK( TYEnqueueBuffer(pData->hDevice, frame->userBuffer, frame->bufferSize) );
 }
 
 void eventCallback(TY_EVENT_INFO *event_info, void *userdata)
@@ -80,11 +106,43 @@ void eventCallback(TY_EVENT_INFO *event_info, void *userdata)
     }
 }
 
+static int FetchOneFrame(CallbackData &cb){
+    TY_FRAME_DATA frame;
+    int err = TYFetchFrame(cb.hDevice, &frame, -1);
+    if (err != TY_STATUS_OK){
+        LOGD("... Drop one frame");
+        return -1;
+    }
+    handleFrame(&frame, &cb);
+    LOGD("=== Re-enqueue buffer(%p, %d)", frame.userBuffer, frame.bufferSize);
+    TYEnqueueBuffer(cb.hDevice, frame.userBuffer, frame.bufferSize);
+}
+
+void* FetchFrameThreadFunc(void* d){
+    CallbackData &cb = *(CallbackData*)d;
+    while(!cb.exit_main){
+        if (FetchOneFrame(cb) != 0){
+            break;
+        }
+    }
+    return NULL;
+}
+
+bool key_pressed(int key){
+    if (key == 's'){
+        cb_data.saveOneFramePoint3d = true;
+        return true;
+    }
+    return false;
+}
+
 int main(int argc, char* argv[])
 {
+    GLPointCloudViewer::GlInit();
     std::string ID, IP;
     TY_INTERFACE_HANDLE hIface = NULL;
     TY_DEV_HANDLE hDevice = NULL;
+    bool with_color_cam = true;
 
     for(int i = 1; i < argc; i++){
         if(strcmp(argv[i], "-id") == 0){
@@ -92,8 +150,11 @@ int main(int argc, char* argv[])
         } else if(strcmp(argv[i], "-ip") == 0) {
             IP = argv[++i];
         }else if(strcmp(argv[i], "-h") == 0){
-            LOGI("Usage: SimpleView_Point3D [-h] [-id <ID>]");
+            printf("Usage: SimpleView_Point3D [-h] [-id <ID>] [-color=off]");
             return 0;
+        }
+        else if (strcmp(argv[i], "-color=off") == 0){
+            with_color_cam = false;
         }
     }
 
@@ -118,12 +179,20 @@ int main(int argc, char* argv[])
     LOGD("=== Configure feature, set resolution to 640x480.");
     int err = TYSetEnum(hDevice, TY_COMPONENT_DEPTH_CAM, TY_ENUM_IMAGE_MODE, TY_IMAGE_MODE_DEPTH16_640x480);
     ASSERT(err == TY_STATUS_OK || err == TY_STATUS_NOT_PERMITTED);
+    int32_t allComps;
+    ASSERT_OK(TYGetComponentIDs(hDevice, &allComps));
+    if ((allComps & TY_COMPONENT_RGB_CAM) && (with_color_cam)){
+        LOGE("=== Has internal RGB camera, try to open it");
+        ASSERT_OK(TYEnableComponents(hDevice, TY_COMPONENT_RGB_CAM));
+        ASSERT_OK(TYGetStruct(hDevice, TY_COMPONENT_RGB_CAM, TY_STRUCT_CAM_CALIB_DATA
+            , &cb_data.color_calib, sizeof(cb_data.color_calib)));
+        ASSERT_OK(TYISPCreate(&isp_handle)); //create a default isp handle for bayer rgb images
+    }
 
     LOGD("=== Prepare image buffer");
     uint32_t frameSize;
     ASSERT_OK( TYGetFrameBufferSize(hDevice, &frameSize) );
     LOGD("     - Get size of framebuffer, %d", frameSize);
-    ASSERT( frameSize >= 640*480*2 );
 
     LOGD("     - Allocate & enqueue buffers");
     char* frameBuffer[2];
@@ -135,9 +204,8 @@ int main(int argc, char* argv[])
     ASSERT_OK( TYEnqueueBuffer(hDevice, frameBuffer[1], frameSize) );
 
     LOGD("=== Read depth intrinsic");
-    TY_CAMERA_CALIB_INFO depth_calib; 
     ASSERT_OK( TYGetStruct(hDevice, TY_COMPONENT_DEPTH_CAM, TY_STRUCT_CAM_CALIB_DATA
-                          , &depth_calib, sizeof(depth_calib)) );
+        , &cb_data.depth_calib, sizeof(cb_data.depth_calib)));
 
     LOGD("=== Register event callback");
     ASSERT_OK(TYRegisterEventCallback(hDevice, eventCallback, NULL));
@@ -150,30 +218,21 @@ int main(int argc, char* argv[])
     LOGD("=== Start capture");
     ASSERT_OK( TYStartCapture(hDevice) );
 
-    DepthViewer depthViewer("depth");
-    PointCloudViewer pcviewer;
-    CallbackData cb_data;
     cb_data.index = 0;
     cb_data.hDevice = hDevice;
-    cb_data.depthViewer = &depthViewer;
-    cb_data.pcviewer = &pcviewer;
-    cb_data.pDepthIntri = &depth_calib;
     cb_data.saveOneFramePoint3d = false;
     cb_data.fileIndex = 0;
     cb_data.exit_main = false;
-
+    //start a thread to fetch image data
+    TYThread fetch_thread;
+    fetch_thread.create(FetchFrameThreadFunc, &cb_data);
     LOGD("=== While loop to fetch frame");
-    TY_FRAME_DATA frame;
-
-    while(!cb_data.exit_main){
-        int err = TYFetchFrame(hDevice, &frame, -1);
-        if( err != TY_STATUS_OK ){
-            LOGD("... Drop one frame");
-            break;
-        }
-
-        handleFrame(&frame, &cb_data);
-    }
+    FetchOneFrame(cb_data); 
+    GLPointCloudViewer::ResetViewTranslate();//init view position by first frame
+    GLPointCloudViewer::RegisterKeyCallback(key_pressed);//key pressed callback
+    GLPointCloudViewer::EnterMainLoop();//start main window 
+    cb_data.exit_main = true;//wait work thread to exit
+    fetch_thread.destroy();
 
     ASSERT_OK( TYStopCapture(hDevice) );
     ASSERT_OK( TYCloseDevice(hDevice) );
@@ -181,8 +240,11 @@ int main(int argc, char* argv[])
     ASSERT_OK( TYDeinitLib() );
     delete frameBuffer[0];
     delete frameBuffer[1];
-
+    if (isp_handle){
+        TYISPRelease(&isp_handle);
+    }
     LOGD("=== Main done!");
+    GLPointCloudViewer::Deinit();
     return 0;
 }
 

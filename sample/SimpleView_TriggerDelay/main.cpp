@@ -123,7 +123,6 @@ int main(int argc, char* argv[])
     uint32_t frameSize;
     ASSERT_OK( TYGetFrameBufferSize(hDevice, &frameSize) );
     LOGD("     - Get size of framebuffer, %d", frameSize);
-    ASSERT( frameSize >= 640 * 480 * 2 );
 
     LOGD("     - Allocate & enqueue buffers");
     char* frameBuffer[2];

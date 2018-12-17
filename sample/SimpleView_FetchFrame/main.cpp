@@ -53,6 +53,7 @@ int main(int argc, char* argv[])
 {
     std::string ID, IP;
     TY_INTERFACE_HANDLE hIface = NULL;
+    TY_ISP_HANDLE hColorIspHandle = NULL;
     TY_DEV_HANDLE hDevice = NULL;
     int32_t color, ir, depth;
     color = ir = depth = 1;
@@ -98,6 +99,7 @@ int main(int argc, char* argv[])
     if(allComps & TY_COMPONENT_RGB_CAM  && color) {
         LOGD("Has RGB camera, open RGB cam");
         ASSERT_OK( TYEnableComponents(hDevice, TY_COMPONENT_RGB_CAM) );
+        ASSERT_OK(TYISPCreate(&hColorIspHandle));
     }
 
     if (allComps & TY_COMPONENT_IR_CAM_LEFT && ir) {
@@ -132,7 +134,6 @@ int main(int argc, char* argv[])
     uint32_t frameSize;
     ASSERT_OK( TYGetFrameBufferSize(hDevice, &frameSize) );
     LOGD("     - Get size of framebuffer, %d", frameSize);
-    ASSERT( frameSize >= 640 * 480 * 2 );
 
     LOGD("     - Allocate & enqueue buffers");
     char* frameBuffer[2];
@@ -174,7 +175,8 @@ int main(int argc, char* argv[])
             }
 
             cv::Mat depth, irl, irr, color;
-            parseFrame(frame, &depth, &irl, &irr, &color);
+            //parseFrame(frame, &depth, &irl, &irr, &color, hColorIspHandle);
+            parseFrame(frame, &depth, &irl, &irr, &color, hColorIspHandle);
             if(!depth.empty()){
                 depthViewer.show(depth);
             }
@@ -201,6 +203,7 @@ int main(int argc, char* argv[])
     ASSERT_OK( TYStopCapture(hDevice) );
     ASSERT_OK( TYCloseDevice(hDevice) );
     ASSERT_OK( TYCloseInterface(hIface) );
+    ASSERT_OK(TYISPRelease(&hColorIspHandle));
     ASSERT_OK( TYDeinitLib() );
     delete frameBuffer[0];
     delete frameBuffer[1];

@@ -65,6 +65,7 @@ int main(int argc, char* argv[])
     std::vector<char*> list;
     int32_t cam_size = 0;
     int32_t found;
+    bool    trigger_mode = false;
 
     for(int i = 0; i < argc; i++) {
         if(strcmp(argv[i], "-h") == 0) {
@@ -91,6 +92,8 @@ int main(int argc, char* argv[])
                 list.push_back(argv[i+1+j]);
                 LOGI("===== Select device %s", list[j]);
             }
+        } else if (strcmp(argv[i], "-trigger") == 0) {
+           trigger_mode = true;
         }
     }
 
@@ -103,7 +106,7 @@ int main(int argc, char* argv[])
     LOGD("     - lib version: %d.%d.%d", ver.major, ver.minor, ver.patch);
 
     std::vector<TY_DEVICE_BASE_INFO> selected;
-    ASSERT_OK( selectDevice(deviceType, "", "", 10, selected) );
+    ASSERT_OK( selectDevice(deviceType, "", "", 100, selected) );
     
     //printf("size: %d\n", list.size()); 
     if (list.size()) {
@@ -148,7 +151,6 @@ int main(int argc, char* argv[])
         uint32_t frameSize;
         ASSERT_OK( TYGetFrameBufferSize(cams[count].hDev, &frameSize) );
         LOGD("     - Get size of framebuffer, %d", frameSize);
-        ASSERT( frameSize >= 640 * 480 * 2 );
 
         LOGD("     - Allocate & enqueue buffers");
         cams[count].fb[0].resize(frameSize);
@@ -163,7 +165,11 @@ int main(int argc, char* argv[])
 
         LOGD("=== Disable trigger mode");
         TY_TRIGGER_PARAM trigger;
-        trigger.mode = TY_TRIGGER_MODE_OFF;
+        if(trigger_mode){
+          trigger.mode = TY_TRIGGER_MODE_SLAVE;
+        } else {
+          trigger.mode = TY_TRIGGER_MODE_OFF;
+        }
         ASSERT_OK(TYSetStruct(cams[count].hDev, TY_COMPONENT_DEVICE, TY_STRUCT_TRIGGER_PARAM, &trigger, sizeof(trigger)));
 
         LOGD("=== Start capture");
@@ -171,7 +177,7 @@ int main(int argc, char* argv[])
         count++;
     }
     
-    if (count != list.size() && count != selected.size()) {
+    if (count != cam_size) {
         LOGD("Invalid ids in input id list"); 
         return 0;
     }
@@ -179,11 +185,23 @@ int main(int argc, char* argv[])
     LOGD("=== While loop to fetch frame");
     bool exit_main = false;
     int cam_index = 0;
+    int triggered = 0;
     while(!exit_main) {
+        if(trigger_mode && triggered == 0){
+            for(size_t i = 0; i < cams.size(); i++){
+                ASSERT_OK( TYSendSoftTrigger(cams[i].hDev) );
+            }
+            triggered = cams.size();
+            LOGD("triggered once");
+        }
+
         int err = TYFetchFrame(cams[cam_index].hDev, &cams[cam_index].frame, 1000);
         if( err != TY_STATUS_OK ) {
             LOGD("cam %s %d ... Drop one frame", cams[cam_index].sn, cams[cam_index].idx);
         } else {
+            LOGD("cam %s %d got one frame", cams[cam_index].sn, cams[cam_index].idx);
+            triggered--;
+
             frameHandler(&cams[cam_index].frame, &cams[cam_index]);
 
             int key = cv::waitKey(1);

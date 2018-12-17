@@ -134,7 +134,7 @@
 
 #define TY_LIB_VERSION_MAJOR       3
 #define TY_LIB_VERSION_MINOR       1 
-#define TY_LIB_VERSION_PATCH       0 
+#define TY_LIB_VERSION_PATCH       4 
 
 
 //------------------------------------------------------------------------------
@@ -232,6 +232,7 @@ typedef enum TY_FEATURE_ID_LIST
     TY_BOOL_GVSP_RESEND             = 0x0013 | TY_FEATURE_BOOL,
     TY_INT_PACKET_DELAY             = 0x0014 | TY_FEATURE_INT,    ///< microseconds
     TY_INT_ACCEPTABLE_PERCENT       = 0x0015 | TY_FEATURE_INT,
+    TY_INT_NTP_SERVER_IP            = 0x0016 | TY_FEATURE_INT,    ///< Ntp server IP
     TY_STRUCT_CAM_STATISTICS        = 0x00ff | TY_FEATURE_STRUCT, ///< statistical information, see TY_CAMERA_STATISTICS
 
     TY_INT_WIDTH_MAX                = 0x0100 | TY_FEATURE_INT,
@@ -554,10 +555,10 @@ typedef struct TY_TRIGGER_PARAM
 
 typedef struct TY_CAMERA_STATISTICS
 {
-    int32_t   packetReceived;
-    int32_t   packetLost;
-    int32_t   imageOutputed;
-    int32_t   imageDropped;
+    uint64_t   packetReceived;
+    uint64_t   packetLost;
+    uint64_t   imageOutputed;
+    uint64_t   imageDropped;
     uint8_t   rsvd[1024];
 }TY_CAMERA_STATISTICS;
 

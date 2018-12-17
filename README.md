@@ -62,5 +62,5 @@ Finally, open .sln file with visual studio to compile and debug.
 Bear in mind that you may want to CROSS COMPILE the libusb and opencv source code first and then cross compile this reference code for your EMBEDDED platform.
 =======
 
-Please refer to https://percipiodc.rtfd.io for more details.
+Please refer to http://bbs.percipio.xyz/viewforum.php?f=2 for more details.
 

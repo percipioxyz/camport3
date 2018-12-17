@@ -56,7 +56,7 @@ int main(int argc, char* argv[])
     TY_DEV_HANDLE hDevice = NULL;
     int32_t color, ir, depth;
     color = ir = depth = 1;
-    int32_t resend = 0;
+    int32_t resend = 1;
 
     for(int i = 1; i < argc; i++) {
         if(strcmp(argv[i], "-id") == 0){
@@ -69,8 +69,8 @@ int main(int argc, char* argv[])
             depth = 0;
         } else if(strcmp(argv[i], "-ir=off") == 0) {
             ir = 0;
-    } else if (strcmp(argv[i], "-resend=on") == 0) {
-            resend = 1;
+    } else if (strcmp(argv[i], "-resend=off") == 0) {
+            resend = 0;
         } else if(strcmp(argv[i], "-h") == 0) {
             LOGI("Usage: SimpleView_FetchFrame [-h]");
             return 0;
@@ -123,7 +123,6 @@ int main(int argc, char* argv[])
     uint32_t frameSize;
     ASSERT_OK( TYGetFrameBufferSize(hDevice, &frameSize) );
     LOGD("     - Get size of framebuffer, %d", frameSize);
-    ASSERT( frameSize >= 640 * 480 * 2 );
 
     LOGD("     - Allocate & enqueue buffers");
     char* frameBuffer[2];
