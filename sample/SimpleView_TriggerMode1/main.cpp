@@ -1,41 +1,5 @@
 #include "../common/common.hpp"
 
-static int fps_counter = 0;
-static clock_t fps_tm = 0;
-
-#ifdef _WIN32
-static int get_fps() {
-   const int kMaxCounter = 250;
-   fps_counter++;
-   if (fps_counter < kMaxCounter) {
-     return -1;
-   }
-   int elapse = (clock() - fps_tm);
-   int v = (int)(((float)fps_counter) / elapse * CLOCKS_PER_SEC);
-   fps_tm = clock();
-
-   fps_counter = 0;
-   return v;
- }
-#else
-static int get_fps() {
-  const int kMaxCounter = 200;
-  struct timeval start;
-  fps_counter++;
-  if (fps_counter < kMaxCounter) {
-    return -1;
-  }
-
-  gettimeofday(&start, NULL);
-  int elapse = start.tv_sec * 1000 + start.tv_usec / 1000 - fps_tm;
-  int v = (int)(((float)fps_counter) / elapse * 1000);
-  gettimeofday(&start, NULL);
-  fps_tm = start.tv_sec * 1000 + start.tv_usec / 1000;
-
-  fps_counter = 0;
-  return v;
-}
-#endif
 
 void eventCallback(TY_EVENT_INFO *event_info, void *userdata)
 {
@@ -69,7 +33,7 @@ int main(int argc, char* argv[])
             depth = 0;
         } else if(strcmp(argv[i], "-ir=off") == 0) {
             ir = 0;
-    } else if (strcmp(argv[i], "-resend=off") == 0) {
+        } else if (strcmp(argv[i], "-resend=off") == 0) {
             resend = 0;
         } else if(strcmp(argv[i], "-h") == 0) {
             LOGI("Usage: SimpleView_FetchFrame [-h]");

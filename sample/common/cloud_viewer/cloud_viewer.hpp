@@ -14,6 +14,7 @@ public:
 
     static int GlInit();
     static int EnterMainLoop();
+    static int LeaveMainLoop();
     static int Update(int point_num, const TY_VECT_3F* points, const uint8_t* color);
     static int ResetViewTranslate();
     static int RegisterKeyCallback(bool(*callback)(int));

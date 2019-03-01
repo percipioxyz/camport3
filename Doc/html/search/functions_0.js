@@ -37,6 +37,8 @@ var searchData=
   ['tyhasfeature',['TYHasFeature',['../a00002.html#af790321f7af197bc663f8fe31d6daa01',1,'TYApi.h']]],
   ['tyhasinterface',['TYHasInterface',['../a00002.html#acc672c510bfe8ee995d4a386e205d6ce',1,'TYApi.h']]],
   ['tyinvertextrinsic',['TYInvertExtrinsic',['../a00005.html#a466f1f9ecdb947607c5da179d1826c19',1,'TYCoordinateMapper.h']]],
+  ['tyispprocessimage',['TYISPProcessImage',['../a00011.html#a45daaf3a72ecfaf89c0b392be986ca90',1,'TyIsp.h']]],
+  ['tyispupdatedevice',['TYISPUpdateDevice',['../a00011.html#a8d98c4d686f95d80d8ea8697439085ed',1,'TyIsp.h']]],
   ['tylibversion',['TYLibVersion',['../a00002.html#a1d72fa96dd837ad7eadf7a6edf180a0d',1,'TYApi.h']]],
   ['tymapdepthimagetopoint3d',['TYMapDepthImageToPoint3d',['../a00005.html#ae4c2bc7bdf3e7abd1081433f9ce57501',1,'TYCoordinateMapper.h']]],
   ['tymapdepthtopoint3d',['TYMapDepthToPoint3d',['../a00005.html#a9885a09350a0f87a29ce1347ffb22357',1,'TYCoordinateMapper.h']]],

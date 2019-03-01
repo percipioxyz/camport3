@@ -5,6 +5,7 @@
 
 struct CallbackData {
   int             index;
+  TY_ISP_HANDLE   IspHandle;
   TY_DEV_HANDLE   hDevice;
   DepthRender*    render;
   DepthViewer*    depthViewer;
@@ -85,7 +86,7 @@ void handleFrame(TY_FRAME_DATA* frame, void* userdata)
   LOGD("=== Get frame %d", ++pData->index);
 
   cv::Mat depth, color;
-  parseFrame(*frame, &depth, 0, 0, &color);
+  parseFrame(*frame, &depth, 0, 0, &color, pData->IspHandle);
   if (!depth.empty()) {
     pData->depthViewer->show(depth);
   }
@@ -170,6 +171,15 @@ int main(int argc, char* argv[])
         LOGE("=== Has no RGB camera, cant do registration");
         return -1;
     }
+    TY_ISP_HANDLE isp_handle;
+    ASSERT_OK(TYISPCreate(&isp_handle));
+    ASSERT_OK(ColorIspInitSetting(isp_handle, hDevice));
+    //You can turn on auto exposure function as follow ,but frame rate may reduce .
+    //Device also may be casually stucked  1~2 seconds when software trying to adjust device exposure time value
+#if 0
+    ASSERT_OK(ColorIspInitAutoExposure(isp_handle, hDevice));
+#endif
+
 
     LOGD("=== Configure components");
     int32_t componentIDs = TY_COMPONENT_DEPTH_CAM | TY_COMPONENT_RGB_CAM;
@@ -216,6 +226,7 @@ int main(int argc, char* argv[])
     cb_data.depthViewer = &depthViewer;
     cb_data.render = &render;
     cb_data.needUndistort = !hasUndistortSwitch && hasDistortionCoef;
+    cb_data.IspHandle = isp_handle;
 
     LOGD("=== Read depth calib info");
     ASSERT_OK( TYGetStruct(hDevice, TY_COMPONENT_DEPTH_CAM, TY_STRUCT_CAM_CALIB_DATA
@@ -239,7 +250,7 @@ int main(int argc, char* argv[])
         }
 
         handleFrame(&frame, &cb_data);
-
+        TYISPUpdateDevice(cb_data.IspHandle);
         int key = cv::waitKey(1);
         switch(key & 0xff){
             case 0xff:

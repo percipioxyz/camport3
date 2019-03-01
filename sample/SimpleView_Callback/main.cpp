@@ -1,94 +1,7 @@
 #include "../common/common.hpp"
 
-static int fps_counter = 0;
-static clock_t fps_tm = 0;
+
 static volatile bool fakeLock = false; // NOTE: fakeLock may lock failed
-
-class CallbackWrapper
-{
-public:
-  typedef void (*TY_FRAME_CALLBACK) (TY_FRAME_DATA*, void* userdata);
-
-  CallbackWrapper(){
-      _hDevice = NULL;
-      _cb = NULL;
-      _userdata = NULL;
-  }
-
-  TY_STATUS TYRegisterCallback(TY_DEV_HANDLE hDevice, TY_FRAME_CALLBACK v, void* userdata)
-  {
-    _hDevice = hDevice;
-    _cb = v;
-    _userdata = userdata;
-    _exit = false;
-    _cbThread.create(&workerThread, this);
-    return TY_STATUS_OK;
-  }
-
-  void TYUnregisterCallback()
-  {
-    _exit = true;
-    _cbThread.destroy();
-  }
-
-private:
-  static void* workerThread(void* userdata)
-  {
-    CallbackWrapper* pWrapper = (CallbackWrapper*)userdata;
-    TY_FRAME_DATA frame;
-  
-    while (!pWrapper->_exit)
-    {
-      int err = TYFetchFrame(pWrapper->_hDevice, &frame, 100);
-      if (!err) {
-        pWrapper->_cb(&frame, pWrapper->_userdata);
-      }
-    }
-    LOGI("frameCallback exit!");
-    return NULL;
-  }
-
-  TY_DEV_HANDLE _hDevice;
-  TY_FRAME_CALLBACK _cb;
-  void* _userdata;
-
-  bool _exit;
-  TYThread _cbThread;
-};
-
-#ifdef _WIN32
-static int get_fps() {
-   const int kMaxCounter = 250;
-   fps_counter++;
-   if (fps_counter < kMaxCounter) {
-     return -1;
-   }
-   int elapse = (clock() - fps_tm);
-   int v = (int)(((float)fps_counter) / elapse * CLOCKS_PER_SEC);
-   fps_tm = clock();
-
-   fps_counter = 0;
-   return v;
- }
-#else
-static int get_fps() {
-  const int kMaxCounter = 200;
-  struct timeval start;
-  fps_counter++;
-  if (fps_counter < kMaxCounter) {
-    return -1;
-  }
-
-  gettimeofday(&start, NULL);
-  int elapse = start.tv_sec * 1000 + start.tv_usec / 1000 - fps_tm;
-  int v = (int)(((float)fps_counter) / elapse * 1000);
-  gettimeofday(&start, NULL);
-  fps_tm = start.tv_sec * 1000 + start.tv_usec / 1000;
-
-  fps_counter = 0;
-  return v;
-}
-#endif
 
 struct CallbackData {
     int             index;
@@ -111,7 +24,7 @@ void frameCallback(TY_FRAME_DATA* frame, void* userdata)
   }
   fakeLock = true;
 
-  parseFrame(*frame, &pData->depth, &pData->leftIR, &pData->rightIR, &pData->color);
+  parseFrame(*frame, &pData->depth, &pData->leftIR, &pData->rightIR, &pData->color,pData->hIspHandle);
 
   fakeLock = false;
 
@@ -202,15 +115,30 @@ int main(int argc, char* argv[])
   }
 
   int32_t componentIDs = 0;
+  DepthViewer depthViewer("SimpleView_Callback");
   LOGD("Configure components, open depth cam");
-  if (depth) {
+  if (depth && (allComps & TY_COMPONENT_DEPTH_CAM)) {
     componentIDs = TY_COMPONENT_DEPTH_CAM;
-  }
-  ASSERT_OK(TYEnableComponents(hDevice, componentIDs));
+    std::vector<TY_ENUM_ENTRY> image_mode_list;
+    ASSERT_OK(get_feature_enum_list(hDevice, TY_COMPONENT_DEPTH_CAM, TY_ENUM_IMAGE_MODE, image_mode_list));
+    for (int idx = 0; idx < image_mode_list.size(); idx++){
+        TY_ENUM_ENTRY &entry = image_mode_list[idx];
+        //try to select a VGA resolution
+        if (TYImageWidth(entry.value) == 640 || TYImageHeight(entry.value) == 640){
+            LOGD("Select Depth Image Mode: %s", entry.description);
+            int err = TYSetEnum(hDevice, TY_COMPONENT_DEPTH_CAM, TY_ENUM_IMAGE_MODE, entry.value);
+            ASSERT(err == TY_STATUS_OK || err == TY_STATUS_NOT_PERMITTED);
+            break;
+        }
+    }
+    //depth map pixel format is uint16_t ,which default unit is  1 mm
+    //the acutal depth (mm)= PxielValue * ScaleUnit 
+    float scale_unit = 1.;
+    TYGetFloat(hDevice, TY_COMPONENT_DEPTH_CAM, TY_FLOAT_SCALE_UNIT, &scale_unit);
+    depthViewer.depth_scale_unit = scale_unit;
 
-  LOGD("Configure feature, set resolution to 640x480.");
-  int err = TYSetEnum(hDevice, TY_COMPONENT_DEPTH_CAM, TY_ENUM_IMAGE_MODE, TY_IMAGE_MODE_DEPTH16_640x480);
-  ASSERT(err == TY_STATUS_OK || err == TY_STATUS_NOT_PERMITTED);
+    ASSERT_OK(TYEnableComponents(hDevice, componentIDs));
+  }
 
   LOGD("Prepare image buffer");
   uint32_t frameSize;
@@ -250,13 +178,22 @@ int main(int argc, char* argv[])
 
   ASSERT_OK(TYGetEnabledComponents(hDevice, &componentIDs));
   if (allComps & TY_COMPONENT_RGB_CAM & componentIDs){
-      ASSERT_OK(TYISPCreate(&cb_data.hIspHandle));
+      ASSERT_OK(TYISPCreate(&cb_data.hIspHandle));//create a isp handle to convert raw image(color bayer format) to rgb image
+      ASSERT_OK(ColorIspInitSetting(cb_data.hIspHandle, hDevice));//Init code can be modified in common.hpp
+      //You can  call follow function to show  color isp supported features
+#if 0
+        ColorIspShowSupportedFeatures(hColorIspHandle);
+#endif
+      //You can turn on auto exposure function as follow ,but frame rate may reduce .
+      //Device may be casually stucked  1~2 seconds while software is trying to adjust device exposure time value
+#if 0
+      ASSERT_OK(ColorIspInitAutoExposure(cb_data.hIspHandle, hDevice));
+#endif
   }
 
   LOGD("Start capture");
   ASSERT_OK(TYStartCapture(hDevice));
   
-  DepthViewer depthViewer("SimpleView_Callback");
   LOGD("While loop to fetch frame");
   while (!cb_data.exit) {
     while (fakeLock) {
@@ -271,8 +208,8 @@ int main(int argc, char* argv[])
     if(!cb_data.leftIR.empty()) { cv::imshow("LeftIR", cb_data.leftIR); }
     if(!cb_data.rightIR.empty()){ cv::imshow("RightIR", cb_data.rightIR); }
     if(!cb_data.color.empty()){ cv::imshow("Color", cb_data.color); }
-
     fakeLock = false;
+    TYISPUpdateDevice(cb_data.hIspHandle);
 
     int key = cv::waitKey(1);
     switch (key & 0xff) {

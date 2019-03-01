@@ -31,7 +31,7 @@
 *       Added some network camera's feature, such as TY_INT_PERSISTENT_IP,
 *       TY_INT_PERSISTENT_SUBMASK, TY_INT_PACKET_DELAY, etc.
 * 
-* Copyright(C)2016-2018 Percipio All Rights Reserved
+* Copyright(C)2016-2019 Percipio All Rights Reserved
 *
 *
 *
@@ -102,6 +102,9 @@
 #  endif
 #  define TY_STDC           __stdcall
 #  define TY_CDEC           __cdecl
+#  ifdef RGB
+#       undef RGB
+#  endif
 #else
 #  ifdef TY_STATIC_LIB
 #    define TY_DLLIMPORT
@@ -134,7 +137,7 @@
 
 #define TY_LIB_VERSION_MAJOR       3
 #define TY_LIB_VERSION_MINOR       1 
-#define TY_LIB_VERSION_PATCH       4 
+#define TY_LIB_VERSION_PATCH       9 
 
 
 //------------------------------------------------------------------------------
@@ -377,7 +380,7 @@ typedef int32_t TY_RESOLUTION_MODE;
 
 ///@brief Predefined Image Mode List
 /// image mode controls image resolution & format
-/// named like TY_IMAGE_MODE_MONO_160x120
+/// predefined image modes named like TY_IMAGE_MODE_MONO_160x120,TY_IMAGE_MODE_RGB_1280x960
 typedef enum TY_IMAGE_MODE_LIST
 {
     TY_DECLARE_IMAGE_MODE1(MONO),

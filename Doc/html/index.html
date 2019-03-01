@@ -99,7 +99,7 @@ compare to V2:</h1>
 <li>Components: Removed Point3D component(TY_COMPONENT_POINT3D). Point3D is a virtual component in V2, and the points are calculated from depth image. We put the calculation outside tycam library to increase flexibility.</li>
 <li>Features: Removed TY_BOOL_TRIGGER_MODE , covered by TY_STRUCT_TRIGGER_PARAM Added TY_STRUCT_CAM_CALIB_DATA , for easy use in image processing library TY_INT_IMAGE_MODE , covered by new added TY_ENUM_IMAGE_MODE Modified TY_ENUM_IMAGE_MODE , means resolution mode in V2, combind resolution and pixel format in V3 Added some network camera's feature, such as TY_INT_PERSISTENT_IP, TY_INT_PERSISTENT_SUBMASK, TY_INT_PACKET_DELAY, etc.</li>
 </ol>
-<p>Copyright(C)2016-2018 Percipio All Rights Reserved</p>
+<p>Copyright(C)2016-2019 Percipio All Rights Reserved</p>
 <h1><a class="anchor" id="Note"></a>
 Note</h1>
 <p>Depth camera, called "device", consists of several components. Each component is a hardware module or virtual module, such as RGB sensor, depth sensor. Each component has its own features, such as image width, exposure time, etc..</p>

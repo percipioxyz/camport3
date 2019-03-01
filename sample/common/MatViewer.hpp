@@ -112,6 +112,8 @@ public:
     virtual void onMouseCallback(cv::Mat& img, int event, const cv::Point pnt
                     , bool& repaint);
 
+
+    float depth_scale_unit;
 private:
     cv::Mat _depth;
     cv::Mat _renderedDepth;

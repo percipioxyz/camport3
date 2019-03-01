@@ -9,6 +9,7 @@
 struct CallbackData {
     int             index;
     TY_DEV_HANDLE   hDevice;
+    TY_ISP_HANDLE   isp_handle;
     TY_CAMERA_CALIB_INFO depth_calib; 
     TY_CAMERA_CALIB_INFO color_calib;
 
@@ -116,6 +117,8 @@ static int FetchOneFrame(CallbackData &cb){
     handleFrame(&frame, &cb);
     LOGD("=== Re-enqueue buffer(%p, %d)", frame.userBuffer, frame.bufferSize);
     TYEnqueueBuffer(cb.hDevice, frame.userBuffer, frame.bufferSize);
+    TYISPUpdateDevice(cb.isp_handle);
+    return 0;
 }
 
 void* FetchFrameThreadFunc(void* d){
@@ -187,6 +190,13 @@ int main(int argc, char* argv[])
         ASSERT_OK(TYGetStruct(hDevice, TY_COMPONENT_RGB_CAM, TY_STRUCT_CAM_CALIB_DATA
             , &cb_data.color_calib, sizeof(cb_data.color_calib)));
         ASSERT_OK(TYISPCreate(&isp_handle)); //create a default isp handle for bayer rgb images
+        cb_data.isp_handle = isp_handle;
+        ASSERT_OK(ColorIspInitSetting(isp_handle, hDevice));
+        //You can turn on auto exposure function as follow ,but frame rate may reduce .
+        //Device also may be casually stucked  1~2 seconds when software trying to adjust device exposure time value
+#if 0
+        ASSERT_OK(ColorIspInitAutoExposure(isp_handle, hDevice));
+#endif
     }
 
     LOGD("=== Prepare image buffer");

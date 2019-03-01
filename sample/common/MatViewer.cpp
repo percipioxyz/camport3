@@ -42,6 +42,7 @@ DepthViewer::DepthViewer(const std::string& win)
 {
     OpencvViewer::addGraphicItem(&_centerDepthItem);
     OpencvViewer::addGraphicItem(&_pickedDepthItem);
+    depth_scale_unit = 1.f;
 }
 
 
@@ -51,17 +52,14 @@ void DepthViewer::show(const cv::Mat& img)
         return;
     }
 
-    {
-      char str[64];
-      sprintf(str, "Depth at center: %d", img.at<uint16_t>(img.rows/2, img.cols/2));
-      _centerDepthItem.set(str);
-    }
-    {
-      char str[64];
-      sprintf(str, "Depth at (%d,%d): %d", _fixLoc.x, _fixLoc.y
-          , img.at<uint16_t>(_fixLoc.y, _fixLoc.x));
-      _pickedDepthItem.set(str);
-    }
+    char str[128];
+    float val = img.at<uint16_t>(img.rows / 2, img.cols / 2)*depth_scale_unit;
+    sprintf(str, "Depth at center: %.1f", val);
+    _centerDepthItem.set(str);
+
+    val = img.at<uint16_t>(_fixLoc.y, _fixLoc.x)*depth_scale_unit;
+    sprintf(str, "Depth at (%d,%d): %.1f", _fixLoc.x, _fixLoc.y , val);
+    _pickedDepthItem.set(str);
 
     _depth = img.clone();
     _renderedDepth = _render.Compute(img);
@@ -77,9 +75,9 @@ void DepthViewer::onMouseCallback(cv::Mat& img, int event, const cv::Point pnt
         case cv::EVENT_LBUTTONDOWN: {
             _fixLoc = pnt;
             char str[64];
-            sprintf(str, "Depth at (%d,%d): %d", pnt.x, pnt.y
-                , _depth.at<uint16_t>(pnt.y, pnt.x));
-            printf(">>>>>>>>>>>>>>>> depth(%d)\n", _depth.at<uint16_t>(pnt.y, pnt.x));
+            float val = _depth.at<uint16_t>(pnt.y, pnt.x)*depth_scale_unit;
+            sprintf(str, "Depth at (%d,%d): %.1f", pnt.x, pnt.y, val);
+            printf(">>>>>>>>>>>>>>>> depth(%.1f)\n", val);
             _pickedDepthItem.set(str);
             repaint = true;
             break;

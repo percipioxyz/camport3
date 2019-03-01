@@ -1,23 +1,63 @@
 #include "../common/common.hpp"
 
+void Usage() 
+{
+    printf(
+    "Usage: ForceDeviceIP <cmd> <MAC> <newIP> <newNetmask> <newGateway>\n"
+    "    - <cmd> should be -force/-static/-dynamic\n"
+    "    Example: ForceDeviceIP -force 12:34:56:78:90:ab 192.168.1.100 255.255.255.0 192.168.1.1\n"
+    "\n"
+    "    1. Force the device IP temporarily.\n"
+    "       - The newIP/newNetmask will be valid only before reboot.\n"
+    "       Command: ForceDeviceIP -force <MAC> <newIP> <newNetmask> <newGateway>\n"
+    "\n"
+    "    2. Force the device IP persistently.\n"
+    "       - The newIP/newNetmask will be fixed and always vaild.\n"
+    "       Command: ForceDeviceIP -static <MAC> <newIP> <newNetmask> <newGateway>\n"
+    "\n"
+    "    3. Set the device IP to dynamic.\n"
+    "       - The simplest way, which is more convenient than usage 4.\n"
+    "       - Not supported by some old devices. Try usage 4 in this case.\n"
+    "       - Take effect immediately. The device will begin to get new IP from DHCP server or Link-local.\n"
+    "       Command: ForceDeviceIP -dynamic <MAC>\n"
+    "\n"
+    "    4. Set the device IP to dynamic, for legacy devices.\n"
+    "       - Force the newIP to the device first.\n"
+    "       - Make sure the tool can access the device properly after newIP is forced.\n"
+    "       - Take effect after reboot.\n"
+    "       Command: ForceDeviceIP -dynamic <MAC> <newIP> <newNetmask> <newGateway>\n"
+    );
+}
+
 int main(int argc, char* argv[])
 {
-    if (argc < 5) {
-        LOGI("Usage: ForceDeviceIP <MAC> <newIP> <newNetmask> <newGateway> [-set | -clear]");
-        return -1;
+    char * cmd = NULL;
+    char * mac = NULL;
+    const char * newIP = "0.0.0.0";
+    const char * newNetmask = "0.0.0.0";
+    const char * newGateway = "0.0.0.0";
+
+    if (argc < 3) {
+      Usage();
+      return -1;
     }
-    const char * MAC        = argv[1];
-    const char * newIP      = argv[2];
-    const char * newNetmask = argv[3];
-    const char * newGateway = argv[4];
-    bool forceSet = false;
-    bool forceClear = false;
-    for(int i = 5; i < argc; i++){
-      if(argv[i] == std::string("-set")){
-        forceSet = true;
-      } else if(argv[i] == std::string("-clear")){
-        forceClear = true;
-      }
+    cmd = argv[1];
+    mac = argv[2];
+    
+    if (strcmp(cmd, "-force") != 0
+      && strcmp(cmd, "-static") != 0
+      && strcmp(cmd, "-dynamic") != 0) {
+      Usage();
+      return -1;
+    }
+    if (argc >= 4) {
+      newIP      = argv[3];
+    }
+    if (argc >= 5) {
+      newNetmask = argv[4];
+    }
+    if (argc >= 6) {
+      newGateway = argv[5];
     }
 
     LOGD("Init lib");
@@ -54,32 +94,40 @@ int main(int argc, char* argv[])
         
         TY_INTERFACE_HANDLE hIface;
         ASSERT_OK( TYOpenInterface(ifaces[i].id, &hIface) );
-        if (TYForceDeviceIP(hIface, MAC, newIP, newNetmask, newGateway) == TY_STATUS_OK) {
+        if (TYForceDeviceIP(hIface, mac, newIP, newNetmask, newGateway) == TY_STATUS_OK) {
             LOGD("**** Force device IP/Netmask/Gateway ...Done! ****");
 
-            if(forceSet || forceClear){
+            bool   open_needed  = false;
+            const char * ip_save      = newIP;
+            const char * netmask_save = newNetmask;
+            const char * gateway_save = newGateway;
+            if(strcmp(cmd, "-static") == 0) {
+              open_needed = true;
+            }
+            if(strcmp(cmd, "-dynamic") == 0 && strcmp(newIP, "0.0.0.0") != 0){
+              open_needed  = true;
+              ip_save      = "0.0.0.0";
+              netmask_save = "0.0.0.0";
+              gateway_save = "0.0.0.0";
+            } 
+            if(open_needed){
               TYUpdateDeviceList(hIface);
               TY_DEV_HANDLE hDev;
               if(TYOpenDeviceWithIP(hIface, newIP, &hDev) == TY_STATUS_OK){
-                if(forceClear){
-                  newIP = "0.0.0.0";
-                  newNetmask = "0.0.0.0";
-                  newGateway = "0.0.0.0";
-                }
                 int32_t ip_i[4];
                 uint8_t ip_b[4];
                 int32_t ip32;
-                sscanf(newIP, "%d.%d.%d.%d", &ip_i[0], &ip_i[1], &ip_i[2], &ip_i[3]);
+                sscanf(ip_save, "%d.%d.%d.%d", &ip_i[0], &ip_i[1], &ip_i[2], &ip_i[3]);
                 ip_b[0] = ip_i[0];ip_b[1] = ip_i[1];ip_b[2] = ip_i[2];ip_b[3] = ip_i[3];
                 ip32 = TYIPv4ToInt(ip_b);
                 LOGI("Set persistent IP 0x%x(%d.%d.%d.%d)", ip32, ip_b[0], ip_b[1], ip_b[2], ip_b[3]);
                 ASSERT_OK( TYSetInt(hDev, TY_COMPONENT_DEVICE, TY_INT_PERSISTENT_IP, ip32) );
-                sscanf(newNetmask, "%d.%d.%d.%d", &ip_i[0], &ip_i[1], &ip_i[2], &ip_i[3]);
+                sscanf(netmask_save, "%d.%d.%d.%d", &ip_i[0], &ip_i[1], &ip_i[2], &ip_i[3]);
                 ip_b[0] = ip_i[0];ip_b[1] = ip_i[1];ip_b[2] = ip_i[2];ip_b[3] = ip_i[3];
                 ip32 = TYIPv4ToInt(ip_b);
                 LOGI("Set persistent Netmask 0x%x(%d.%d.%d.%d)", ip32, ip_b[0], ip_b[1], ip_b[2], ip_b[3]);
                 ASSERT_OK( TYSetInt(hDev, TY_COMPONENT_DEVICE, TY_INT_PERSISTENT_SUBMASK, ip32) );
-                sscanf(newGateway, "%d.%d.%d.%d", &ip_i[0], &ip_i[1], &ip_i[2], &ip_i[3]);
+                sscanf(gateway_save, "%d.%d.%d.%d", &ip_i[0], &ip_i[1], &ip_i[2], &ip_i[3]);
                 ip_b[0] = ip_i[0];ip_b[1] = ip_i[1];ip_b[2] = ip_i[2];ip_b[3] = ip_i[3];
                 ip32 = TYIPv4ToInt(ip_b);
                 LOGI("Set persistent Gateway 0x%x(%d.%d.%d.%d)", ip32, ip_b[0], ip_b[1], ip_b[2], ip_b[3]);
@@ -96,3 +144,4 @@ int main(int argc, char* argv[])
     ASSERT_OK(TYDeinitLib());
     return 0;
 }
+

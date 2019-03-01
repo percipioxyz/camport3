@@ -1,41 +1,5 @@
 #include "../common/common.hpp"
 
-static int fps_counter = 0;
-static clock_t fps_tm = 0;
-
-#ifdef _WIN32
-static int get_fps() {
-   const int kMaxCounter = 250;
-   fps_counter++;
-   if (fps_counter < kMaxCounter) {
-     return -1;
-   }
-   int elapse = (clock() - fps_tm);
-   int v = (int)(((float)fps_counter) / elapse * CLOCKS_PER_SEC);
-   fps_tm = clock();
-
-   fps_counter = 0;
-   return v;
- }
-#else
-static int get_fps() {
-  const int kMaxCounter = 200;
-  struct timeval start;
-  fps_counter++;
-  if (fps_counter < kMaxCounter) {
-    return -1;
-  }
-
-  gettimeofday(&start, NULL);
-  int elapse = start.tv_sec * 1000 + start.tv_usec / 1000 - fps_tm;
-  int v = (int)(((float)fps_counter) / elapse * 1000);
-  gettimeofday(&start, NULL);
-  fps_tm = start.tv_sec * 1000 + start.tv_usec / 1000;
-
-  fps_counter = 0;
-  return v;
-}
-#endif
 
 void eventCallback(TY_EVENT_INFO *event_info, void *userdata)
 {
@@ -96,10 +60,25 @@ int main(int argc, char* argv[])
 
     int32_t allComps;
     ASSERT_OK( TYGetComponentIDs(hDevice, &allComps) );
+
+    ///try to enable color camera
     if(allComps & TY_COMPONENT_RGB_CAM  && color) {
         LOGD("Has RGB camera, open RGB cam");
         ASSERT_OK( TYEnableComponents(hDevice, TY_COMPONENT_RGB_CAM) );
+        //create a isp handle to convert raw image(color bayer format) to rgb image
         ASSERT_OK(TYISPCreate(&hColorIspHandle));
+        //Init code can be modified in common.hpp
+        //NOTE: Should set RGB image format & size before init ISP
+        ASSERT_OK(ColorIspInitSetting(hColorIspHandle, hDevice));
+        //You can  call follow function to show  color isp supported features
+#if 0
+        ColorIspShowSupportedFeatures(hColorIspHandle);
+#endif
+        //You can turn on auto exposure function as follow ,but frame rate may reduce .
+        //Device may be casually stucked  1~2 seconds while software is trying to adjust device exposure time value
+#if 0
+        ASSERT_OK(ColorIspInitAutoExposure(hColorIspHandle, hDevice));
+#endif
     }
 
     if (allComps & TY_COMPONENT_IR_CAM_LEFT && ir) {
@@ -112,13 +91,15 @@ int main(int argc, char* argv[])
 		    ASSERT_OK(TYEnableComponents(hDevice, TY_COMPONENT_IR_CAM_RIGHT));
     }
 
+    //try to enable depth map
     LOGD("Configure components, open depth cam");
+    DepthViewer depthViewer("Depth");
     if (allComps & TY_COMPONENT_DEPTH_CAM && depth) {
         std::vector<TY_ENUM_ENTRY> image_mode_list;
         ASSERT_OK(get_feature_enum_list(hDevice, TY_COMPONENT_DEPTH_CAM, TY_ENUM_IMAGE_MODE, image_mode_list));
         for (int idx = 0; idx < image_mode_list.size(); idx++){
             TY_ENUM_ENTRY &entry = image_mode_list[idx];
-            //try to select a vga resolution
+            //try to select a VGA resolution
             if (TYImageWidth(entry.value) == 640 || TYImageHeight(entry.value) == 640){
                 LOGD("Select Depth Image Mode: %s", entry.description);
                 int err = TYSetEnum(hDevice, TY_COMPONENT_DEPTH_CAM, TY_ENUM_IMAGE_MODE, entry.value);
@@ -127,7 +108,13 @@ int main(int argc, char* argv[])
             }
         }
         ASSERT_OK(TYEnableComponents(hDevice, TY_COMPONENT_DEPTH_CAM));
+        //depth map pixel format is uint16_t ,which default unit is  1 mm
+        //the acutal depth (mm)= PxielValue * ScaleUnit 
+        float scale_unit = 1.;
+        TYGetFloat(hDevice, TY_COMPONENT_DEPTH_CAM, TY_FLOAT_SCALE_UNIT, &scale_unit);
+        depthViewer.depth_scale_unit = scale_unit;
     }
+
 
 
     LOGD("Prepare image buffer");
@@ -162,7 +149,6 @@ int main(int argc, char* argv[])
     LOGD("While loop to fetch frame");
     bool exit_main = false;
     TY_FRAME_DATA frame;
-    DepthViewer depthViewer("Depth");
     int index = 0;
     while(!exit_main) {
         int err = TYFetchFrame(hDevice, &frame, -1);
@@ -175,7 +161,6 @@ int main(int argc, char* argv[])
             }
 
             cv::Mat depth, irl, irr, color;
-            //parseFrame(frame, &depth, &irl, &irr, &color, hColorIspHandle);
             parseFrame(frame, &depth, &irl, &irr, &color, hColorIspHandle);
             if(!depth.empty()){
                 depthViewer.show(depth);
@@ -195,6 +180,7 @@ int main(int argc, char* argv[])
                 LOGD("Unmapped key %d", key);
             }
 
+            TYISPUpdateDevice(hColorIspHandle);
             LOGD("Re-enqueue buffer(%p, %d)"
                 , frame.userBuffer, frame.bufferSize);
             ASSERT_OK( TYEnqueueBuffer(hDevice, frame.userBuffer, frame.bufferSize) );

@@ -1,42 +1,5 @@
 #include "../common/common.hpp"
 
-static int fps_counter = 0;
-static clock_t fps_tm = 0;
-
-#ifdef _WIN32
-static int get_fps() {
-   const int kMaxCounter = 250;
-   fps_counter++;
-   if (fps_counter < kMaxCounter) {
-     return -1;
-   }
-   int elapse = (clock() - fps_tm);
-   int v = (int)(((float)fps_counter) / elapse * CLOCKS_PER_SEC);
-   fps_tm = clock();
-
-   fps_counter = 0;
-   return v;
- }
-#else
-static int get_fps() {
-  const int kMaxCounter = 200;
-  struct timeval start;
-  fps_counter++;
-  if (fps_counter < kMaxCounter) {
-    return -1;
-  }
-
-  gettimeofday(&start, NULL);
-  int elapse = start.tv_sec * 1000 + start.tv_usec / 1000 - fps_tm;
-  int v = (int)(((float)fps_counter) / elapse * 1000);
-  gettimeofday(&start, NULL);
-  fps_tm = start.tv_sec * 1000 + start.tv_usec / 1000;
-
-  fps_counter = 0;
-  return v;
-}
-#endif
-
 void eventCallback(TY_EVENT_INFO *event_info, void *userdata)
 {
     if (event_info->eventId == TY_EVENT_DEVICE_OFFLINE) {
