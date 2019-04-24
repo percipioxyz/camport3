@@ -97,6 +97,7 @@ var a00002 =
       [ "TY_COMPONENT_LASER", "a00002.html#a6e3668325ff8193e2690514a0a6fde57ae777d36a98dd9df3f7ad4dc1f3a96f93", null ],
       [ "TY_COMPONENT_IMU", "a00002.html#a6e3668325ff8193e2690514a0a6fde57a07136f420b6748a4a7bd389e4a485187", null ],
       [ "TY_COMPONENT_BRIGHT_HISTO", "a00002.html#a6e3668325ff8193e2690514a0a6fde57a6074a9b055db390cd2af18ad2ac4cf0a", null ],
+      [ "TY_COMPONENT_STORAGE", "a00002.html#a6e3668325ff8193e2690514a0a6fde57a188f91a6717aafd55fe711b53bff7ee8", null ],
       [ "TY_COMPONENT_RGB_CAM", "a00002.html#a6e3668325ff8193e2690514a0a6fde57af91a018177a11bf3971301e35889e3b6", null ]
     ] ],
     [ "TY_EVENT_LIST", "a00002.html#a1d951d2f881b002794c44f80a829a67c", [
@@ -109,6 +110,8 @@ var a00002 =
       [ "TY_STRUCT_EXTRINSIC_TO_LEFT_IR", "a00002.html#ad106ea6dcff8f708ca26b57c430f9124a8a3817d03926c449182a05f046c1b533", null ],
       [ "TY_STRUCT_CAM_DISTORTION", "a00002.html#ad106ea6dcff8f708ca26b57c430f9124a9e09cfdcd4618eef97e4a3aef8a8177f", null ],
       [ "TY_STRUCT_CAM_CALIB_DATA", "a00002.html#ad106ea6dcff8f708ca26b57c430f9124aa4b8a68216252560f7ef352f10f315ce", null ],
+      [ "TY_BYTEARRAY_CUSTOM_BLOCK", "a00002.html#ad106ea6dcff8f708ca26b57c430f9124a3b04591610b017147a83959fe9470b5b", null ],
+      [ "TY_BYTEARRAY_ISP_BLOCK", "a00002.html#ad106ea6dcff8f708ca26b57c430f9124a474fb34d87d354c57816b8d6814a82df", null ],
       [ "TY_INT_PERSISTENT_IP", "a00002.html#ad106ea6dcff8f708ca26b57c430f9124a24dbc849003fb0a7075a2ef2749c46d3", null ],
       [ "TY_INT_PERSISTENT_SUBMASK", "a00002.html#ad106ea6dcff8f708ca26b57c430f9124ab47bbbd6664374f9983a7a0bd632a031", null ],
       [ "TY_INT_PERSISTENT_GATEWAY", "a00002.html#ad106ea6dcff8f708ca26b57c430f9124a77e246ca7867849d7687a04b846c61d8", null ],
@@ -242,7 +245,9 @@ var a00002 =
       [ "TY_TRIGGER_MODE_OFF", "a00002.html#a02513e8af0f5898d86aa8ada972f5fb9a0e57fa882e539966b9c99891708d64c9", null ],
       [ "TY_TRIGGER_MODE_SLAVE", "a00002.html#a02513e8af0f5898d86aa8ada972f5fb9ac3238b405fc2cd3f572f33cb38174993", null ],
       [ "TY_TRIGGER_MODE_M_SIG", "a00002.html#a02513e8af0f5898d86aa8ada972f5fb9acd2cb0a2bd04ceee9b5cdb203b25598c", null ],
-      [ "TY_TRIGGER_MODE_M_PER", "a00002.html#a02513e8af0f5898d86aa8ada972f5fb9a72b26deaeee841838bb3c433f23db68c", null ]
+      [ "TY_TRIGGER_MODE_M_PER", "a00002.html#a02513e8af0f5898d86aa8ada972f5fb9a72b26deaeee841838bb3c433f23db68c", null ],
+      [ "TY_TRIGGER_MODE_SIG_PASS", "a00002.html#a02513e8af0f5898d86aa8ada972f5fb9ae621fd2f3b5daa3f7113e73d41c5142e", null ],
+      [ "TY_TRIGGER_MODE_PER_PASS", "a00002.html#a02513e8af0f5898d86aa8ada972f5fb9a203041904285d0cc15d13e7827175550", null ]
     ] ],
     [ "_TYInitLib", "a00002.html#acfe1b35c050a5b6b7bb386551ca583f2", null ],
     [ "TYClearBufferQueue", "a00002.html#afdb631d69e76108c05e5c9f1fa8106db", null ],
@@ -256,6 +261,8 @@ var a00002 =
     [ "TYFetchFrame", "a00002.html#a3bdbb598929614983955aad7d6c6ef7a", null ],
     [ "TYForceDeviceIP", "a00002.html#ac5f5c8618b92b883a83a44fd8be7f7db", null ],
     [ "TYGetBool", "a00002.html#a5e735473417bd5771b3e6f0445661c53", null ],
+    [ "TYGetByteArray", "a00002.html#a9cfe5842a0e8418783d9deff98b2cf90", null ],
+    [ "TYGetByteArraySize", "a00002.html#ae4b787c2b243c4020614b828a95ee277", null ],
     [ "TYGetComponentIDs", "a00002.html#a5eeec980e1d7b51c41a8856a1abf28e5", null ],
     [ "TYGetDeviceInfo", "a00002.html#ade9775ca18449a26818034787f72d4e9", null ],
     [ "TYGetDeviceInterface", "a00002.html#a108e0a6fa6d913fb662a85af629e14a9", null ],
@@ -286,6 +293,7 @@ var a00002 =
     [ "TYRegisterEventCallback", "a00002.html#a1a413221c79c9516ea90d7252b671076", null ],
     [ "TYSendSoftTrigger", "a00002.html#afd5565df7f7b9387bfd267a0d749530e", null ],
     [ "TYSetBool", "a00002.html#a34265b26ff5c00dc958a7b0b191d3dd0", null ],
+    [ "TYSetByteArray", "a00002.html#a6a40ab2a2d531a6c5e6efa09ffa6502e", null ],
     [ "TYSetEnum", "a00002.html#ad0f81735e6eecda1703c181660d65a25", null ],
     [ "TYSetFloat", "a00002.html#acd070907938a304f240c32dc5a9c393f", null ],
     [ "TYSetInt", "a00002.html#a3a15bc24b678dcf127835f48a3525d7b", null ],

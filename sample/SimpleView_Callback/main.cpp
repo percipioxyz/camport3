@@ -12,6 +12,7 @@ struct CallbackData {
     cv::Mat         leftIR;
     cv::Mat         rightIR;
     cv::Mat         color;
+    DepthViewer*    dViewer;
 };
 
 void frameCallback(TY_FRAME_DATA* frame, void* userdata)
@@ -19,18 +20,35 @@ void frameCallback(TY_FRAME_DATA* frame, void* userdata)
   CallbackData* pData = (CallbackData*)userdata;
   LOGD("=== Get frame %d", ++pData->index);
 
-  while (fakeLock) {
-    MSLEEP(10);
+  int fps = get_fps();
+  if (fps > 0){
+      LOGI("fps: %d", fps);
   }
-  fakeLock = true;
 
   parseFrame(*frame, &pData->depth, &pData->leftIR, &pData->rightIR, &pData->color,pData->hIspHandle);
 
-  fakeLock = false;
+  if(!pData->depth.empty()){
+      pData->dViewer->show(pData->depth);
+  }
+  if(!pData->leftIR.empty()) { cv::imshow("LeftIR", pData->leftIR); }
+  if(!pData->rightIR.empty()){ cv::imshow("RightIR", pData->rightIR); }
+  if(!pData->color.empty()){ cv::imshow("Color", pData->color); }
+  TYISPUpdateDevice(pData->hIspHandle);
 
   if (!pData->color.empty()) {
     LOGI("Color format is %s", colorFormatName(TYImageInFrame(*frame, TY_COMPONENT_RGB_CAM)->pixelFormat));
   }
+  int key = cv::waitKey(1);
+    switch (key & 0xff) {
+    case 0xff:
+      break;
+    case 'q':
+      pData->exit = true;
+      // have to call TYUnregisterCallback to release thread
+      break;
+    default:
+      LOGD("Unmapped key %d", key);
+    }
 
   LOGD("=== Callback: Re-enqueue buffer(%p, %d)", frame->userBuffer, frame->bufferSize);
   ASSERT_OK(TYEnqueueBuffer(pData->hDevice, frame->userBuffer, frame->bufferSize));
@@ -172,6 +190,7 @@ int main(int argc, char* argv[])
   cb_data.hDevice = hDevice;
   cb_data.exit = false;
   cb_data.hIspHandle = NULL;
+  cb_data.dViewer = &depthViewer;
   // Register Callback
   CallbackWrapper cbWrapper;
   cbWrapper.TYRegisterCallback(hDevice, frameCallback, &cb_data);
@@ -196,35 +215,10 @@ int main(int argc, char* argv[])
   
   LOGD("While loop to fetch frame");
   while (!cb_data.exit) {
-    while (fakeLock) {
-      MSLEEP(10);
-    }
-    fakeLock = true;
-
-    // show images
-    if(!cb_data.depth.empty()){
-        depthViewer.show(cb_data.depth);
-    }
-    if(!cb_data.leftIR.empty()) { cv::imshow("LeftIR", cb_data.leftIR); }
-    if(!cb_data.rightIR.empty()){ cv::imshow("RightIR", cb_data.rightIR); }
-    if(!cb_data.color.empty()){ cv::imshow("Color", cb_data.color); }
-    fakeLock = false;
-    TYISPUpdateDevice(cb_data.hIspHandle);
-
-    int key = cv::waitKey(1);
-    switch (key & 0xff) {
-    case 0xff:
-      break;
-    case 'q':
-      cb_data.exit = true;
-      // have to call TYUnregisterCallback to release thread
-      cbWrapper.TYUnregisterCallback();
-      break;
-    default:
-      LOGD("Unmapped key %d", key);
-    }
+     MSLEEP(1000*10);
   }
 
+  cbWrapper.TYUnregisterCallback();
   ASSERT_OK(TYStopCapture(hDevice));
   ASSERT_OK(TYCloseDevice(hDevice));
   ASSERT_OK(TYCloseInterface(hIface));

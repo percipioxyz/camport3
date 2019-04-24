@@ -3,6 +3,8 @@
 
 #include "Utils.hpp"
 
+#include <fstream>
+#include <iterator>
 #include <opencv2/opencv.hpp>
 #include "DepthRender.hpp"
 #include "MatViewer.hpp"
@@ -301,6 +303,28 @@ static TY_STATUS ColorIspInitSetting(TY_ISP_HANDLE isp_handle, TY_DEV_HANDLE dev
     ASSERT_OK(TYISPSetFeature(isp_handle, TY_ISP_FEATURE_WHITEBALANCE_GAIN, (uint8_t*)wb_rgb_gain, sizeof(wb_rgb_gain)));
 #endif
 
+    //try to load specifical device config from  device storage
+    int32_t comp_all;
+    ASSERT_OK(TYGetComponentIDs(dev_handle, &comp_all));
+    if (!(comp_all & TY_COMPONENT_STORAGE)){
+        return TY_STATUS_OK;
+    }
+    bool has_isp_block = false;
+    ASSERT_OK(TYHasFeature(dev_handle, TY_COMPONENT_STORAGE, TY_BYTEARRAY_ISP_BLOCK, &has_isp_block));
+    if (!has_isp_block){
+        return TY_STATUS_OK;
+    }
+    uint32_t sz = 0;
+    ASSERT_OK(TYGetByteArraySize(dev_handle, TY_COMPONENT_STORAGE, TY_BYTEARRAY_ISP_BLOCK, &sz));
+    if (sz <= 0){
+        return TY_STATUS_OK;
+    }
+    std::vector<uint8_t> buff(sz);
+    ASSERT_OK(TYGetByteArray(dev_handle, TY_COMPONENT_STORAGE, TY_BYTEARRAY_ISP_BLOCK, &buff[0], buff.size()));
+    res = TYISPLoadConfig(isp_handle, &buff[0], buff.size());
+    if (res == TY_STATUS_OK){
+        LOGD("Load RGB ISP Config From Device");
+    }
     return TY_STATUS_OK;
 }
 
@@ -342,6 +366,35 @@ static TY_STATUS ColorIspShowSupportedFeatures(TY_ISP_HANDLE handle){
         printf("feature name : %-50s  type : %s \n", info[idx].name, info[idx].value_type);
     }
     return TY_STATUS_OK;
+}
+
+static std::vector<uint8_t> TYReadBinaryFile(const char* filename)
+{
+    // open the file:
+    std::ifstream file(filename, std::ios::binary);
+    if (!file.is_open()){
+        return std::vector<uint8_t>();
+    }
+    // Stop eating new lines in binary mode!!!
+    file.unsetf(std::ios::skipws);
+
+    // get its size:
+    std::streampos fileSize;
+
+    file.seekg(0, std::ios::end);
+    fileSize = file.tellg();
+    file.seekg(0, std::ios::beg);
+
+    // reserve capacity
+    std::vector<uint8_t> vec;
+    vec.reserve(fileSize);
+
+    // read the data:
+    vec.insert(vec.begin(),
+               std::istream_iterator<uint8_t>(file),
+               std::istream_iterator<uint8_t>());
+
+    return vec;
 }
 
 #endif

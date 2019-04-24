@@ -136,8 +136,8 @@
 
 
 #define TY_LIB_VERSION_MAJOR       3
-#define TY_LIB_VERSION_MINOR       1 
-#define TY_LIB_VERSION_PATCH       9 
+#define TY_LIB_VERSION_MINOR       2 
+#define TY_LIB_VERSION_PATCH       0 
 
 
 //------------------------------------------------------------------------------
@@ -200,6 +200,7 @@ typedef enum TY_DEVICE_COMPONENT_LIST
     TY_COMPONENT_LASER          = 0x00400000, ///< Laser
     TY_COMPONENT_IMU            = 0x00800000, ///< Inertial Measurement Unit
     TY_COMPONENT_BRIGHT_HISTO   = 0x01000000, ///< virtual component for brightness histogram of ir
+    TY_COMPONENT_STORAGE        = 0x02000000, ///< virtual component for device storage
 
     TY_COMPONENT_RGB_CAM        = TY_COMPONENT_RGB_CAM_LEFT ///< Some device has only one RGB camera, map it to left
 }TY_DEVICE_COMPONENT_LIST;
@@ -228,6 +229,8 @@ typedef enum TY_FEATURE_ID_LIST
     TY_STRUCT_EXTRINSIC_TO_LEFT_IR  = 0x0001 | TY_FEATURE_STRUCT, ///< extrinsic from current component to left IR, see TY_CAMERA_EXTRINSIC
     TY_STRUCT_CAM_DISTORTION        = 0x0006 | TY_FEATURE_STRUCT, ///< see TY_CAMERA_DISTORTION
     TY_STRUCT_CAM_CALIB_DATA        = 0x0007 | TY_FEATURE_STRUCT, ///< see TY_CAMERA_CALIB_INFO
+    TY_BYTEARRAY_CUSTOM_BLOCK       = 0x000A | TY_FEATURE_BYTEARRAY, ///< used for reading/writing custom block
+    TY_BYTEARRAY_ISP_BLOCK          = 0x000B | TY_FEATURE_BYTEARRAY, ///< used for reading/writing fpn block
 
     TY_INT_PERSISTENT_IP            = 0x0010 | TY_FEATURE_INT,
     TY_INT_PERSISTENT_SUBMASK       = 0x0011 | TY_FEATURE_INT,
@@ -246,7 +249,7 @@ typedef enum TY_FEATURE_ID_LIST
     TY_INT_HEIGHT                   = 0x0105 | TY_FEATURE_INT,  ///< Image height
     TY_ENUM_IMAGE_MODE              = 0x0109 | TY_FEATURE_ENUM, ///< Resolution-PixelFromat mode, see TY_IMAGE_MODE_LIST
 
-    //@breif scale unit
+    //@brief scale unit
     //depth image is uint16 pixel format with default millimeter unit ,for some device  can output Sub-millimeter accuracy data
     //the acutal depth (mm)= PxielValue * ScaleUnit 
     TY_FLOAT_SCALE_UNIT             = 0x010a | TY_FEATURE_FLOAT, 
@@ -402,6 +405,8 @@ typedef enum TY_TRIGGER_MODE_LIST
     TY_TRIGGER_MODE_SLAVE       = 1, ///<slave mode, receive soft/hardware triggers
     TY_TRIGGER_MODE_M_SIG       = 2, ///<master mode 1, sending one trigger signal once received a soft/hardware trigger
     TY_TRIGGER_MODE_M_PER       = 3, ///<master mode 2, periodic sending one trigger signals, 'fps' param should be set
+    TY_TRIGGER_MODE_SIG_PASS    = 18,
+    TY_TRIGGER_MODE_PER_PASS    = 19,
 }TY_TRIGGER_MODE_LIST;
 typedef int16_t TY_TRIGGER_MODE;
 
@@ -1260,7 +1265,51 @@ TY_CAPI TYGetStruct               (TY_DEV_HANDLE hDevice, TY_COMPONENT_ID compon
 /// @retval TY_STATUS_WRONG_SIZE        structSize incorrect.
 /// @retval TY_STATUS_BUSY              Device is capturing, the feature is locked.
 TY_CAPI TYSetStruct               (TY_DEV_HANDLE hDevice, TY_COMPONENT_ID componentID, TY_FEATURE_ID featureID, void* pStruct, uint32_t structSize);
+ 
+/// @brief Get the size of specified byte array zone .
+/// @param  [in]  hDevice       Device handle.
+/// @param  [in]  componentID   Component ID.
+/// @param  [in]  featureID     Feature ID.
+/// @param  [out] pSize         size of specified byte array zone.
+/// @retval TY_STATUS_OK        Succeed.
+/// @retval TY_STATUS_INVALID_HANDLE    Invalid device handle.
+/// @retval TY_STATUS_INVALID_COMPONENT Invalid component ID.
+/// @retval TY_STATUS_INVALID_FEATURE   Invalid feature ID.
+/// @retval TY_STATUS_WRONG_TYPE        The feature's type is not TY_FEATURE_BYTEARRAY.
+/// @retval TY_STATUS_NULL_POINTER      pSize is NULL.
+TY_CAPI TYGetByteArraySize        (TY_DEV_HANDLE hDevice, TY_COMPONENT_ID componentID, TY_FEATURE_ID featureID, uint32_t* pSize);
+ 
+/// @brief Read byte array from device.
+/// @param  [in]  hDevice       Device handle.
+/// @param  [in]  componentID   Component ID.
+/// @param  [in]  featureID     Feature ID.
+/// @param  [out] pbuffer       byte buffer.
+/// @param  [in]  bufferSize    Size of buffer.
+/// @retval TY_STATUS_OK        Succeed.
+/// @retval TY_STATUS_INVALID_HANDLE    Invalid device handle.
+/// @retval TY_STATUS_INVALID_COMPONENT Invalid component ID.
+/// @retval TY_STATUS_INVALID_FEATURE   Invalid feature ID.
+/// @retval TY_STATUS_WRONG_TYPE        The feature's type is not TY_FEATURE_BYTEARRAY.
+/// @retval TY_STATUS_NULL_POINTER      pbuffer is NULL.
+/// @retval TY_STATUS_WRONG_SIZE        bufferSize incorrect.
+TY_CAPI TYGetByteArray            (TY_DEV_HANDLE hDevice, TY_COMPONENT_ID componentID, TY_FEATURE_ID featureID, uint8_t* pBuffer, uint32_t bufferSize);
 
+/// @brief Write byte array to device.
+/// @param  [in]  hDevice       Device handle.
+/// @param  [in]  componentID   Component ID.
+/// @param  [in]  featureID     Feature ID.
+/// @param  [out] pbuffer       byte buffer.
+/// @param  [in]  bufferSize    Size of buffer.
+/// @retval TY_STATUS_OK        Succeed.
+/// @retval TY_STATUS_INVALID_HANDLE    Invalid device handle.
+/// @retval TY_STATUS_INVALID_COMPONENT Invalid component ID.
+/// @retval TY_STATUS_INVALID_FEATURE   Invalid feature ID.
+/// @retval TY_STATUS_NOT_PERMITTED     The feature is not writable.
+/// @retval TY_STATUS_WRONG_TYPE        The feature's type is not TY_FEATURE_BYTEARRAY.
+/// @retval TY_STATUS_NULL_POINTER      pbuffer is NULL.
+/// @retval TY_STATUS_WRONG_SIZE        bufferSize incorrect.
+/// @retval TY_STATUS_BUSY              Device is capturing, the feature is locked.
+TY_CAPI TYSetByteArray            (TY_DEV_HANDLE hDevice, TY_COMPONENT_ID componentID, TY_FEATURE_ID featureID, const uint8_t* pBuffer, uint32_t bufferSize);
 
 //------------------------------------------------------------------------------
 //  Version check
@@ -1337,6 +1386,9 @@ TY_CAPI             TYGetString               (TY_DEV_HANDLE hDevice, TY_COMPONE
 TY_CAPI             TYSetString               (TY_DEV_HANDLE hDevice, TY_COMPONENT_ID componentID, TY_FEATURE_ID featureID, const char* buffer);
 TY_CAPI             TYGetStruct               (TY_DEV_HANDLE hDevice, TY_COMPONENT_ID componentID, TY_FEATURE_ID featureID, void* pStruct, uint32_t structSize);
 TY_CAPI             TYSetStruct               (TY_DEV_HANDLE hDevice, TY_COMPONENT_ID componentID, TY_FEATURE_ID featureID, void* pStruct, uint32_t structSize);
+TY_CAPI             TYGetByteArraySize        (TY_DEV_HANDLE hDevice, TY_COMPONENT_ID componentID, TY_FEATURE_ID featureID, uint32_t* pSize);
+TY_CAPI             TYGetByteArray            (TY_DEV_HANDLE hDevice, TY_COMPONENT_ID componentID, TY_FEATURE_ID featureID, uint8_t* pBuffer, uint32_t bufferSize);
+TY_CAPI             TYSetByteArray            (TY_DEV_HANDLE hDevice, TY_COMPONENT_ID componentID, TY_FEATURE_ID featureID, const uint8_t* pBuffer, uint32_t bufferSize);
 
 
 #endif // TY_API_H_

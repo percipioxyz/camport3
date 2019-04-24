@@ -23,8 +23,10 @@ typedef enum{
     TY_ISP_FEATURE_ENABLE_AUTO_WHITEBALANCE         = 0x000300,
     TY_ISP_FEATURE_SHADING                          = 0x000400,
     TY_ISP_FEATURE_SHADING_CENTER                   = 0x000500,
-    TY_ISP_FEATURE_BLACK_LEVEL                      = 0x000600,
-    TY_ISP_FEATURE_BLACK_LEVEL_GAIN                 = 0x000700,
+    TY_ISP_FEATURE_BLACK_LEVEL                      = 0x000600, ///<global black level
+    TY_ISP_FEATURE_BLACK_LEVEL_COLUMN               = 0x000610, ///<to set different black level for each image column
+    TY_ISP_FEATURE_BLACK_LEVEL_GAIN                 = 0x000700, ///<global pixel gain
+    TY_ISP_FEATURE_BLACK_LEVEL_GAIN_COLUMN          = 0x000710, ///<to set different gain for each image column
     TY_ISP_FEATURE_BAYER_PATTERN                    = 0x000800,
     TY_ISP_FEATURE_DEMOSAIC_METHOD                  = 0x000900,
     TY_ISP_FEATURE_GAMMA                            = 0x000A00,
@@ -68,6 +70,7 @@ typedef struct{
 
 TYISP_CAPI TYISPCreate(TY_ISP_HANDLE *handle);
 TYISP_CAPI TYISPRelease(TY_ISP_HANDLE *handle);
+TYISP_CAPI TYISPLoadConfig(TY_ISP_HANDLE handle,const uint8_t *config, uint32_t config_size);
 ///@breif called by main thread to update & control device status for ISP
 TYISP_CAPI TYISPUpdateDevice(TY_ISP_HANDLE handle);
 

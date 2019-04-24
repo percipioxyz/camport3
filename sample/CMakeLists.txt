@@ -6,6 +6,7 @@ set(ALL_SAMPLES
     LoopDetect
     ForceDeviceIP
     NetStatistic
+    DeviceStorage
     SimpleView_FetchFrame
     SimpleView_Callback
     SimpleView_Registration
@@ -13,6 +14,7 @@ set(ALL_SAMPLES
     SimpleView_MultiDevice
     SimpleView_TriggerMode0
     SimpleView_TriggerMode1
+    SimpleView_TriggerMode18
     SimpleView_TriggerMode_M2S1
     SimpleView_TriggerMode_M3S1
     SimpleView_KeepAlive

@@ -204,10 +204,10 @@ Macros</h2></td></tr>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>TY_LIB_VERSION_MAJOR</b>&#160;&#160;&#160;3</td></tr>
 <tr class="separator:a3ad29b7e51d7256afc988c03aa1868b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab7b51d30017169eef553363a27bafa4c"><td class="memItemLeft" align="right" valign="top"><a id="ab7b51d30017169eef553363a27bafa4c"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>TY_LIB_VERSION_MINOR</b>&#160;&#160;&#160;1</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>TY_LIB_VERSION_MINOR</b>&#160;&#160;&#160;2</td></tr>
 <tr class="separator:ab7b51d30017169eef553363a27bafa4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a93ec4ddd20d2a3ac85e1d95cc519fe7b"><td class="memItemLeft" align="right" valign="top"><a id="a93ec4ddd20d2a3ac85e1d95cc519fe7b"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>TY_LIB_VERSION_PATCH</b>&#160;&#160;&#160;9</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>TY_LIB_VERSION_PATCH</b>&#160;&#160;&#160;0</td></tr>
 <tr class="separator:a93ec4ddd20d2a3ac85e1d95cc519fe7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a014cecdf6710372ed9331436259eb528"><td class="memItemLeft" align="right" valign="top"><a id="a014cecdf6710372ed9331436259eb528"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>TY_DECLARE_IMAGE_MODE0</b>(pix,  res)&#160;&#160;&#160;TY_IMAGE_MODE_##pix##_##res = TY_PIXEL_FORMAT_##pix | TY_RESOLUTION_MODE_##res</td></tr>
@@ -421,6 +421,7 @@ Enumerations</h2></td></tr>
 <a class="el" href="a00002.html#a6e3668325ff8193e2690514a0a6fde57a07136f420b6748a4a7bd389e4a485187">TY_COMPONENT_IMU</a> = 0x00800000, 
 <br />
 &#160;&#160;<a class="el" href="a00002.html#a6e3668325ff8193e2690514a0a6fde57a6074a9b055db390cd2af18ad2ac4cf0a">TY_COMPONENT_BRIGHT_HISTO</a> = 0x01000000, 
+<a class="el" href="a00002.html#a6e3668325ff8193e2690514a0a6fde57a188f91a6717aafd55fe711b53bff7ee8">TY_COMPONENT_STORAGE</a> = 0x02000000, 
 <a class="el" href="a00002.html#a6e3668325ff8193e2690514a0a6fde57af91a018177a11bf3971301e35889e3b6">TY_COMPONENT_RGB_CAM</a> = TY_COMPONENT_RGB_CAM_LEFT
 <br />
  }</td></tr>
@@ -444,52 +445,54 @@ Enumerations</h2></td></tr>
 <a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124a9e09cfdcd4618eef97e4a3aef8a8177f">TY_STRUCT_CAM_DISTORTION</a> = 0x0006 | TY_FEATURE_STRUCT, 
 <a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124aa4b8a68216252560f7ef352f10f315ce">TY_STRUCT_CAM_CALIB_DATA</a> = 0x0007 | TY_FEATURE_STRUCT, 
 <br />
-&#160;&#160;<b>TY_INT_PERSISTENT_IP</b> = 0x0010 | TY_FEATURE_INT, 
+&#160;&#160;<a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124a3b04591610b017147a83959fe9470b5b">TY_BYTEARRAY_CUSTOM_BLOCK</a> = 0x000A | TY_FEATURE_BYTEARRAY, 
+<a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124a474fb34d87d354c57816b8d6814a82df">TY_BYTEARRAY_ISP_BLOCK</a> = 0x000B | TY_FEATURE_BYTEARRAY, 
+<b>TY_INT_PERSISTENT_IP</b> = 0x0010 | TY_FEATURE_INT, 
 <b>TY_INT_PERSISTENT_SUBMASK</b> = 0x0011 | TY_FEATURE_INT, 
-<b>TY_INT_PERSISTENT_GATEWAY</b> = 0x0012 | TY_FEATURE_INT, 
+<br />
+&#160;&#160;<b>TY_INT_PERSISTENT_GATEWAY</b> = 0x0012 | TY_FEATURE_INT, 
 <b>TY_BOOL_GVSP_RESEND</b> = 0x0013 | TY_FEATURE_BOOL, 
-<br />
-&#160;&#160;<a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124a42c416088b87f1f2b05253eb73ac89af">TY_INT_PACKET_DELAY</a> = 0x0014 | TY_FEATURE_INT, 
+<a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124a42c416088b87f1f2b05253eb73ac89af">TY_INT_PACKET_DELAY</a> = 0x0014 | TY_FEATURE_INT, 
 <b>TY_INT_ACCEPTABLE_PERCENT</b> = 0x0015 | TY_FEATURE_INT, 
-<a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124ac7562e117a75e3cfd2af160e524580f6">TY_INT_NTP_SERVER_IP</a> = 0x0016 | TY_FEATURE_INT, 
+<br />
+&#160;&#160;<a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124ac7562e117a75e3cfd2af160e524580f6">TY_INT_NTP_SERVER_IP</a> = 0x0016 | TY_FEATURE_INT, 
 <a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124a152803e3954af9489fab0c88c942d5ad">TY_STRUCT_CAM_STATISTICS</a> = 0x00ff | TY_FEATURE_STRUCT, 
-<br />
-&#160;&#160;<b>TY_INT_WIDTH_MAX</b> = 0x0100 | TY_FEATURE_INT, 
+<b>TY_INT_WIDTH_MAX</b> = 0x0100 | TY_FEATURE_INT, 
 <b>TY_INT_HEIGHT_MAX</b> = 0x0101 | TY_FEATURE_INT, 
-<b>TY_INT_OFFSET_X</b> = 0x0102 | TY_FEATURE_INT, 
+<br />
+&#160;&#160;<b>TY_INT_OFFSET_X</b> = 0x0102 | TY_FEATURE_INT, 
 <b>TY_INT_OFFSET_Y</b> = 0x0103 | TY_FEATURE_INT, 
-<br />
-&#160;&#160;<a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124a5e9205c48d12b22e4982a04b90f0be7c">TY_INT_WIDTH</a> = 0x0104 | TY_FEATURE_INT, 
+<a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124a5e9205c48d12b22e4982a04b90f0be7c">TY_INT_WIDTH</a> = 0x0104 | TY_FEATURE_INT, 
 <a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124a9c2d4bbee1e06ec9d19c0b8d0374051e">TY_INT_HEIGHT</a> = 0x0105 | TY_FEATURE_INT, 
-<a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124a0519147c7e082603a4405054e2290bcc">TY_ENUM_IMAGE_MODE</a> = 0x0109 | TY_FEATURE_ENUM, 
+<br />
+&#160;&#160;<a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124a0519147c7e082603a4405054e2290bcc">TY_ENUM_IMAGE_MODE</a> = 0x0109 | TY_FEATURE_ENUM, 
 <b>TY_FLOAT_SCALE_UNIT</b> = 0x010a | TY_FEATURE_FLOAT, 
-<br />
-&#160;&#160;<a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124a564ff79d426f8895dcca8e41afb5b17d">TY_ENUM_TRIGGER_ACTIVATION</a> = 0x0201 | TY_FEATURE_ENUM, 
+<a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124a564ff79d426f8895dcca8e41afb5b17d">TY_ENUM_TRIGGER_ACTIVATION</a> = 0x0201 | TY_FEATURE_ENUM, 
 <a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124af323a74de002972f3d0201cdb5f53f09">TY_INT_FRAME_PER_TRIGGER</a> = 0x0202 | TY_FEATURE_INT, 
-<a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124a6555890aacdb59f65594437d2a259696">TY_STRUCT_TRIGGER_PARAM</a> = 0x0523 | TY_FEATURE_STRUCT, 
+<br />
+&#160;&#160;<a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124a6555890aacdb59f65594437d2a259696">TY_STRUCT_TRIGGER_PARAM</a> = 0x0523 | TY_FEATURE_STRUCT, 
 <a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124a58674f119f443456b08f7532cc411995">TY_BOOL_KEEP_ALIVE_ONOFF</a> = 0x0203 | TY_FEATURE_BOOL, 
-<br />
-&#160;&#160;<a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124aca08314da8146be2239c8fd8b8608d5a">TY_INT_KEEP_ALIVE_TIMEOUT</a> = 0x0204 | TY_FEATURE_INT, 
+<a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124aca08314da8146be2239c8fd8b8608d5a">TY_INT_KEEP_ALIVE_TIMEOUT</a> = 0x0204 | TY_FEATURE_INT, 
 <a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124a2dc1f5f6ff5abaf97a0b9a41040f6d0c">TY_BOOL_CMOS_SYNC</a> = 0x0205 | TY_FEATURE_BOOL, 
-<a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124ab9cafffcac1298fe0d3c175300f49b1e">TY_INT_TRIGGER_DELAY_US</a> = 0x0206 | TY_FEATURE_INT, 
+<br />
+&#160;&#160;<a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124ab9cafffcac1298fe0d3c175300f49b1e">TY_INT_TRIGGER_DELAY_US</a> = 0x0206 | TY_FEATURE_INT, 
 <a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124a760b29bf21e57a45dbbcb3b745e68cfe">TY_BOOL_TRIGGER_OUT_IO</a> = 0x0207 | TY_FEATURE_BOOL, 
-<br />
-&#160;&#160;<a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124a7111399fbe52bfec363fbcc3a84165db">TY_BOOL_AUTO_EXPOSURE</a> = 0x0300 | TY_FEATURE_BOOL, 
+<a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124a7111399fbe52bfec363fbcc3a84165db">TY_BOOL_AUTO_EXPOSURE</a> = 0x0300 | TY_FEATURE_BOOL, 
 <a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124a800000a3782afc0c64a37494bd95968a">TY_INT_EXPOSURE_TIME</a> = 0x0301 | TY_FEATURE_INT, 
-<a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124a2dddfa2f8000896f88ff2835675f9a6d">TY_BOOL_AUTO_GAIN</a> = 0x0302 | TY_FEATURE_BOOL, 
+<br />
+&#160;&#160;<a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124a2dddfa2f8000896f88ff2835675f9a6d">TY_BOOL_AUTO_GAIN</a> = 0x0302 | TY_FEATURE_BOOL, 
 <a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124af5848aa7ee4ab4356fa00ac3b73800d6">TY_INT_GAIN</a> = 0x0303 | TY_FEATURE_INT, 
-<br />
-&#160;&#160;<a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124ad49dbc7de890a43620c6848d241b0720">TY_BOOL_AUTO_AWB</a> = 0x0304 | TY_FEATURE_BOOL, 
+<a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124ad49dbc7de890a43620c6848d241b0720">TY_BOOL_AUTO_AWB</a> = 0x0304 | TY_FEATURE_BOOL, 
 <a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124a39f1bae0a509f8b917f3d2e46ac66446">TY_INT_LASER_POWER</a> = 0x0500 | TY_FEATURE_INT, 
-<a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124a9e728970d3b6c1ba088891834f2d733e">TY_BOOL_LASER_AUTO_CTRL</a> = 0x0501 | TY_FEATURE_BOOL, 
+<br />
+&#160;&#160;<a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124a9e728970d3b6c1ba088891834f2d733e">TY_BOOL_LASER_AUTO_CTRL</a> = 0x0501 | TY_FEATURE_BOOL, 
 <a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124ad8ba7a8ff19ca5e5e16baecfd7f90d7c">TY_BOOL_UNDISTORTION</a> = 0x0510 | TY_FEATURE_BOOL, 
-<br />
-&#160;&#160;<a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124a96c9a2085babbc7c27efa45a019b9bcd">TY_BOOL_BRIGHTNESS_HISTOGRAM</a> = 0x0511 | TY_FEATURE_BOOL, 
+<a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124a96c9a2085babbc7c27efa45a019b9bcd">TY_BOOL_BRIGHTNESS_HISTOGRAM</a> = 0x0511 | TY_FEATURE_BOOL, 
 <a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124aa33c31670b3fedc298f957654b9a8825">TY_BOOL_DEPTH_POSTPROC</a> = 0x0512 | TY_FEATURE_BOOL, 
-<a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124af959400781d55f751ad6d9b433713b45">TY_INT_R_GAIN</a> = 0x0520 | TY_FEATURE_INT, 
-<a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124ad62bbcbda253a1dab4fdf7b694039839">TY_INT_G_GAIN</a> = 0x0521 | TY_FEATURE_INT, 
 <br />
-&#160;&#160;<a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124aebd176e36456383af154c2bf12c94683">TY_INT_B_GAIN</a> = 0x0522 | TY_FEATURE_INT, 
+&#160;&#160;<a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124af959400781d55f751ad6d9b433713b45">TY_INT_R_GAIN</a> = 0x0520 | TY_FEATURE_INT, 
+<a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124ad62bbcbda253a1dab4fdf7b694039839">TY_INT_G_GAIN</a> = 0x0521 | TY_FEATURE_INT, 
+<a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124aebd176e36456383af154c2bf12c94683">TY_INT_B_GAIN</a> = 0x0522 | TY_FEATURE_INT, 
 <a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124accb42916dcece10e84d7b701d2b852f0">TY_INT_ANALOG_GAIN</a> = 0x0524 | TY_FEATURE_INT
 <br />
  }</td></tr>
@@ -575,10 +578,15 @@ Enumerations</h2></td></tr>
  }</td></tr>
 <tr class="memdesc:aec99fa7be38751f1b7d34fd8115ceefe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Predefined Image Mode List image mode controls image resolution &amp; format predefined image modes named like TY_IMAGE_MODE_MONO_160x120,TY_IMAGE_MODE_RGB_1280x960. <br /></td></tr>
 <tr class="separator:aec99fa7be38751f1b7d34fd8115ceefe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a02513e8af0f5898d86aa8ada972f5fb9"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00002.html#a02513e8af0f5898d86aa8ada972f5fb9">TY_TRIGGER_MODE_LIST</a> { <a class="el" href="a00002.html#a02513e8af0f5898d86aa8ada972f5fb9a0e57fa882e539966b9c99891708d64c9">TY_TRIGGER_MODE_OFF</a> = 0, 
+<tr class="memitem:a02513e8af0f5898d86aa8ada972f5fb9"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00002.html#a02513e8af0f5898d86aa8ada972f5fb9">TY_TRIGGER_MODE_LIST</a> { <br />
+&#160;&#160;<a class="el" href="a00002.html#a02513e8af0f5898d86aa8ada972f5fb9a0e57fa882e539966b9c99891708d64c9">TY_TRIGGER_MODE_OFF</a> = 0, 
 <a class="el" href="a00002.html#a02513e8af0f5898d86aa8ada972f5fb9ac3238b405fc2cd3f572f33cb38174993">TY_TRIGGER_MODE_SLAVE</a> = 1, 
 <a class="el" href="a00002.html#a02513e8af0f5898d86aa8ada972f5fb9acd2cb0a2bd04ceee9b5cdb203b25598c">TY_TRIGGER_MODE_M_SIG</a> = 2, 
-<a class="el" href="a00002.html#a02513e8af0f5898d86aa8ada972f5fb9a72b26deaeee841838bb3c433f23db68c">TY_TRIGGER_MODE_M_PER</a> = 3
+<a class="el" href="a00002.html#a02513e8af0f5898d86aa8ada972f5fb9a72b26deaeee841838bb3c433f23db68c">TY_TRIGGER_MODE_M_PER</a> = 3, 
+<br />
+&#160;&#160;<b>TY_TRIGGER_MODE_SIG_PASS</b> = 18, 
+<b>TY_TRIGGER_MODE_PER_PASS</b> = 19
+<br />
  }</td></tr>
 <tr class="separator:a02513e8af0f5898d86aa8ada972f5fb9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -734,6 +742,15 @@ Functions</h2></td></tr>
 <tr class="memitem:a747d65de6aff4ee2269682d04d5dc4ee"><td class="memItemLeft" align="right" valign="top">TY_CAPI&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00002.html#a747d65de6aff4ee2269682d04d5dc4ee">TYSetStruct</a> (<a class="el" href="a00002.html#a87e3bf5de81e300fe8fd1e548de1e9a0">TY_DEV_HANDLE</a> hDevice, <a class="el" href="a00002.html#aedb134adb4c20d3438db3019a72611d5">TY_COMPONENT_ID</a> componentID, <a class="el" href="a00002.html#ae9fc1ab0d63ac6eb7105245d95351d69">TY_FEATURE_ID</a> featureID, void *pStruct, uint32_t structSize)</td></tr>
 <tr class="memdesc:a747d65de6aff4ee2269682d04d5dc4ee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set value of struct.  <a href="#a747d65de6aff4ee2269682d04d5dc4ee">More...</a><br /></td></tr>
 <tr class="separator:a747d65de6aff4ee2269682d04d5dc4ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae4b787c2b243c4020614b828a95ee277"><td class="memItemLeft" align="right" valign="top">TY_CAPI&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00002.html#ae4b787c2b243c4020614b828a95ee277">TYGetByteArraySize</a> (<a class="el" href="a00002.html#a87e3bf5de81e300fe8fd1e548de1e9a0">TY_DEV_HANDLE</a> hDevice, <a class="el" href="a00002.html#aedb134adb4c20d3438db3019a72611d5">TY_COMPONENT_ID</a> componentID, <a class="el" href="a00002.html#ae9fc1ab0d63ac6eb7105245d95351d69">TY_FEATURE_ID</a> featureID, uint32_t *pSize)</td></tr>
+<tr class="memdesc:ae4b787c2b243c4020614b828a95ee277"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the size of specified byte array zone .  <a href="#ae4b787c2b243c4020614b828a95ee277">More...</a><br /></td></tr>
+<tr class="separator:ae4b787c2b243c4020614b828a95ee277"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9cfe5842a0e8418783d9deff98b2cf90"><td class="memItemLeft" align="right" valign="top">TY_CAPI&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00002.html#a9cfe5842a0e8418783d9deff98b2cf90">TYGetByteArray</a> (<a class="el" href="a00002.html#a87e3bf5de81e300fe8fd1e548de1e9a0">TY_DEV_HANDLE</a> hDevice, <a class="el" href="a00002.html#aedb134adb4c20d3438db3019a72611d5">TY_COMPONENT_ID</a> componentID, <a class="el" href="a00002.html#ae9fc1ab0d63ac6eb7105245d95351d69">TY_FEATURE_ID</a> featureID, uint8_t *pBuffer, uint32_t bufferSize)</td></tr>
+<tr class="memdesc:a9cfe5842a0e8418783d9deff98b2cf90"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read byte array from device.  <a href="#a9cfe5842a0e8418783d9deff98b2cf90">More...</a><br /></td></tr>
+<tr class="separator:a9cfe5842a0e8418783d9deff98b2cf90"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6a40ab2a2d531a6c5e6efa09ffa6502e"><td class="memItemLeft" align="right" valign="top">TY_CAPI&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00002.html#a6a40ab2a2d531a6c5e6efa09ffa6502e">TYSetByteArray</a> (<a class="el" href="a00002.html#a87e3bf5de81e300fe8fd1e548de1e9a0">TY_DEV_HANDLE</a> hDevice, <a class="el" href="a00002.html#aedb134adb4c20d3438db3019a72611d5">TY_COMPONENT_ID</a> componentID, <a class="el" href="a00002.html#ae9fc1ab0d63ac6eb7105245d95351d69">TY_FEATURE_ID</a> featureID, const uint8_t *pBuffer, uint32_t bufferSize)</td></tr>
+<tr class="memdesc:a6a40ab2a2d531a6c5e6efa09ffa6502e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write byte array to device.  <a href="#a6a40ab2a2d531a6c5e6efa09ffa6502e">More...</a><br /></td></tr>
+<tr class="separator:a6a40ab2a2d531a6c5e6efa09ffa6502e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acfe1b35c050a5b6b7bb386551ca583f2"><td class="memItemLeft" align="right" valign="top"><a id="acfe1b35c050a5b6b7bb386551ca583f2"></a>
 TY_CAPI&#160;</td><td class="memItemRight" valign="bottom"><b>_TYInitLib</b> (void)</td></tr>
 <tr class="separator:acfe1b35c050a5b6b7bb386551ca583f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -760,7 +777,7 @@ TY_CAPI&#160;</td><td class="memItemRight" valign="bottom"><b>_TYInitLib</b> (vo
       </table>
 </div><div class="memdoc">
 <b>Value:</b><div class="fragment"><div class="line">TY_DECLARE_IMAGE_MODE0(pix, 160x120), \</div><div class="line">            TY_DECLARE_IMAGE_MODE0(pix, 320x180), \</div><div class="line">            TY_DECLARE_IMAGE_MODE0(pix, 320x200), \</div><div class="line">            TY_DECLARE_IMAGE_MODE0(pix, 320x240), \</div><div class="line">            TY_DECLARE_IMAGE_MODE0(pix, 480x640), \</div><div class="line">            TY_DECLARE_IMAGE_MODE0(pix, 640x360), \</div><div class="line">            TY_DECLARE_IMAGE_MODE0(pix, 640x400), \</div><div class="line">            TY_DECLARE_IMAGE_MODE0(pix, 640x480), \</div><div class="line">            TY_DECLARE_IMAGE_MODE0(pix, 960x1280), \</div><div class="line">            TY_DECLARE_IMAGE_MODE0(pix, 1280x720), \</div><div class="line">            TY_DECLARE_IMAGE_MODE0(pix, 1280x960), \</div><div class="line">            TY_DECLARE_IMAGE_MODE0(pix, 1280x800), \</div><div class="line">            TY_DECLARE_IMAGE_MODE0(pix, 2592x1944)</div></div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="a00002_source.html#l00365">365</a> of file <a class="el" href="a00002_source.html">TYApi.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00002_source.html#l00368">368</a> of file <a class="el" href="a00002_source.html">TYApi.h</a>.</p>
 
 </div>
 </div>
@@ -846,7 +863,7 @@ TY_CAPI&#160;</td><td class="memItemRight" valign="bottom"><b>_TYInitLib</b> (vo
 <p>component unique id </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="a00002.html#a6e3668325ff8193e2690514a0a6fde57">TY_DEVICE_COMPONENT_LIST</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="a00002_source.html#l00206">206</a> of file <a class="el" href="a00002_source.html">TYApi.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00002_source.html#l00207">207</a> of file <a class="el" href="a00002_source.html">TYApi.h</a>.</p>
 
 </div>
 </div>
@@ -910,7 +927,7 @@ TY_CAPI&#160;</td><td class="memItemRight" valign="bottom"><b>_TYInitLib</b> (vo
 <p>feature unique id </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124" title="feature for component definitions ">TY_FEATURE_ID_LIST</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="a00002_source.html#l00282">282</a> of file <a class="el" href="a00002_source.html">TYApi.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00002_source.html#l00285">285</a> of file <a class="el" href="a00002_source.html">TYApi.h</a>.</p>
 
 </div>
 </div>
@@ -993,6 +1010,8 @@ TY_CAPI&#160;</td><td class="memItemRight" valign="bottom"><b>_TYInitLib</b> (vo
 </td></tr>
 <tr><td class="fieldname"><a id="a6e3668325ff8193e2690514a0a6fde57a6074a9b055db390cd2af18ad2ac4cf0a"></a>TY_COMPONENT_BRIGHT_HISTO&#160;</td><td class="fielddoc"><p>virtual component for brightness histogram of ir </p>
 </td></tr>
+<tr><td class="fieldname"><a id="a6e3668325ff8193e2690514a0a6fde57a188f91a6717aafd55fe711b53bff7ee8"></a>TY_COMPONENT_STORAGE&#160;</td><td class="fielddoc"><p>virtual component for device storage </p>
+</td></tr>
 <tr><td class="fieldname"><a id="a6e3668325ff8193e2690514a0a6fde57af91a018177a11bf3971301e35889e3b6"></a>TY_COMPONENT_RGB_CAM&#160;</td><td class="fielddoc"><p>Some device has only one RGB camera, map it to left. </p>
 </td></tr>
 </table>
@@ -1022,6 +1041,10 @@ TY_CAPI&#160;</td><td class="memItemRight" valign="bottom"><b>_TYInitLib</b> (vo
 <tr><td class="fieldname"><a id="ad106ea6dcff8f708ca26b57c430f9124a9e09cfdcd4618eef97e4a3aef8a8177f"></a>TY_STRUCT_CAM_DISTORTION&#160;</td><td class="fielddoc"><p>see <a class="el" href="a00069.html" title="camera distortion parameters ">TY_CAMERA_DISTORTION</a> </p>
 </td></tr>
 <tr><td class="fieldname"><a id="ad106ea6dcff8f708ca26b57c430f9124aa4b8a68216252560f7ef352f10f315ce"></a>TY_STRUCT_CAM_CALIB_DATA&#160;</td><td class="fielddoc"><p>see <a class="el" href="a00073.html">TY_CAMERA_CALIB_INFO</a> </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ad106ea6dcff8f708ca26b57c430f9124a3b04591610b017147a83959fe9470b5b"></a>TY_BYTEARRAY_CUSTOM_BLOCK&#160;</td><td class="fielddoc"><p>used for reading/writing custom block </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ad106ea6dcff8f708ca26b57c430f9124a474fb34d87d354c57816b8d6814a82df"></a>TY_BYTEARRAY_ISP_BLOCK&#160;</td><td class="fielddoc"><p>used for reading/writing fpn block </p>
 </td></tr>
 <tr><td class="fieldname"><a id="ad106ea6dcff8f708ca26b57c430f9124a42c416088b87f1f2b05253eb73ac89af"></a>TY_INT_PACKET_DELAY&#160;</td><td class="fielddoc"><p>microseconds </p>
 </td></tr>
@@ -1081,7 +1104,7 @@ TY_CAPI&#160;</td><td class="memItemRight" valign="bottom"><b>_TYInitLib</b> (vo
 </td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="a00002_source.html#l00225">225</a> of file <a class="el" href="a00002_source.html">TYApi.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00002_source.html#l00226">226</a> of file <a class="el" href="a00002_source.html">TYApi.h</a>.</p>
 
 </div>
 </div>
@@ -1119,7 +1142,7 @@ TY_CAPI&#160;</td><td class="memItemRight" valign="bottom"><b>_TYInitLib</b> (vo
 </td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="a00002_source.html#l00327">327</a> of file <a class="el" href="a00002_source.html">TYApi.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00002_source.html#l00330">330</a> of file <a class="el" href="a00002_source.html">TYApi.h</a>.</p>
 
 </div>
 </div>
@@ -1167,7 +1190,7 @@ TY_CAPI&#160;</td><td class="memItemRight" valign="bottom"><b>_TYInitLib</b> (vo
 </td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="a00002_source.html#l00343">343</a> of file <a class="el" href="a00002_source.html">TYApi.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00002_source.html#l00346">346</a> of file <a class="el" href="a00002_source.html">TYApi.h</a>.</p>
 
 </div>
 </div>
@@ -1186,7 +1209,7 @@ TY_CAPI&#160;</td><td class="memItemRight" valign="bottom"><b>_TYInitLib</b> (vo
 <p>set external trigger signal edge </p>
 <dl class="section see"><dt>See also</dt><dd>refer to sample SimpleView_TriggerMode for detail usage </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="a00002_source.html#l00287">287</a> of file <a class="el" href="a00002_source.html">TYApi.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00002_source.html#l00290">290</a> of file <a class="el" href="a00002_source.html">TYApi.h</a>.</p>
 
 </div>
 </div>
@@ -1213,7 +1236,7 @@ TY_CAPI&#160;</td><td class="memItemRight" valign="bottom"><b>_TYInitLib</b> (vo
 </td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="a00002_source.html#l00399">399</a> of file <a class="el" href="a00002_source.html">TYApi.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00002_source.html#l00402">402</a> of file <a class="el" href="a00002_source.html">TYApi.h</a>.</p>
 
 </div>
 </div>
@@ -1701,6 +1724,138 @@ TY_CAPI&#160;</td><td class="memItemRight" valign="bottom"><b>_TYInitLib</b> (vo
     <tr><td class="paramname">TY_STATUS_INVALID_FEATURE</td><td>Invalid feature ID. </td></tr>
     <tr><td class="paramname">TY_STATUS_WRONG_TYPE</td><td>The feature's type is not TY_FEATURE_BOOL. </td></tr>
     <tr><td class="paramname">TY_STATUS_NULL_POINTER</td><td>value is NULL. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a9cfe5842a0e8418783d9deff98b2cf90"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9cfe5842a0e8418783d9deff98b2cf90">&#9670;&nbsp;</a></span>TYGetByteArray()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">TY_CAPI TYGetByteArray </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00002.html#a87e3bf5de81e300fe8fd1e548de1e9a0">TY_DEV_HANDLE</a>&#160;</td>
+          <td class="paramname"><em>hDevice</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00002.html#aedb134adb4c20d3438db3019a72611d5">TY_COMPONENT_ID</a>&#160;</td>
+          <td class="paramname"><em>componentID</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00002.html#ae9fc1ab0d63ac6eb7105245d95351d69">TY_FEATURE_ID</a>&#160;</td>
+          <td class="paramname"><em>featureID</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t *&#160;</td>
+          <td class="paramname"><em>pBuffer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>bufferSize</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Read byte array from device. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">hDevice</td><td>Device handle. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">componentID</td><td>Component ID. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">featureID</td><td>Feature ID. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">pbuffer</td><td>byte buffer. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">bufferSize</td><td>Size of buffer. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">TY_STATUS_OK</td><td>Succeed. </td></tr>
+    <tr><td class="paramname">TY_STATUS_INVALID_HANDLE</td><td>Invalid device handle. </td></tr>
+    <tr><td class="paramname">TY_STATUS_INVALID_COMPONENT</td><td>Invalid component ID. </td></tr>
+    <tr><td class="paramname">TY_STATUS_INVALID_FEATURE</td><td>Invalid feature ID. </td></tr>
+    <tr><td class="paramname">TY_STATUS_WRONG_TYPE</td><td>The feature's type is not TY_FEATURE_BYTEARRAY. </td></tr>
+    <tr><td class="paramname">TY_STATUS_NULL_POINTER</td><td>pbuffer is NULL. </td></tr>
+    <tr><td class="paramname">TY_STATUS_WRONG_SIZE</td><td>bufferSize incorrect. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ae4b787c2b243c4020614b828a95ee277"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae4b787c2b243c4020614b828a95ee277">&#9670;&nbsp;</a></span>TYGetByteArraySize()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">TY_CAPI TYGetByteArraySize </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00002.html#a87e3bf5de81e300fe8fd1e548de1e9a0">TY_DEV_HANDLE</a>&#160;</td>
+          <td class="paramname"><em>hDevice</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00002.html#aedb134adb4c20d3438db3019a72611d5">TY_COMPONENT_ID</a>&#160;</td>
+          <td class="paramname"><em>componentID</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00002.html#ae9fc1ab0d63ac6eb7105245d95351d69">TY_FEATURE_ID</a>&#160;</td>
+          <td class="paramname"><em>featureID</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t *&#160;</td>
+          <td class="paramname"><em>pSize</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get the size of specified byte array zone . </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">hDevice</td><td>Device handle. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">componentID</td><td>Component ID. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">featureID</td><td>Feature ID. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">pSize</td><td>size of specified byte array zone. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">TY_STATUS_OK</td><td>Succeed. </td></tr>
+    <tr><td class="paramname">TY_STATUS_INVALID_HANDLE</td><td>Invalid device handle. </td></tr>
+    <tr><td class="paramname">TY_STATUS_INVALID_COMPONENT</td><td>Invalid component ID. </td></tr>
+    <tr><td class="paramname">TY_STATUS_INVALID_FEATURE</td><td>Invalid feature ID. </td></tr>
+    <tr><td class="paramname">TY_STATUS_WRONG_TYPE</td><td>The feature's type is not TY_FEATURE_BYTEARRAY. </td></tr>
+    <tr><td class="paramname">TY_STATUS_NULL_POINTER</td><td>pSize is NULL. </td></tr>
   </table>
   </dd>
 </dl>
@@ -3332,6 +3487,78 @@ TY_CAPI&#160;</td><td class="memItemRight" valign="bottom"><b>_TYInitLib</b> (vo
     <tr><td class="paramname">TY_STATUS_INVALID_FEATURE</td><td>Invalid feature ID. </td></tr>
     <tr><td class="paramname">TY_STATUS_NOT_PERMITTED</td><td>The feature is not writable. </td></tr>
     <tr><td class="paramname">TY_STATUS_WRONG_TYPE</td><td>The feature's type is not TY_FEATURE_BOOL. </td></tr>
+    <tr><td class="paramname">TY_STATUS_BUSY</td><td>Device is capturing, the feature is locked. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a6a40ab2a2d531a6c5e6efa09ffa6502e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6a40ab2a2d531a6c5e6efa09ffa6502e">&#9670;&nbsp;</a></span>TYSetByteArray()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">TY_CAPI TYSetByteArray </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00002.html#a87e3bf5de81e300fe8fd1e548de1e9a0">TY_DEV_HANDLE</a>&#160;</td>
+          <td class="paramname"><em>hDevice</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00002.html#aedb134adb4c20d3438db3019a72611d5">TY_COMPONENT_ID</a>&#160;</td>
+          <td class="paramname"><em>componentID</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00002.html#ae9fc1ab0d63ac6eb7105245d95351d69">TY_FEATURE_ID</a>&#160;</td>
+          <td class="paramname"><em>featureID</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const uint8_t *&#160;</td>
+          <td class="paramname"><em>pBuffer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>bufferSize</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Write byte array to device. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">hDevice</td><td>Device handle. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">componentID</td><td>Component ID. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">featureID</td><td>Feature ID. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">pbuffer</td><td>byte buffer. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">bufferSize</td><td>Size of buffer. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">TY_STATUS_OK</td><td>Succeed. </td></tr>
+    <tr><td class="paramname">TY_STATUS_INVALID_HANDLE</td><td>Invalid device handle. </td></tr>
+    <tr><td class="paramname">TY_STATUS_INVALID_COMPONENT</td><td>Invalid component ID. </td></tr>
+    <tr><td class="paramname">TY_STATUS_INVALID_FEATURE</td><td>Invalid feature ID. </td></tr>
+    <tr><td class="paramname">TY_STATUS_NOT_PERMITTED</td><td>The feature is not writable. </td></tr>
+    <tr><td class="paramname">TY_STATUS_WRONG_TYPE</td><td>The feature's type is not TY_FEATURE_BYTEARRAY. </td></tr>
+    <tr><td class="paramname">TY_STATUS_NULL_POINTER</td><td>pbuffer is NULL. </td></tr>
+    <tr><td class="paramname">TY_STATUS_WRONG_SIZE</td><td>bufferSize incorrect. </td></tr>
     <tr><td class="paramname">TY_STATUS_BUSY</td><td>Device is capturing, the feature is locked. </td></tr>
   </table>
   </dd>

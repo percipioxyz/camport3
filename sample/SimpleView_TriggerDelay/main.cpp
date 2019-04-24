@@ -118,8 +118,8 @@ int main(int argc, char* argv[])
     }
 
     //notice: trigger delay only be enabled in trigger salve mode and only work for hardware trigger.
-    //        delay time unit is microsecond
-    int32_t time = 1000;
+    //        delay time unit is microsecond, the maximum value is 2.6s
+    int32_t time = 1000; 
     ASSERT_OK(TYSetInt(hDevice, TY_COMPONENT_DEVICE, TY_INT_TRIGGER_DELAY_US, time));
 
     LOGD("=== Start capture");

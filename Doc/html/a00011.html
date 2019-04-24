@@ -146,27 +146,29 @@ Enumerations</h2></td></tr>
 <b>TY_ISP_FEATURE_SHADING</b> = 0x000400, 
 <b>TY_ISP_FEATURE_SHADING_CENTER</b> = 0x000500, 
 <br />
-&#160;&#160;<b>TY_ISP_FEATURE_BLACK_LEVEL</b> = 0x000600, 
-<b>TY_ISP_FEATURE_BLACK_LEVEL_GAIN</b> = 0x000700, 
-<b>TY_ISP_FEATURE_BAYER_PATTERN</b> = 0x000800, 
+&#160;&#160;<a class="el" href="a00011.html#ab9368908bb0baf2d31dc950142e470b4a633470c3ffa504fb8f1116fb47a5167d">TY_ISP_FEATURE_BLACK_LEVEL</a> = 0x000600, 
+<a class="el" href="a00011.html#ab9368908bb0baf2d31dc950142e470b4ad0e11e3218a06bf7862184699a1d07b5">TY_ISP_FEATURE_BLACK_LEVEL_COLUMN</a> = 0x000610, 
+<a class="el" href="a00011.html#ab9368908bb0baf2d31dc950142e470b4ac533e98fa5b3ce23d9b1de4c5fbb55be">TY_ISP_FEATURE_BLACK_LEVEL_GAIN</a> = 0x000700, 
+<a class="el" href="a00011.html#ab9368908bb0baf2d31dc950142e470b4a0e86ee965691940f628552d08b386200">TY_ISP_FEATURE_BLACK_LEVEL_GAIN_COLUMN</a> = 0x000710, 
+<br />
+&#160;&#160;<b>TY_ISP_FEATURE_BAYER_PATTERN</b> = 0x000800, 
 <b>TY_ISP_FEATURE_DEMOSAIC_METHOD</b> = 0x000900, 
-<br />
-&#160;&#160;<b>TY_ISP_FEATURE_GAMMA</b> = 0x000A00, 
+<b>TY_ISP_FEATURE_GAMMA</b> = 0x000A00, 
 <b>TY_ISP_FEATURE_DEFECT_PIXEL_LIST</b> = 0x000B00, 
-<b>TY_ISP_FEATURE_CCM</b> = 0x000C00, 
+<br />
+&#160;&#160;<b>TY_ISP_FEATURE_CCM</b> = 0x000C00, 
 <a class="el" href="a00011.html#ab9368908bb0baf2d31dc950142e470b4a1d09113dc1bd93e5e87168399f17f078">TY_ISP_FEATURE_CCM_ENABLE</a> = 0x000C10, 
-<br />
-&#160;&#160;<b>TY_ISP_FEATURE_BRIGHT</b> = 0x000D00, 
+<b>TY_ISP_FEATURE_BRIGHT</b> = 0x000D00, 
 <b>TY_ISP_FEATURE_CONTRAST</b> = 0x000E00, 
-<b>TY_ISP_FEATURE_AUTOBRIGHT</b> = 0x000F00, 
+<br />
+&#160;&#160;<b>TY_ISP_FEATURE_AUTOBRIGHT</b> = 0x000F00, 
 <b>TY_ISP_FEATURE_INPUT_RESAMPLE_SCALE</b> = 0x001000, 
-<br />
-&#160;&#160;<b>TY_ISP_FEATURE_ENABLE_AUTO_EXPOSURE_GAIN</b> = 0x001100, 
+<b>TY_ISP_FEATURE_ENABLE_AUTO_EXPOSURE_GAIN</b> = 0x001100, 
 <a class="el" href="a00011.html#ab9368908bb0baf2d31dc950142e470b4a60a5b30c505e65d92e9c83dbef449bf7">TY_ISP_FEATURE_AUTO_EXPOSURE_RANGE</a> = 0x001200, 
-<a class="el" href="a00011.html#ab9368908bb0baf2d31dc950142e470b4a18928616511ee2304dd1317e96c84979">TY_ISP_FEATURE_AUTO_GAIN_RANGE</a> = 0x001300, 
-<a class="el" href="a00011.html#ab9368908bb0baf2d31dc950142e470b4a9cdff26af27613b0994a220cd0a08f77">TY_ISP_FEATURE_AUTO_EXPOSURE_UPDATE_INTERVAL</a> = 0x001400, 
 <br />
-&#160;&#160;<a class="el" href="a00011.html#ab9368908bb0baf2d31dc950142e470b4a57dfe9e62738253d065ee88fa2048417">TY_ISP_FEATURE_DEBUG_LOG</a> = 0xff000000
+&#160;&#160;<a class="el" href="a00011.html#ab9368908bb0baf2d31dc950142e470b4a18928616511ee2304dd1317e96c84979">TY_ISP_FEATURE_AUTO_GAIN_RANGE</a> = 0x001300, 
+<a class="el" href="a00011.html#ab9368908bb0baf2d31dc950142e470b4a9cdff26af27613b0994a220cd0a08f77">TY_ISP_FEATURE_AUTO_EXPOSURE_UPDATE_INTERVAL</a> = 0x001400, 
+<a class="el" href="a00011.html#ab9368908bb0baf2d31dc950142e470b4a57dfe9e62738253d065ee88fa2048417">TY_ISP_FEATURE_DEBUG_LOG</a> = 0xff000000
 <br />
  }</td></tr>
 <tr class="separator:ab9368908bb0baf2d31dc950142e470b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -195,6 +197,9 @@ TYISP_CAPI&#160;</td><td class="memItemRight" valign="bottom"><b>TYISPCreate</b>
 <tr class="memitem:aa40f3131f0d1a1dd882b033c1566f695"><td class="memItemLeft" align="right" valign="top"><a id="aa40f3131f0d1a1dd882b033c1566f695"></a>
 TYISP_CAPI&#160;</td><td class="memItemRight" valign="bottom"><b>TYISPRelease</b> (TY_ISP_HANDLE *handle)</td></tr>
 <tr class="separator:aa40f3131f0d1a1dd882b033c1566f695"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4f321a7fc98ea14f5bac588908102845"><td class="memItemLeft" align="right" valign="top"><a id="a4f321a7fc98ea14f5bac588908102845"></a>
+TYISP_CAPI&#160;</td><td class="memItemRight" valign="bottom"><b>TYISPLoadConfig</b> (TY_ISP_HANDLE handle, const uint8_t *config, uint32_t config_size)</td></tr>
+<tr class="separator:a4f321a7fc98ea14f5bac588908102845"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8d98c4d686f95d80d8ea8697439085ed"><td class="memItemLeft" align="right" valign="top"><a id="a8d98c4d686f95d80d8ea8697439085ed"></a>
 TYISP_CAPI&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00011.html#a8d98c4d686f95d80d8ea8697439085ed">TYISPUpdateDevice</a> (TY_ISP_HANDLE handle)</td></tr>
 <tr class="memdesc:a8d98c4d686f95d80d8ea8697439085ed"><td class="mdescLeft">&#160;</td><td class="mdescRight">called by main thread to update &amp; control device status for ISP <br /></td></tr>
@@ -245,6 +250,14 @@ TYISP_CAPI&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href
 <tr><td class="fieldname"><a id="ab9368908bb0baf2d31dc950142e470b4a429a1c7b40bbbd33b193ee6de8a5fa8b"></a>TY_ISP_FEATURE_CAM_DEV_COMPONENT&#160;</td><td class="fielddoc"><p>the component to control </p>
 </td></tr>
 <tr><td class="fieldname"><a id="ab9368908bb0baf2d31dc950142e470b4a6752df2dbb24dcdfe61a8631d42ba017"></a>TY_ISP_FEATURE_IMAGE_SIZE&#160;</td><td class="fielddoc"><p>image size width&amp;height </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ab9368908bb0baf2d31dc950142e470b4a633470c3ffa504fb8f1116fb47a5167d"></a>TY_ISP_FEATURE_BLACK_LEVEL&#160;</td><td class="fielddoc"><p>global black level </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ab9368908bb0baf2d31dc950142e470b4ad0e11e3218a06bf7862184699a1d07b5"></a>TY_ISP_FEATURE_BLACK_LEVEL_COLUMN&#160;</td><td class="fielddoc"><p>to set different black level for each image column </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ab9368908bb0baf2d31dc950142e470b4ac533e98fa5b3ce23d9b1de4c5fbb55be"></a>TY_ISP_FEATURE_BLACK_LEVEL_GAIN&#160;</td><td class="fielddoc"><p>global pixel gain </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ab9368908bb0baf2d31dc950142e470b4a0e86ee965691940f628552d08b386200"></a>TY_ISP_FEATURE_BLACK_LEVEL_GAIN_COLUMN&#160;</td><td class="fielddoc"><p>to set different gain for each image column </p>
 </td></tr>
 <tr><td class="fieldname"><a id="ab9368908bb0baf2d31dc950142e470b4a1d09113dc1bd93e5e87168399f17f078"></a>TY_ISP_FEATURE_CCM_ENABLE&#160;</td><td class="fielddoc"><p>ENABLE CCM. </p>
 </td></tr>

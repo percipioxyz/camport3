@@ -61,7 +61,8 @@ void eventCallback(TY_EVENT_INFO *event_info, void *userdata)
 
 int main(int argc, char* argv[])
 {
-    int32_t deviceType = TY_INTERFACE_ALL;
+    int32_t deviceType = TY_INTERFACE_ETHERNET | TY_INTERFACE_USB;
+
     std::vector<char*> list;
     int32_t cam_size = 0;
     int32_t found;
