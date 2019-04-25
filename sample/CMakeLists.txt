@@ -15,6 +15,7 @@ set(ALL_SAMPLES
     SimpleView_TriggerMode0
     SimpleView_TriggerMode1
     SimpleView_TriggerMode18
+    SimpleView_TriggerMode19
     SimpleView_TriggerMode_M2S1
     SimpleView_TriggerMode_M3S1
     SimpleView_KeepAlive
