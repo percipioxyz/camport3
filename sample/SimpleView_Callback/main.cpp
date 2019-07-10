@@ -133,7 +133,7 @@ int main(int argc, char* argv[])
   }
 
   int32_t componentIDs = 0;
-  DepthViewer depthViewer("SimpleView_Callback");
+  DepthViewer depthViewer("Depth");
   LOGD("Configure components, open depth cam");
   if (depth && (allComps & TY_COMPONENT_DEPTH_CAM)) {
     componentIDs = TY_COMPONENT_DEPTH_CAM;

@@ -136,8 +136,8 @@
 
 
 #define TY_LIB_VERSION_MAJOR       3
-#define TY_LIB_VERSION_MINOR       2 
-#define TY_LIB_VERSION_PATCH       0 
+#define TY_LIB_VERSION_MINOR       3 
+#define TY_LIB_VERSION_PATCH       1 
 
 
 //------------------------------------------------------------------------------
@@ -257,11 +257,13 @@ typedef enum TY_FEATURE_ID_LIST
     TY_ENUM_TRIGGER_ACTIVATION      = 0x0201 | TY_FEATURE_ENUM, ///< Trigger activation, see TY_TRIGGER_ACTIVATION_LIST
     TY_INT_FRAME_PER_TRIGGER        = 0x0202 | TY_FEATURE_INT,  ///< Number of frames captured per trigger
     TY_STRUCT_TRIGGER_PARAM         = 0x0523 | TY_FEATURE_STRUCT,  ///< param of trigger, see TY_TRIGGER_PARAM
+    TY_STRUCT_TRIGGER_PARAM_EX      = 0x0525 | TY_FEATURE_STRUCT,  ///< param of trigger, see TY_TRIGGER_PARAM_EX
     TY_BOOL_KEEP_ALIVE_ONOFF        = 0x0203 | TY_FEATURE_BOOL, ///< Keep Alive switch
     TY_INT_KEEP_ALIVE_TIMEOUT       = 0x0204 | TY_FEATURE_INT,  ///< Keep Alive timeout
     TY_BOOL_CMOS_SYNC               = 0x0205 | TY_FEATURE_BOOL, ///< Cmos sync switch
     TY_INT_TRIGGER_DELAY_US         = 0x0206 | TY_FEATURE_INT,  ///< Trigger delay time, in microseconds
     TY_BOOL_TRIGGER_OUT_IO          = 0x0207 | TY_FEATURE_BOOL, ///< Trigger out IO
+    TY_INT_TRIGGER_DURATION_US      = 0x0208 | TY_FEATURE_INT,  ///< Trigger duration time, in microseconds
 
     TY_BOOL_AUTO_EXPOSURE           = 0x0300 | TY_FEATURE_BOOL, ///< Auto exposure switch
     TY_INT_EXPOSURE_TIME            = 0x0301 | TY_FEATURE_INT,  ///< Exposure time in percentage
@@ -560,6 +562,18 @@ typedef struct TY_TRIGGER_PARAM
     int8_t    rsvd;
 }TY_TRIGGER_PARAM;
 
+//@see sample SimpleView_TriggerMode, only for TY_TRIGGER_MODE_SIG_PASS/TY_TRIGGER_MODE_PER_PASS
+typedef struct TY_TRIGGER_PARAM_EX
+{
+    TY_TRIGGER_MODE   mode;
+    int8_t    fps;
+    int8_t    duty;
+    int32_t   laser_stream;
+    int32_t   led_stream;
+    int32_t   led_expo;
+    int32_t   led_gain;
+    int32_t   rsvd[20];
+}TY_TRIGGER_PARAM_EX;
 
 typedef struct TY_CAMERA_STATISTICS
 {

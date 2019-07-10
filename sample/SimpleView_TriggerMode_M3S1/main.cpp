@@ -7,7 +7,7 @@ struct CamInfo
 	std::string         tag;
 	TY_INTERFACE_HANDLE hIface;
 	TY_DEV_HANDLE       hDev;
-	std::vector<char>   fb[2];
+	std::vector<char>   fb[6];
 	TY_FRAME_DATA       frame;
 	int                 idx;
 	DepthRender         render;
@@ -76,7 +76,7 @@ int main(int argc, char* argv[])
 
     for(int i = 0; i < argc; i++) {
 		if (strcmp(argv[i], "-h") == 0) {
-			LOGI("Usage: %s [-h]", argv[0]);
+			LOGI("Usage: %s -list [xxx, xxx, ....] [-h]", argv[0]);
 			return 0;
 		}
 		else if (strcmp(argv[i], "-list") == 0) {
@@ -147,12 +147,11 @@ int main(int argc, char* argv[])
 		LOGD("     - Get size of framebuffer, %d", frameSize);
 
 		LOGD("     - Allocate & enqueue buffers");
-		cams[count].fb[0].resize(frameSize);
-		cams[count].fb[1].resize(frameSize);
-		LOGD("     - Enqueue buffer (%p, %d)", cams[count].fb[0].data(), frameSize);
-		ASSERT_OK(TYEnqueueBuffer(cams[count].hDev, cams[count].fb[0].data(), frameSize));
-		LOGD("     - Enqueue buffer (%p, %d)", cams[count].fb[1].data(), frameSize);
-		ASSERT_OK(TYEnqueueBuffer(cams[count].hDev, cams[count].fb[1].data(), frameSize));
+        for (int i = 0; i < 6; i++) {
+            cams[count].fb[i].resize(frameSize);
+            LOGD("     - Enqueue buffer (%p, %d)", cams[count].fb[i].data(), frameSize);
+            ASSERT_OK(TYEnqueueBuffer(cams[count].hDev, cams[count].fb[i].data(), frameSize));
+        }
 
 		LOGD("=== Register event callback");
 		ASSERT_OK(TYRegisterEventCallback(cams[count].hDev, eventCallback, NULL));
@@ -189,14 +188,32 @@ int main(int argc, char* argv[])
 			}
 		}
 
-		LOGD("=== Start capture");
-		ASSERT_OK(TYStartCapture(cams[count].hDev));
-		count++;
+        //LOGD("=== Start capture");
+        //ASSERT_OK(TYStartCapture(cams[count].hDev));
+        count++;
 	}
+
+
 	if (count != cam_size) {
 		LOGD("Invalid ids in input id list");
 		return 0;
 	}
+
+	LOGD("=== Start capture for salve");
+	for (uint32_t i = 0; i < cams.size(); i++) {
+		if (cams[i].tag.compare(13, 6, "master") != 0) {
+			ASSERT_OK(TYStartCapture(cams[i].hDev));
+		}
+	}
+
+	LOGD("=== Start capture for master");
+	for (uint32_t i = 0; i < cams.size(); i++) {
+		if (cams[i].tag.compare(13, 6, "master") == 0) {
+			ASSERT_OK(TYStartCapture(cams[i].hDev));
+		}
+	}
+
+    MSLEEP(1000);
 
 	LOGD("=== While loop to fetch frame");
 	bool exit_main = false;

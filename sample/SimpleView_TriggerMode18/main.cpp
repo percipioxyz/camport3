@@ -90,23 +90,26 @@ int main(int argc, char* argv[])
     LOGD("     - Get size of framebuffer, %d", frameSize);
 
     LOGD("     - Allocate & enqueue buffers");
-    char* frameBuffer[2];
-    frameBuffer[0] = new char[frameSize];
-    frameBuffer[1] = new char[frameSize];
-    LOGD("     - Enqueue buffer (%p, %d)", frameBuffer[0], frameSize);
-    ASSERT_OK( TYEnqueueBuffer(hDevice, frameBuffer[0], frameSize) );
-    LOGD("     - Enqueue buffer (%p, %d)", frameBuffer[1], frameSize);
-    ASSERT_OK( TYEnqueueBuffer(hDevice, frameBuffer[1], frameSize) );
+    std::vector<char *> frameBuffer(duty + 2);
+    for (int i=0; i<duty + 2; i++) {
+        frameBuffer[i] = new char[frameSize];
+        LOGD("     - Enqueue buffer (%p, %d)", frameBuffer[i], frameSize);
+        ASSERT_OK(TYEnqueueBuffer(hDevice, frameBuffer[i], frameSize));
+    }
 
     LOGD("=== Register event callback");
     ASSERT_OK(TYRegisterEventCallback(hDevice, eventCallback, NULL));
 
     LOGD("=== Set trigger to trig mode 18");
-    TY_TRIGGER_PARAM trigger;
+    TY_TRIGGER_PARAM_EX trigger;
     trigger.mode = TY_TRIGGER_MODE_SIG_PASS;
-    trigger.fps = 10;
-    trigger.rsvd = duty;
-    ASSERT_OK(TYSetStruct(hDevice, TY_COMPONENT_DEVICE, TY_STRUCT_TRIGGER_PARAM, &trigger, sizeof(trigger)));
+    trigger.fps = 10;           // [1, 15]
+    trigger.duty = duty;
+    trigger.laser_stream = TY_COMPONENT_DEPTH_CAM | TY_COMPONENT_RGB_CAM;
+    trigger.led_stream = TY_COMPONENT_IR_CAM_LEFT | TY_COMPONENT_RGB_CAM;
+    trigger.led_expo = 1088;    // [3, 1088]
+    trigger.led_gain = 32;      // [0, 255]
+    ASSERT_OK(TYSetStruct(hDevice, TY_COMPONENT_DEVICE, TY_STRUCT_TRIGGER_PARAM_EX, &trigger, sizeof(trigger)));
 
     LOGD("=== Enable Resend Option");
     ASSERT_OK(TYSetBool(hDevice, TY_COMPONENT_DEVICE, TY_BOOL_GVSP_RESEND, true));
@@ -117,7 +120,7 @@ int main(int argc, char* argv[])
     LOGD("=== While loop to fetch frame");
     bool exit_main = false;
     TY_FRAME_DATA frame;
-    DepthViewer depthViewer("SimpleView_FetchFrame");
+    DepthViewer depthViewer("Depth");
     int index = 0;
     int cnt = 0;
 

@@ -73,10 +73,6 @@ static void handleFrame(TY_FRAME_DATA* frame, void* userdata) {
         p3d.resize(depth.size().area());
         ASSERT_OK(TYMapDepthImageToPoint3d(&pData->depth_calib, depth.cols, depth.rows
             , (uint16_t*)depth.data, &p3d[0]));
-        for (int idx = 0; idx < p3d.size(); idx++){
-            p3d[idx].y = -p3d[idx].y;
-            p3d[idx].z = -p3d[idx].z;
-        }
         uint8_t *color_data = NULL;
         cv::Mat color_data_mat;
         if (!color.empty()){
@@ -84,14 +80,18 @@ static void handleFrame(TY_FRAME_DATA* frame, void* userdata) {
             cv::cvtColor(color_data_mat, color_data_mat, CV_BGR2RGB);
             color_data = color_data_mat.ptr<uint8_t>();
         }
-        GLPointCloudViewer::Update(p3d.size(), &p3d[0], color_data);
-
         if (pData->saveOneFramePoint3d){
             char file[32];
             sprintf(file, "points-%d.xyz", pData->fileIndex++);
             writePointCloud((cv::Point3f*)&p3d[0], (const cv::Vec3b*)color_data_mat.data, p3d.size(), file, PC_FILE_FORMAT_XYZ);
             pData->saveOneFramePoint3d = false;
         }
+        for (int idx = 0; idx < p3d.size(); idx++){//we adjust coordinate for display
+            p3d[idx].y = -p3d[idx].y;
+            p3d[idx].z = -p3d[idx].z;
+        }
+        GLPointCloudViewer::Update(p3d.size(), &p3d[0], color_data);
+
     }
 }
 
@@ -185,7 +185,7 @@ int main(int argc, char* argv[])
     int32_t allComps;
     ASSERT_OK(TYGetComponentIDs(hDevice, &allComps));
     if ((allComps & TY_COMPONENT_RGB_CAM) && (with_color_cam)){
-        LOGE("=== Has internal RGB camera, try to open it");
+        LOGD("=== Has internal RGB camera, try to open it");
         ASSERT_OK(TYEnableComponents(hDevice, TY_COMPONENT_RGB_CAM));
         ASSERT_OK(TYGetStruct(hDevice, TY_COMPONENT_RGB_CAM, TY_STRUCT_CAM_CALIB_DATA
             , &cb_data.color_calib, sizeof(cb_data.color_calib)));

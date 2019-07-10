@@ -46,95 +46,113 @@ int main(int argc, char* argv[])
         std::vector<TY_DEVICE_BASE_INFO> selected;
 
         int ret = 0;
-        ret = selectDevice(TY_INTERFACE_USB, ID, IP, 1, selected);
-		if (ret == TY_STATUS_ERROR) {
-			MSleep(2000);
-			continue;
-		}
+        ret = selectDevice(TY_INTERFACE_ALL, ID, IP, 1, selected);
+        if (ret < 0) {
+            MSleep(2000);
+            continue;
+        }
 
         ASSERT(selected.size() > 0);
         TY_DEVICE_BASE_INFO& selectedDev = selected[0];
 
         LOGD("=== Open interface: %s", selectedDev.iface.id);
-        ASSERT_OK( TYOpenInterface(selectedDev.iface.id, &hIface) );
+        ASSERT_OK(TYOpenInterface(selectedDev.iface.id, &hIface));
 
         LOGD("=== Open device: %s", selectedDev.id);
         ret = TYOpenDevice(hIface, selectedDev.id, &hDevice);
-		if (ret == TY_STATUS_ERROR) {
-			continue;
-		}
+        if (ret < 0) {
+            LOGD("Failed!");
+            ASSERT_OK(TYCloseInterface(hIface));
+            continue;
+        }
 
         int32_t allComps;
         ret = TYGetComponentIDs(hDevice, &allComps);
-		if (ret == TY_STATUS_ERROR) {
-			continue;
-		}
+        if (ret < 0) {
+            LOGD("Failed!");
+            ASSERT_OK(TYCloseDevice(hDevice));
+            ASSERT_OK(TYCloseInterface(hIface));
+            continue;
+        }
 
         if(allComps & TY_COMPONENT_RGB_CAM){
             LOGD("=== Has RGB camera, open RGB cam");
             ret = TYEnableComponents(hDevice, TY_COMPONENT_RGB_CAM);
-			if (ret == TY_STATUS_ERROR) {
-				continue;
-			}
+            if (ret < 0) {
+                LOGD("Failed!");
+                ASSERT_OK(TYCloseDevice(hDevice));
+                ASSERT_OK(TYCloseInterface(hIface));
+                continue;
+            }
         }
 
         LOGD("=== Configure components, open depth cam");
         int32_t componentIDs = TY_COMPONENT_DEPTH_CAM;
         ret = TYEnableComponents(hDevice, componentIDs);
-		if (ret == TY_STATUS_ERROR) {
-			continue;
-		}
+        if (ret < 0) {
+            LOGD("Failed!");
+            ASSERT_OK(TYCloseDevice(hDevice));
+            ASSERT_OK(TYCloseInterface(hIface));
+            continue;
+        }
 
         LOGD("=== Configure feature, set resolution to 640x480.");
-        int err = TYSetEnum(hDevice, TY_COMPONENT_DEPTH_CAM, TY_ENUM_IMAGE_MODE, TY_IMAGE_MODE_DEPTH16_640x480);
-		if (ret == TY_STATUS_ERROR) {
-			continue;
-		}
+        ret = TYSetEnum(hDevice, TY_COMPONENT_DEPTH_CAM, TY_ENUM_IMAGE_MODE, TY_IMAGE_MODE_DEPTH16_640x480);
+        if (ret < 0) {
+            LOGD("Failed!");
+            ASSERT_OK(TYCloseDevice(hDevice));
+            ASSERT_OK(TYCloseInterface(hIface));
+            continue;
+        }
 
         LOGD("=== Prepare image buffer");
         uint32_t frameSize;
         ret = TYGetFrameBufferSize(hDevice, &frameSize);
-		if (ret == TY_STATUS_ERROR) {
-			continue;
-		}
+        if (ret < 0) {
+            LOGD("Failed!");
+            ASSERT_OK(TYCloseDevice(hDevice));
+            ASSERT_OK(TYCloseInterface(hIface));
+            continue;
+        }
 
         LOGD("     - Allocate & enqueue buffers");
         char* frameBuffer[2];
         frameBuffer[0] = new char[frameSize];
         frameBuffer[1] = new char[frameSize];
         LOGD("     - Enqueue buffer (%p, %d)", frameBuffer[0], frameSize);
-        ret = TYEnqueueBuffer(hDevice, frameBuffer[0], frameSize);
-		if (ret == TY_STATUS_ERROR) {
-			continue;
-		}
+        ASSERT_OK(TYEnqueueBuffer(hDevice, frameBuffer[0], frameSize));
         LOGD("     - Enqueue buffer (%p, %d)", frameBuffer[1], frameSize);
-        ret = TYEnqueueBuffer(hDevice, frameBuffer[1], frameSize);
-		if (ret == TY_STATUS_ERROR) {
-			continue;
-		}
+        ASSERT_OK(TYEnqueueBuffer(hDevice, frameBuffer[1], frameSize));
 
         bool device_offline = false;;
         LOGD("=== Register event callback");
         LOGD("Note: Callback may block internal data receiving,");
         LOGD("      so that user should not do long time work in callback.");
-        ret = TYRegisterEventCallback(hDevice, eventCallback, &device_offline);
-		if (ret == TY_STATUS_ERROR) {
-			continue;
-		}
+        ASSERT_OK(TYRegisterEventCallback(hDevice, eventCallback, &device_offline));
 
         LOGD("=== Disable trigger mode");
         TY_TRIGGER_PARAM trigger;
         trigger.mode = TY_TRIGGER_MODE_OFF;
         ret = TYSetStruct(hDevice, TY_COMPONENT_DEVICE, TY_STRUCT_TRIGGER_PARAM, &trigger, sizeof(trigger));
-		if (ret == TY_STATUS_ERROR) {
-			continue;
-		}
+        if (ret < 0) {
+            LOGD("Failed!");
+            ASSERT_OK(TYCloseDevice(hDevice));
+            ASSERT_OK(TYCloseInterface(hIface));
+            delete frameBuffer[0];
+            delete frameBuffer[1];            
+            continue;
+        }
 
         LOGD("=== Start capture");
         ret = TYStartCapture(hDevice);
-		if (ret == TY_STATUS_ERROR) {
-			continue;
-		}
+        if (ret < 0) {
+            LOGD("Failed!");
+            ASSERT_OK(TYCloseDevice(hDevice));
+            ASSERT_OK(TYCloseInterface(hIface));
+            delete frameBuffer[0];
+            delete frameBuffer[1];            
+            continue;
+        }
 
         bool saveFrame = false;
         int saveIdx = 0;
@@ -145,16 +163,12 @@ int main(int argc, char* argv[])
 
         LOGD("=== Wait for callback");
         bool exit_main = false;
-        DepthViewer depthViewer("LoopDetect");
+        DepthViewer depthViewer("Depth");
         int count = 0;
         TY_FRAME_DATA frame;
         while(!exit_main){
-            int err = TYFetchFrame(hDevice, &frame, 1000);
-			if (ret < 0) {
-				break;
-			}
-
-            if( err == TY_STATUS_OK ) {
+            ret = TYFetchFrame(hDevice, &frame, 1000);
+            if( ret == TY_STATUS_OK ) {
                 LOGD("=== Get frame %d", ++count);
                 parseFrame(frame, &depth, &leftIR, &rightIR, &color);
 
@@ -163,10 +177,7 @@ int main(int argc, char* argv[])
                 }
 
                 LOGD("=== Callback: Re-enqueue buffer(%p, %d)", frame.userBuffer, frame.bufferSize);
-                ret = TYEnqueueBuffer(hDevice, frame.userBuffer, frame.bufferSize);
-				if (ret == TY_STATUS_ERROR) {
-					continue;
-				}
+                ASSERT_OK(TYEnqueueBuffer(hDevice, frame.userBuffer, frame.bufferSize));
 
                 if(!depth.empty()){
                     depthViewer.show(depth);
@@ -224,18 +235,9 @@ int main(int argc, char* argv[])
         } else {
             LOGI("normal exit");
         }
-        ret = TYStopCapture(hDevice);
-		if (ret == TY_STATUS_ERROR) {
-			continue;
-		}
-        ret = TYCloseDevice(hDevice);
-		if (ret == TY_STATUS_ERROR) {
-			continue;
-		}
-        ret = TYCloseInterface(hIface);
-		if (ret == TY_STATUS_ERROR) {
-			continue;
-		}
+        ASSERT_OK(TYStopCapture(hDevice));
+        ASSERT_OK(TYCloseDevice(hDevice));
+        ASSERT_OK(TYCloseInterface(hIface));
         delete frameBuffer[0];
         delete frameBuffer[1];
     }

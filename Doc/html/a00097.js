@@ -1,7 +1,5 @@
 var a00097 =
 [
-    [ "depth", "a00097.html#a5c2c74e1aa19e036ec78459623f3d1aa", null ],
-    [ "rsvd", "a00097.html#a34a4bba880ce9c62e6f8fd05c077060e", null ],
-    [ "x", "a00097.html#a86e54f296eb1afe8964402379feb3961", null ],
-    [ "y", "a00097.html#aff6686623101300f50db5106c28bc4f0", null ]
+    [ "eventId", "a00097.html#a4857ee27ef6d52060541c23396323d98", null ],
+    [ "message", "a00097.html#a7170ca44cbd013232bb4230d9e396488", null ]
 ];

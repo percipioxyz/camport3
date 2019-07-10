@@ -7,7 +7,7 @@ struct CamInfo
     std::string         tag;
     TY_INTERFACE_HANDLE hIface;
     TY_DEV_HANDLE       hDev;
-    std::vector<char>   fb[2];
+	std::vector<char>   fb[6];
     TY_FRAME_DATA       frame;
     int                 idx;
     DepthRender         render;
@@ -146,20 +146,19 @@ int main(int argc, char* argv[])
 		LOGD("     - Get size of framebuffer, %d", frameSize);
 
 		LOGD("     - Allocate & enqueue buffers");
-        cams[count].fb[0].resize(frameSize);
-        cams[count].fb[1].resize(frameSize);
-        LOGD("     - Enqueue buffer (%p, %d)", cams[count].fb[0].data(), frameSize);
-        ASSERT_OK( TYEnqueueBuffer(cams[count].hDev, cams[count].fb[0].data(), frameSize) );
-        LOGD("     - Enqueue buffer (%p, %d)", cams[count].fb[1].data(), frameSize);
-        ASSERT_OK( TYEnqueueBuffer(cams[count].hDev, cams[count].fb[1].data(), frameSize) );
+        for (int i = 0; i < 6; i++) {
+            cams[count].fb[i].resize(frameSize);
+            LOGD("     - Enqueue buffer (%p, %d)", cams[count].fb[i].data(), frameSize);
+            ASSERT_OK(TYEnqueueBuffer(cams[count].hDev, cams[count].fb[i].data(), frameSize));
+        }
 
 		LOGD("=== Register event callback");
         ASSERT_OK(TYRegisterEventCallback(cams[count].hDev, eventCallback, NULL));
 
 		LOGD("=== Set trigger mode");
-
-		if (strcmp(selected[i].id, list[0]) == 0) {
-			LOGD("=== set master device");
+        if (((strcmp(selected[i].id, list[0]) == 0) && (list.size() > 0))
+                || ((count == 0) && (list.size() == 0))) {
+			LOGD("=== set master device, id: %s", cams[count].sn);
 			cams[count].tag = std::string(cams[count].sn) + "_master";
 			TY_TRIGGER_PARAM param;
 			param.mode = TY_TRIGGER_MODE_M_SIG;
@@ -185,8 +184,8 @@ int main(int argc, char* argv[])
 			}
 		}
 
-		LOGD("=== Start capture");
-        ASSERT_OK( TYStartCapture(cams[count].hDev) );
+		//LOGD("=== Start capture");
+        //ASSERT_OK( TYStartCapture(cams[count].hDev) );
 		count++;
 	}
 	if (count != cam_size) {
@@ -194,14 +193,32 @@ int main(int argc, char* argv[])
 		return 0;
 	}
 
+	int cam_index = 0;
+
+	LOGD("=== Start capture for salve");
+	for (uint32_t i = 0; i < cams.size(); i++) {
+		if (cams[i].tag.compare(13, 6, "master") != 0) {
+			ASSERT_OK(TYStartCapture(cams[i].hDev));
+            cam_index = i;
+		}
+	}
+
+	LOGD("=== Start capture for master");
+	for (uint32_t i = 0; i < cams.size(); i++) {
+		if (cams[i].tag.compare(13, 6, "master") == 0) {
+			ASSERT_OK(TYStartCapture(cams[i].hDev));
+		}
+	}
+    MSLEEP(1000);
+
 	LOGD("=== While loop to fetch frame");
 	bool exit_main = false;
-	int cam_index = 0;
-	while (!exit_main) {
-		if (cams[cam_index].tag.compare(14, 6, "master")) {
-			ASSERT_OK(TYSendSoftTrigger(cams[cam_index].hDev));
-		}
 
+	while (!exit_main) {
+		if (cams[cam_index].tag.compare(13, 6, "master") == 0) {
+			ASSERT_OK(TYSendSoftTrigger(cams[cam_index].hDev));
+        } 
+        
 		int err = TYFetchFrame(cams[cam_index].hDev, &cams[cam_index].frame, 20000);
 		if (err != TY_STATUS_OK) {
 			LOGD("cam %s %d ... Drop one frame", cams[cam_index].sn, cams[cam_index].idx);

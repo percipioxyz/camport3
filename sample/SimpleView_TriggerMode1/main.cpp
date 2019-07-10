@@ -124,7 +124,7 @@ int main(int argc, char* argv[])
     LOGD("=== While loop to fetch frame");
     bool exit_main = false;
     TY_FRAME_DATA frame;
-    DepthViewer depthViewer("SimpleView_FetchFrame");
+    DepthViewer depthViewer("Depth");
     int index = 0;
     while(!exit_main) {
         ASSERT_OK( TYSendSoftTrigger(hDevice) );

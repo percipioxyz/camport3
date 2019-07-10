@@ -218,7 +218,7 @@ int main(int argc, char* argv[])
         ASSERT_OK(TYSetStruct(hDevice, TY_COMPONENT_DEVICE, TY_STRUCT_TRIGGER_PARAM, &trigger, sizeof(trigger)));
     }
 
-    DepthViewer depthViewer("depth");
+    DepthViewer depthViewer("Depth");
     DepthRender render;
     CallbackData cb_data;
     cb_data.index = 0;
