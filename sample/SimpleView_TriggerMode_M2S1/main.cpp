@@ -199,7 +199,6 @@ int main(int argc, char* argv[])
 	for (uint32_t i = 0; i < cams.size(); i++) {
 		if (cams[i].tag.compare(13, 6, "master") != 0) {
 			ASSERT_OK(TYStartCapture(cams[i].hDev));
-            cam_index = i;
 		}
 	}
 
@@ -207,6 +206,7 @@ int main(int argc, char* argv[])
 	for (uint32_t i = 0; i < cams.size(); i++) {
 		if (cams[i].tag.compare(13, 6, "master") == 0) {
 			ASSERT_OK(TYStartCapture(cams[i].hDev));
+            cam_index = i;
 		}
 	}
     MSLEEP(1000);

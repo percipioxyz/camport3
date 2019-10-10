@@ -100,7 +100,7 @@ if (OPENGL_VIEW)
     target_compile_definitions(cloud_viewer PUBLIC FREEGLUT_STATIC)
 
     if (WIN32)
-        #build freeglut by ourself
+        #build freeglut by ourselves
         include(ExternalProject)
         ExternalProject_Add( glut_proj
             PREFIX "${CMAKE_CURRENT_SOURCE_DIR}"

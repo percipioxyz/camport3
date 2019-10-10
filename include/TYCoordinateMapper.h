@@ -256,7 +256,7 @@ static inline TY_STATUS TYMapRGBImageToDepthCoordinate(
                   uint32_t rgbW, uint32_t rgbH, const uint8_t* inRgb,
                   uint8_t* mappedRgb)
 {
-  TY_PIXEL_DESC* lut = (TY_PIXEL_DESC*)malloc(sizeof(TY_PIXEL_DESC) * depthW * depthH*4);
+  TY_PIXEL_DESC* lut = (TY_PIXEL_DESC*)malloc(sizeof(TY_PIXEL_DESC) * depthW * depthH);
   TYMAP_CHECKRET(TYCreateDepthToColorCoordinateLookupTable(
                     depth_calib, depthW, depthH, depth,
                     color_calib, rgbW, rgbH, lut), lut);

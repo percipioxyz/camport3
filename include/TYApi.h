@@ -128,16 +128,18 @@
 #  define TY_EXPORT     TY_DLLIMPORT
 #endif
 
-#if defined(__cplusplus)
-#  define TY_EXTC extern "C"
-#else
-#  define TY_EXTC
+#if !defined(TY_EXTC)
+#	if defined(__cplusplus)
+#	  define TY_EXTC extern "C"
+#	else
+#	  define TY_EXTC
+#	endif
 #endif
 
 
 #define TY_LIB_VERSION_MAJOR       3
 #define TY_LIB_VERSION_MINOR       3 
-#define TY_LIB_VERSION_PATCH       1 
+#define TY_LIB_VERSION_PATCH       2 
 
 
 //------------------------------------------------------------------------------
