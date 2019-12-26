@@ -1,5 +1,8 @@
 #include "../common/common.hpp"
+#include <signal.h>
 
+static bool exit_main = false;
+static bool capture_started = false;
 
 struct CamInfo
 {
@@ -60,6 +63,18 @@ void eventCallback(TY_EVENT_INFO *event_info, void *userdata)
 	}
 }
 
+void signalHandle(int signum)
+{
+	LOGD("Interrupt signal %d received", signum);
+	signal(SIGINT, signalHandle);
+	if (capture_started) {
+		exit_main = true;
+	} else {
+		ASSERT_OK(TYDeinitLib());
+		exit(0);
+	}
+}
+
 int main(int argc, char* argv[])
 {
 	int32_t resend = 1;
@@ -91,6 +106,8 @@ int main(int argc, char* argv[])
 			}
 		}
 	}
+
+    signal(SIGINT, signalHandle);
 
 	LOGD("=== Init lib");
 	ASSERT_OK(TYInitLib());
@@ -212,8 +229,8 @@ int main(int argc, char* argv[])
     MSLEEP(1000);
 
 	LOGD("=== While loop to fetch frame");
-	bool exit_main = false;
-
+	capture_started = true;
+	exit_main = false;
 	while (!exit_main) {
 		if (cams[cam_index].tag.compare(13, 6, "master") == 0) {
 			ASSERT_OK(TYSendSoftTrigger(cams[cam_index].hDev));

@@ -1,4 +1,5 @@
 #include "../common/common.hpp"
+#include <fstream>
 
 
 void dumpFeature(TY_DEV_HANDLE handle, TY_COMPONENT_ID compID, TY_FEATURE_ID featID, const char* name)
@@ -156,6 +157,7 @@ void dumpAllComponentFeatures(TY_DEV_HANDLE handle, int32_t compIDs)
 
 int main(int argc, char* argv[])
 {
+    bool dumpConfig = false;
     std::string ID, IP;
     TY_INTERFACE_HANDLE hIface;
     TY_DEV_HANDLE handle;
@@ -166,12 +168,23 @@ int main(int argc, char* argv[])
             ID = argv[++i];
         } else if(strcmp(argv[i], "-ip") == 0) {
             IP = argv[++i];
+        }else if(strcmp(argv[i], "-d") == 0){
+            dumpConfig = true;
         }else if(strcmp(argv[i], "-h") == 0){
             LOGI("Usage: SimpleView_Callback [-h]");
             return 0;
         }
     }
-    
+
+    if (dumpConfig) {
+        std::ofstream fout("fetch_config.xml");  
+        if (fout) {
+            LOGD("Create fetch_config.xml successfully");
+        } else {
+            LOGD("Create fetch_config.xml failed");
+        }
+    }
+
     // Init lib
     ASSERT_OK(TYInitLib());
     TY_VERSION_INFO ver;

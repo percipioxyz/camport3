@@ -167,6 +167,12 @@ int main(int argc, char* argv[])
         LOGD("=== Disable trigger mode");
         TY_TRIGGER_PARAM trigger;
         if(trigger_mode){
+          bool hasResend;
+          ASSERT_OK(TYHasFeature(cams[count].hDev, TY_COMPONENT_DEVICE, TY_BOOL_GVSP_RESEND, &hasResend));
+          if (hasResend) {
+            LOGD("=== Open resend");
+            ASSERT_OK(TYSetBool(cams[count].hDev, TY_COMPONENT_DEVICE, TY_BOOL_GVSP_RESEND, true));
+          }
           trigger.mode = TY_TRIGGER_MODE_SLAVE;
         } else {
           trigger.mode = TY_TRIGGER_MODE_OFF;
