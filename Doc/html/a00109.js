@@ -1,7 +1,5 @@
 var a00109 =
 [
-    [ "outlier_rate", "a00109.html#ac9d2fb2f66185d5e4e362fd68c688c1b", null ],
-    [ "outlier_win_sz", "a00109.html#ae710febd7b70a95c1ec51e8721cb4d6e", null ],
-    [ "sigma_r", "a00109.html#a307c0f2750006519986ede18f461a33f", null ],
-    [ "sigma_s", "a00109.html#a005d6e28cca77a5964b0c588ee3839e9", null ]
+    [ "max_speckle_diff", "a00109.html#afdd5935e2dcb0b359500c84c75c613c4", null ],
+    [ "max_speckle_size", "a00109.html#a101f480aa882c40a5e0ed4dc069d3655", null ]
 ];

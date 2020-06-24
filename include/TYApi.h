@@ -139,7 +139,7 @@
 
 #define TY_LIB_VERSION_MAJOR       3
 #define TY_LIB_VERSION_MINOR       4 
-#define TY_LIB_VERSION_PATCH       1 
+#define TY_LIB_VERSION_PATCH       7 
 
 
 //------------------------------------------------------------------------------
@@ -256,7 +256,7 @@ typedef enum TY_FEATURE_ID_LIST
     //the acutal depth (mm)= PxielValue * ScaleUnit 
     TY_FLOAT_SCALE_UNIT             = 0x010a | TY_FEATURE_FLOAT, 
 
-    TY_ENUM_TRIGGER_ACTIVATION      = 0x0201 | TY_FEATURE_ENUM, ///< Trigger activation, see TY_TRIGGER_ACTIVATION_LIST
+    TY_ENUM_TRIGGER_POL             = 0x3201 | TY_FEATURE_ENUM,  ///< Trigger POL, see TY_TRIGGER_POL_LIST
     TY_INT_FRAME_PER_TRIGGER        = 0x0202 | TY_FEATURE_INT,  ///< Number of frames captured per trigger
     TY_STRUCT_TRIGGER_PARAM         = 0x0523 | TY_FEATURE_STRUCT,  ///< param of trigger, see TY_TRIGGER_PARAM
     TY_STRUCT_TRIGGER_PARAM_EX      = 0x0525 | TY_FEATURE_STRUCT,  ///< param of trigger, see TY_TRIGGER_PARAM_EX
@@ -266,12 +266,15 @@ typedef enum TY_FEATURE_ID_LIST
     TY_INT_TRIGGER_DELAY_US         = 0x0206 | TY_FEATURE_INT,  ///< Trigger delay time, in microseconds
     TY_BOOL_TRIGGER_OUT_IO          = 0x0207 | TY_FEATURE_BOOL, ///< Trigger out IO
     TY_INT_TRIGGER_DURATION_US      = 0x0208 | TY_FEATURE_INT,  ///< Trigger duration time, in microseconds
+    TY_ENUM_STREAM_ASYNC            = 0x0209 | TY_FEATURE_ENUM,  ///< stream async switch, see TY_STREAM_ASYNC_MODE
+    TY_INT_CAPTURE_TIME_US          = 0x0210 | TY_FEATURE_INT,  ///< capture time in multi-ir 
 
     TY_BOOL_AUTO_EXPOSURE           = 0x0300 | TY_FEATURE_BOOL, ///< Auto exposure switch
     TY_INT_EXPOSURE_TIME            = 0x0301 | TY_FEATURE_INT,  ///< Exposure time in percentage
     TY_BOOL_AUTO_GAIN               = 0x0302 | TY_FEATURE_BOOL, ///< Auto gain switch
     TY_INT_GAIN                     = 0x0303 | TY_FEATURE_INT,  ///< Sensor Gain
     TY_BOOL_AUTO_AWB                = 0x0304 | TY_FEATURE_BOOL, ///< Auto white balance
+    TY_STRUCT_AEC_ROI               = 0x0305 | TY_FEATURE_STRUCT,  ///< region of aec statistics, see TY_AEC_ROI_PARAM
 
     TY_INT_LASER_POWER              = 0x0500 | TY_FEATURE_INT,  ///< Laser power level
     TY_BOOL_LASER_AUTO_CTRL         = 0x0501 | TY_FEATURE_BOOL, ///< Laser auto ctrl
@@ -288,16 +291,13 @@ typedef enum TY_FEATURE_ID_LIST
 }TY_FEATURE_ID_LIST;
 typedef int32_t TY_FEATURE_ID;///< feature unique id @see TY_FEATURE_ID_LIST
 
-
-///@brief set external trigger signal edge
-///@see refer to sample SimpleView_TriggerMode for detail usage
-typedef enum TY_TRIGGER_ACTIVATION_LIST
+///set external trigger signal edge
+typedef enum TY_TRIGGER_POL_LIST
 {
-    TY_TRIGGER_ACTIVATION_FALLINGEDGE = 0,
-    TY_TRIGGER_ACTIVATION_RISINGEDGE  = 1,
-}TY_TRIGGER_ACTIVATION_LIST;
-typedef int32_t TY_TRIGGER_ACTIVATION;
-
+    TY_TRIGGER_POL_FALLINGEDGE = 0,
+    TY_TRIGGER_POL_RISINGEDGE  = 1,
+}TY_TRIGGER_POL_LIST;
+typedef int32_t TY_TRIGGER_POL;
 
 ///interface type definition
 typedef enum TY_INTERFACE_TYPE_LIST
@@ -319,6 +319,16 @@ typedef enum TY_ACCESS_MODE_LIST
 }TY_ACCESS_MODE_LIST;
 typedef int8_t TY_ACCESS_MODE;
 
+///stream async mode
+typedef enum TY_STREAM_ASYNC_MODE_LIST
+{
+    TY_STREAM_ASYNC_OFF         = 0,
+    TY_STREAM_ASYNC_DEPTH       = 1,
+    TY_STREAM_ASYNC_RGB         = 2,
+    TY_STREAM_ASYNC_DEPTH_RGB   = 3,
+    TY_STREAM_ASYNC_ALL         = 0xff,
+}TY_STREAM_ASYNC_MODE_LIST;
+typedef int8_t TY_STREAM_ASYNC_MODE;
 
 //------------------------------------------------------------------------------
 ///Pixel size type definitions 
@@ -358,7 +368,7 @@ typedef enum TY_RESOLUTION_MODE_LIST
     TY_RESOLUTION_MODE_640x360      = (640<<12)+360,    ///< 0x00280168
     TY_RESOLUTION_MODE_640x400      = (640<<12)+400,    ///< 0x00280190
     TY_RESOLUTION_MODE_640x480      = (640<<12)+480,    ///< 0x002801e0
-    TY_RESOLUTION_MODE_960x1280      = (960<<12)+1280,    ///< 0x003c0500
+    TY_RESOLUTION_MODE_960x1280     = (960<<12)+1280,    ///< 0x003c0500
     TY_RESOLUTION_MODE_1280x720     = (1280<<12)+720,   ///< 0x005002d0
     TY_RESOLUTION_MODE_1280x800     = (1280<<12)+800,   ///< 0x00500320
     TY_RESOLUTION_MODE_1280x960     = (1280<<12)+960,   ///< 0x005003c0
@@ -576,6 +586,14 @@ typedef struct TY_TRIGGER_PARAM_EX
     int32_t   led_gain;
     int32_t   rsvd[20];
 }TY_TRIGGER_PARAM_EX;
+
+typedef struct TY_AEC_ROI_PARAM
+{
+    uint32_t  x;
+    uint32_t  y;
+    uint32_t  w;
+    uint32_t  h;
+}TY_AEC_ROI_PARAM;
 
 typedef struct TY_CAMERA_STATISTICS
 {

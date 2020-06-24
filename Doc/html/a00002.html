@@ -158,13 +158,15 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00081.html">TY_TRIGGER_PARAM_EX</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00085.html">TY_CAMERA_STATISTICS</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00085.html">TY_AEC_ROI_PARAM</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00089.html">TY_IMAGE_DATA</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00089.html">TY_CAMERA_STATISTICS</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00093.html">TY_FRAME_DATA</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00093.html">TY_IMAGE_DATA</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00097.html">TY_EVENT_INFO</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00097.html">TY_FRAME_DATA</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00101.html">TY_EVENT_INFO</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
@@ -209,7 +211,7 @@ Macros</h2></td></tr>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>TY_LIB_VERSION_MINOR</b>&#160;&#160;&#160;4</td></tr>
 <tr class="separator:ab7b51d30017169eef553363a27bafa4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a93ec4ddd20d2a3ac85e1d95cc519fe7b"><td class="memItemLeft" align="right" valign="top"><a id="a93ec4ddd20d2a3ac85e1d95cc519fe7b"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>TY_LIB_VERSION_PATCH</b>&#160;&#160;&#160;1</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>TY_LIB_VERSION_PATCH</b>&#160;&#160;&#160;7</td></tr>
 <tr class="separator:a93ec4ddd20d2a3ac85e1d95cc519fe7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a014cecdf6710372ed9331436259eb528"><td class="memItemLeft" align="right" valign="top"><a id="a014cecdf6710372ed9331436259eb528"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>TY_DECLARE_IMAGE_MODE0</b>(pix,  res)&#160;&#160;&#160;TY_IMAGE_MODE_##pix##_##res = TY_PIXEL_FORMAT_##pix | TY_RESOLUTION_MODE_##res</td></tr>
@@ -262,12 +264,13 @@ typedef enum <a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124">
 <tr class="memitem:ae9fc1ab0d63ac6eb7105245d95351d69"><td class="memItemLeft" align="right" valign="top">typedef int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00002.html#ae9fc1ab0d63ac6eb7105245d95351d69">TY_FEATURE_ID</a></td></tr>
 <tr class="memdesc:ae9fc1ab0d63ac6eb7105245d95351d69"><td class="mdescLeft">&#160;</td><td class="mdescRight">feature unique id  <a href="#ae9fc1ab0d63ac6eb7105245d95351d69">More...</a><br /></td></tr>
 <tr class="separator:ae9fc1ab0d63ac6eb7105245d95351d69"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a99332248330cc43697f159988da15d35"><td class="memItemLeft" align="right" valign="top">typedef enum <a class="el" href="a00002.html#a4839e5c5f94e5e6b4b4084495a65cc4f">TY_TRIGGER_ACTIVATION_LIST</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00002.html#a99332248330cc43697f159988da15d35">TY_TRIGGER_ACTIVATION_LIST</a></td></tr>
-<tr class="memdesc:a99332248330cc43697f159988da15d35"><td class="mdescLeft">&#160;</td><td class="mdescRight">set external trigger signal edge  <a href="#a99332248330cc43697f159988da15d35">More...</a><br /></td></tr>
-<tr class="separator:a99332248330cc43697f159988da15d35"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adffcff9fcad6a8509bb4527d2aeef45e"><td class="memItemLeft" align="right" valign="top"><a id="adffcff9fcad6a8509bb4527d2aeef45e"></a>
-typedef int32_t&#160;</td><td class="memItemRight" valign="bottom"><b>TY_TRIGGER_ACTIVATION</b></td></tr>
-<tr class="separator:adffcff9fcad6a8509bb4527d2aeef45e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a28ababfeaa291222b940ff7b117d2127"><td class="memItemLeft" align="right" valign="top"><a id="a28ababfeaa291222b940ff7b117d2127"></a>
+typedef enum <a class="el" href="a00002.html#ac9e301e24ed27508226f1e0eaa4175c8">TY_TRIGGER_POL_LIST</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00002.html#a28ababfeaa291222b940ff7b117d2127">TY_TRIGGER_POL_LIST</a></td></tr>
+<tr class="memdesc:a28ababfeaa291222b940ff7b117d2127"><td class="mdescLeft">&#160;</td><td class="mdescRight">set external trigger signal edge <br /></td></tr>
+<tr class="separator:a28ababfeaa291222b940ff7b117d2127"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aba5944eeac6031bbb52de102c983ed82"><td class="memItemLeft" align="right" valign="top"><a id="aba5944eeac6031bbb52de102c983ed82"></a>
+typedef int32_t&#160;</td><td class="memItemRight" valign="bottom"><b>TY_TRIGGER_POL</b></td></tr>
+<tr class="separator:aba5944eeac6031bbb52de102c983ed82"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af89db8ad2441e625ad17a90099c33794"><td class="memItemLeft" align="right" valign="top"><a id="af89db8ad2441e625ad17a90099c33794"></a>
 typedef enum <a class="el" href="a00002.html#a612c00b6cf44f75663a51c0266ce835b">TY_INTERFACE_TYPE_LIST</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00002.html#af89db8ad2441e625ad17a90099c33794">TY_INTERFACE_TYPE_LIST</a></td></tr>
 <tr class="memdesc:af89db8ad2441e625ad17a90099c33794"><td class="mdescLeft">&#160;</td><td class="mdescRight">interface type definition <br /></td></tr>
@@ -282,6 +285,13 @@ typedef enum <a class="el" href="a00002.html#a242245e454161b88d913186d239d00f5">
 <tr class="memitem:a4c69b0aa97b457db2f7690eb8d6de382"><td class="memItemLeft" align="right" valign="top"><a id="a4c69b0aa97b457db2f7690eb8d6de382"></a>
 typedef int8_t&#160;</td><td class="memItemRight" valign="bottom"><b>TY_ACCESS_MODE</b></td></tr>
 <tr class="separator:a4c69b0aa97b457db2f7690eb8d6de382"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7ddb964a16e51cccabc848f604e507d3"><td class="memItemLeft" align="right" valign="top"><a id="a7ddb964a16e51cccabc848f604e507d3"></a>
+typedef enum <a class="el" href="a00002.html#ab31f4b37998ea99deb46bc4d1c0e0824">TY_STREAM_ASYNC_MODE_LIST</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00002.html#a7ddb964a16e51cccabc848f604e507d3">TY_STREAM_ASYNC_MODE_LIST</a></td></tr>
+<tr class="memdesc:a7ddb964a16e51cccabc848f604e507d3"><td class="mdescLeft">&#160;</td><td class="mdescRight">stream async mode <br /></td></tr>
+<tr class="separator:a7ddb964a16e51cccabc848f604e507d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1b76b19fc3feec00d579a7262ffda559"><td class="memItemLeft" align="right" valign="top"><a id="a1b76b19fc3feec00d579a7262ffda559"></a>
+typedef int8_t&#160;</td><td class="memItemRight" valign="bottom"><b>TY_STREAM_ASYNC_MODE</b></td></tr>
+<tr class="separator:a1b76b19fc3feec00d579a7262ffda559"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a87fe01cfad78ab0217dd225699c21dc4"><td class="memItemLeft" align="right" valign="top"><a id="a87fe01cfad78ab0217dd225699c21dc4"></a>
 typedef enum <a class="el" href="a00002.html#a17f4d33c64d5b36073102315f12e6608">TY_PIXEL_BITS_LIST</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00002.html#a87fe01cfad78ab0217dd225699c21dc4">TY_PIXEL_BITS_LIST</a></td></tr>
 <tr class="memdesc:a87fe01cfad78ab0217dd225699c21dc4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pixel size type definitions. <br /></td></tr>
@@ -355,20 +365,23 @@ typedef struct <a class="el" href="a00077.html">TY_TRIGGER_PARAM</a>&#160;</td><
 <tr class="memitem:a1998f46e3801b117e49bd71fde39063d"><td class="memItemLeft" align="right" valign="top"><a id="a1998f46e3801b117e49bd71fde39063d"></a>
 typedef struct <a class="el" href="a00081.html">TY_TRIGGER_PARAM_EX</a>&#160;</td><td class="memItemRight" valign="bottom"><b>TY_TRIGGER_PARAM_EX</b></td></tr>
 <tr class="separator:a1998f46e3801b117e49bd71fde39063d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a45e52638813d86b3ef792e3a1e94687f"><td class="memItemLeft" align="right" valign="top"><a id="a45e52638813d86b3ef792e3a1e94687f"></a>
+typedef struct <a class="el" href="a00085.html">TY_AEC_ROI_PARAM</a>&#160;</td><td class="memItemRight" valign="bottom"><b>TY_AEC_ROI_PARAM</b></td></tr>
+<tr class="separator:a45e52638813d86b3ef792e3a1e94687f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7b815baf02c85cc0c8501afb08bebe47"><td class="memItemLeft" align="right" valign="top"><a id="a7b815baf02c85cc0c8501afb08bebe47"></a>
-typedef struct <a class="el" href="a00085.html">TY_CAMERA_STATISTICS</a>&#160;</td><td class="memItemRight" valign="bottom"><b>TY_CAMERA_STATISTICS</b></td></tr>
+typedef struct <a class="el" href="a00089.html">TY_CAMERA_STATISTICS</a>&#160;</td><td class="memItemRight" valign="bottom"><b>TY_CAMERA_STATISTICS</b></td></tr>
 <tr class="separator:a7b815baf02c85cc0c8501afb08bebe47"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2b5a008ccecefe5d12db790251a89902"><td class="memItemLeft" align="right" valign="top"><a id="a2b5a008ccecefe5d12db790251a89902"></a>
-typedef struct <a class="el" href="a00089.html">TY_IMAGE_DATA</a>&#160;</td><td class="memItemRight" valign="bottom"><b>TY_IMAGE_DATA</b></td></tr>
+typedef struct <a class="el" href="a00093.html">TY_IMAGE_DATA</a>&#160;</td><td class="memItemRight" valign="bottom"><b>TY_IMAGE_DATA</b></td></tr>
 <tr class="separator:a2b5a008ccecefe5d12db790251a89902"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa3d98f66160331074e466acf1e413393"><td class="memItemLeft" align="right" valign="top"><a id="aa3d98f66160331074e466acf1e413393"></a>
-typedef struct <a class="el" href="a00093.html">TY_FRAME_DATA</a>&#160;</td><td class="memItemRight" valign="bottom"><b>TY_FRAME_DATA</b></td></tr>
+typedef struct <a class="el" href="a00097.html">TY_FRAME_DATA</a>&#160;</td><td class="memItemRight" valign="bottom"><b>TY_FRAME_DATA</b></td></tr>
 <tr class="separator:aa3d98f66160331074e466acf1e413393"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a33d17909e8958c64e51f1c483f49ffce"><td class="memItemLeft" align="right" valign="top"><a id="a33d17909e8958c64e51f1c483f49ffce"></a>
-typedef struct <a class="el" href="a00097.html">TY_EVENT_INFO</a>&#160;</td><td class="memItemRight" valign="bottom"><b>TY_EVENT_INFO</b></td></tr>
+typedef struct <a class="el" href="a00101.html">TY_EVENT_INFO</a>&#160;</td><td class="memItemRight" valign="bottom"><b>TY_EVENT_INFO</b></td></tr>
 <tr class="separator:a33d17909e8958c64e51f1c483f49ffce"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad37cdba8da0708602c4880c8519f4390"><td class="memItemLeft" align="right" valign="top"><a id="ad37cdba8da0708602c4880c8519f4390"></a>
-typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><b>TY_EVENT_CALLBACK</b>) (<a class="el" href="a00097.html">TY_EVENT_INFO</a> *, void *userdata)</td></tr>
+typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><b>TY_EVENT_CALLBACK</b>) (<a class="el" href="a00101.html">TY_EVENT_INFO</a> *, void *userdata)</td></tr>
 <tr class="separator:ad37cdba8da0708602c4880c8519f4390"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
@@ -472,7 +485,7 @@ Enumerations</h2></td></tr>
 <br />
 &#160;&#160;<a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124a0519147c7e082603a4405054e2290bcc">TY_ENUM_IMAGE_MODE</a> = 0x0109 | TY_FEATURE_ENUM, 
 <b>TY_FLOAT_SCALE_UNIT</b> = 0x010a | TY_FEATURE_FLOAT, 
-<a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124a564ff79d426f8895dcca8e41afb5b17d">TY_ENUM_TRIGGER_ACTIVATION</a> = 0x0201 | TY_FEATURE_ENUM, 
+<a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124a3fb92b22db4f01daa1bacdc8048ba954">TY_ENUM_TRIGGER_POL</a> = 0x3201 | TY_FEATURE_ENUM, 
 <a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124af323a74de002972f3d0201cdb5f53f09">TY_INT_FRAME_PER_TRIGGER</a> = 0x0202 | TY_FEATURE_INT, 
 <br />
 &#160;&#160;<a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124a6555890aacdb59f65594437d2a259696">TY_STRUCT_TRIGGER_PARAM</a> = 0x0523 | TY_FEATURE_STRUCT, 
@@ -485,32 +498,36 @@ Enumerations</h2></td></tr>
 <a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124a760b29bf21e57a45dbbcb3b745e68cfe">TY_BOOL_TRIGGER_OUT_IO</a> = 0x0207 | TY_FEATURE_BOOL, 
 <a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124aa9e38f8e3474121523cba4097a4ae271">TY_INT_TRIGGER_DURATION_US</a> = 0x0208 | TY_FEATURE_INT, 
 <br />
-&#160;&#160;<a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124a7111399fbe52bfec363fbcc3a84165db">TY_BOOL_AUTO_EXPOSURE</a> = 0x0300 | TY_FEATURE_BOOL, 
+&#160;&#160;<a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124a1c5eb0221113b2c7608dad10b37bc1d6">TY_ENUM_STREAM_ASYNC</a> = 0x0209 | TY_FEATURE_ENUM, 
+<a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124a4b0d37a5d86dbceb5dafc969f34c5e75">TY_INT_CAPTURE_TIME_US</a> = 0x0210 | TY_FEATURE_INT, 
+<a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124a7111399fbe52bfec363fbcc3a84165db">TY_BOOL_AUTO_EXPOSURE</a> = 0x0300 | TY_FEATURE_BOOL, 
 <a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124a800000a3782afc0c64a37494bd95968a">TY_INT_EXPOSURE_TIME</a> = 0x0301 | TY_FEATURE_INT, 
-<a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124a2dddfa2f8000896f88ff2835675f9a6d">TY_BOOL_AUTO_GAIN</a> = 0x0302 | TY_FEATURE_BOOL, 
-<a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124af5848aa7ee4ab4356fa00ac3b73800d6">TY_INT_GAIN</a> = 0x0303 | TY_FEATURE_INT, 
 <br />
-&#160;&#160;<a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124ad49dbc7de890a43620c6848d241b0720">TY_BOOL_AUTO_AWB</a> = 0x0304 | TY_FEATURE_BOOL, 
-<a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124a39f1bae0a509f8b917f3d2e46ac66446">TY_INT_LASER_POWER</a> = 0x0500 | TY_FEATURE_INT, 
+&#160;&#160;<a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124a2dddfa2f8000896f88ff2835675f9a6d">TY_BOOL_AUTO_GAIN</a> = 0x0302 | TY_FEATURE_BOOL, 
+<a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124af5848aa7ee4ab4356fa00ac3b73800d6">TY_INT_GAIN</a> = 0x0303 | TY_FEATURE_INT, 
+<a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124ad49dbc7de890a43620c6848d241b0720">TY_BOOL_AUTO_AWB</a> = 0x0304 | TY_FEATURE_BOOL, 
+<a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124aa93143eafabddc82a4285efc0ec564ba">TY_STRUCT_AEC_ROI</a> = 0x0305 | TY_FEATURE_STRUCT, 
+<br />
+&#160;&#160;<a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124a39f1bae0a509f8b917f3d2e46ac66446">TY_INT_LASER_POWER</a> = 0x0500 | TY_FEATURE_INT, 
 <a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124a9e728970d3b6c1ba088891834f2d733e">TY_BOOL_LASER_AUTO_CTRL</a> = 0x0501 | TY_FEATURE_BOOL, 
 <a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124ad8ba7a8ff19ca5e5e16baecfd7f90d7c">TY_BOOL_UNDISTORTION</a> = 0x0510 | TY_FEATURE_BOOL, 
+<a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124a96c9a2085babbc7c27efa45a019b9bcd">TY_BOOL_BRIGHTNESS_HISTOGRAM</a> = 0x0511 | TY_FEATURE_BOOL, 
 <br />
-&#160;&#160;<a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124a96c9a2085babbc7c27efa45a019b9bcd">TY_BOOL_BRIGHTNESS_HISTOGRAM</a> = 0x0511 | TY_FEATURE_BOOL, 
-<a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124aa33c31670b3fedc298f957654b9a8825">TY_BOOL_DEPTH_POSTPROC</a> = 0x0512 | TY_FEATURE_BOOL, 
+&#160;&#160;<a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124aa33c31670b3fedc298f957654b9a8825">TY_BOOL_DEPTH_POSTPROC</a> = 0x0512 | TY_FEATURE_BOOL, 
 <a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124af959400781d55f751ad6d9b433713b45">TY_INT_R_GAIN</a> = 0x0520 | TY_FEATURE_INT, 
 <a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124ad62bbcbda253a1dab4fdf7b694039839">TY_INT_G_GAIN</a> = 0x0521 | TY_FEATURE_INT, 
+<a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124aebd176e36456383af154c2bf12c94683">TY_INT_B_GAIN</a> = 0x0522 | TY_FEATURE_INT, 
 <br />
-&#160;&#160;<a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124aebd176e36456383af154c2bf12c94683">TY_INT_B_GAIN</a> = 0x0522 | TY_FEATURE_INT, 
-<a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124accb42916dcece10e84d7b701d2b852f0">TY_INT_ANALOG_GAIN</a> = 0x0524 | TY_FEATURE_INT
+&#160;&#160;<a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124accb42916dcece10e84d7b701d2b852f0">TY_INT_ANALOG_GAIN</a> = 0x0524 | TY_FEATURE_INT
 <br />
  }</td></tr>
 <tr class="memdesc:ad106ea6dcff8f708ca26b57c430f9124"><td class="mdescLeft">&#160;</td><td class="mdescRight">feature for component definitions  <a href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124">More...</a><br /></td></tr>
 <tr class="separator:ad106ea6dcff8f708ca26b57c430f9124"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4839e5c5f94e5e6b4b4084495a65cc4f"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00002.html#a4839e5c5f94e5e6b4b4084495a65cc4f">TY_TRIGGER_ACTIVATION_LIST</a> { <b>TY_TRIGGER_ACTIVATION_FALLINGEDGE</b> = 0, 
-<b>TY_TRIGGER_ACTIVATION_RISINGEDGE</b> = 1
+<tr class="memitem:ac9e301e24ed27508226f1e0eaa4175c8"><td class="memItemLeft" align="right" valign="top"><a id="ac9e301e24ed27508226f1e0eaa4175c8"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00002.html#ac9e301e24ed27508226f1e0eaa4175c8">TY_TRIGGER_POL_LIST</a> { <b>TY_TRIGGER_POL_FALLINGEDGE</b> = 0, 
+<b>TY_TRIGGER_POL_RISINGEDGE</b> = 1
  }</td></tr>
-<tr class="memdesc:a4839e5c5f94e5e6b4b4084495a65cc4f"><td class="mdescLeft">&#160;</td><td class="mdescRight">set external trigger signal edge  <a href="a00002.html#a4839e5c5f94e5e6b4b4084495a65cc4f">More...</a><br /></td></tr>
-<tr class="separator:a4839e5c5f94e5e6b4b4084495a65cc4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memdesc:ac9e301e24ed27508226f1e0eaa4175c8"><td class="mdescLeft">&#160;</td><td class="mdescRight">set external trigger signal edge <br /></td></tr>
+<tr class="separator:ac9e301e24ed27508226f1e0eaa4175c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a612c00b6cf44f75663a51c0266ce835b"><td class="memItemLeft" align="right" valign="top"><a id="a612c00b6cf44f75663a51c0266ce835b"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00002.html#a612c00b6cf44f75663a51c0266ce835b">TY_INTERFACE_TYPE_LIST</a> { <br />
 &#160;&#160;<b>TY_INTERFACE_UNKNOWN</b> = 0, 
 <b>TY_INTERFACE_RAW</b> = 1, 
@@ -528,6 +545,17 @@ Enumerations</h2></td></tr>
  }</td></tr>
 <tr class="memdesc:a242245e454161b88d913186d239d00f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">a feature is readable or writable <br /></td></tr>
 <tr class="separator:a242245e454161b88d913186d239d00f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab31f4b37998ea99deb46bc4d1c0e0824"><td class="memItemLeft" align="right" valign="top"><a id="ab31f4b37998ea99deb46bc4d1c0e0824"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00002.html#ab31f4b37998ea99deb46bc4d1c0e0824">TY_STREAM_ASYNC_MODE_LIST</a> { <br />
+&#160;&#160;<b>TY_STREAM_ASYNC_OFF</b> = 0, 
+<b>TY_STREAM_ASYNC_DEPTH</b> = 1, 
+<b>TY_STREAM_ASYNC_RGB</b> = 2, 
+<b>TY_STREAM_ASYNC_DEPTH_RGB</b> = 3, 
+<br />
+&#160;&#160;<b>TY_STREAM_ASYNC_ALL</b> = 0xff
+<br />
+ }</td></tr>
+<tr class="memdesc:ab31f4b37998ea99deb46bc4d1c0e0824"><td class="mdescLeft">&#160;</td><td class="mdescRight">stream async mode <br /></td></tr>
+<tr class="separator:ab31f4b37998ea99deb46bc4d1c0e0824"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a17f4d33c64d5b36073102315f12e6608"><td class="memItemLeft" align="right" valign="top"><a id="a17f4d33c64d5b36073102315f12e6608"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00002.html#a17f4d33c64d5b36073102315f12e6608">TY_PIXEL_BITS_LIST</a> { <b>TY_PIXEL_8BIT</b> = 0x1 &lt;&lt; 28, 
 <b>TY_PIXEL_16BIT</b> = 0x2 &lt;&lt; 28, 
 <b>TY_PIXEL_24BIT</b> = 0x3 &lt;&lt; 28, 
@@ -690,7 +718,7 @@ Functions</h2></td></tr>
 <tr class="memitem:a1a413221c79c9516ea90d7252b671076"><td class="memItemLeft" align="right" valign="top">TY_CAPI&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00002.html#a1a413221c79c9516ea90d7252b671076">TYRegisterEventCallback</a> (<a class="el" href="a00002.html#a87e3bf5de81e300fe8fd1e548de1e9a0">TY_DEV_HANDLE</a> hDevice, TY_EVENT_CALLBACK callback, void *userdata)</td></tr>
 <tr class="memdesc:a1a413221c79c9516ea90d7252b671076"><td class="mdescLeft">&#160;</td><td class="mdescRight">Register device status callback. Register NULL to clean callback.  <a href="#a1a413221c79c9516ea90d7252b671076">More...</a><br /></td></tr>
 <tr class="separator:a1a413221c79c9516ea90d7252b671076"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3bdbb598929614983955aad7d6c6ef7a"><td class="memItemLeft" align="right" valign="top">TY_CAPI&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00002.html#a3bdbb598929614983955aad7d6c6ef7a">TYFetchFrame</a> (<a class="el" href="a00002.html#a87e3bf5de81e300fe8fd1e548de1e9a0">TY_DEV_HANDLE</a> hDevice, <a class="el" href="a00093.html">TY_FRAME_DATA</a> *frame, int32_t timeout)</td></tr>
+<tr class="memitem:a3bdbb598929614983955aad7d6c6ef7a"><td class="memItemLeft" align="right" valign="top">TY_CAPI&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00002.html#a3bdbb598929614983955aad7d6c6ef7a">TYFetchFrame</a> (<a class="el" href="a00002.html#a87e3bf5de81e300fe8fd1e548de1e9a0">TY_DEV_HANDLE</a> hDevice, <a class="el" href="a00097.html">TY_FRAME_DATA</a> *frame, int32_t timeout)</td></tr>
 <tr class="memdesc:a3bdbb598929614983955aad7d6c6ef7a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fetch one frame.  <a href="#a3bdbb598929614983955aad7d6c6ef7a">More...</a><br /></td></tr>
 <tr class="separator:a3bdbb598929614983955aad7d6c6ef7a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af790321f7af197bc663f8fe31d6daa01"><td class="memItemLeft" align="right" valign="top">TY_CAPI&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00002.html#af790321f7af197bc663f8fe31d6daa01">TYHasFeature</a> (<a class="el" href="a00002.html#a87e3bf5de81e300fe8fd1e548de1e9a0">TY_DEV_HANDLE</a> hDevice, <a class="el" href="a00002.html#aedb134adb4c20d3438db3019a72611d5">TY_COMPONENT_ID</a> componentID, <a class="el" href="a00002.html#ae9fc1ab0d63ac6eb7105245d95351d69">TY_FEATURE_ID</a> featureID, bool *value)</td></tr>
@@ -785,7 +813,7 @@ TY_CAPI&#160;</td><td class="memItemRight" valign="bottom"><b>_TYInitLib</b> (vo
       </table>
 </div><div class="memdoc">
 <b>Value:</b><div class="fragment"><div class="line">TY_DECLARE_IMAGE_MODE0(pix, 160x120), \</div><div class="line">            TY_DECLARE_IMAGE_MODE0(pix, 320x180), \</div><div class="line">            TY_DECLARE_IMAGE_MODE0(pix, 320x200), \</div><div class="line">            TY_DECLARE_IMAGE_MODE0(pix, 320x240), \</div><div class="line">            TY_DECLARE_IMAGE_MODE0(pix, 480x640), \</div><div class="line">            TY_DECLARE_IMAGE_MODE0(pix, 640x360), \</div><div class="line">            TY_DECLARE_IMAGE_MODE0(pix, 640x400), \</div><div class="line">            TY_DECLARE_IMAGE_MODE0(pix, 640x480), \</div><div class="line">            TY_DECLARE_IMAGE_MODE0(pix, 960x1280), \</div><div class="line">            TY_DECLARE_IMAGE_MODE0(pix, 1280x720), \</div><div class="line">            TY_DECLARE_IMAGE_MODE0(pix, 1280x960), \</div><div class="line">            TY_DECLARE_IMAGE_MODE0(pix, 1280x800), \</div><div class="line">            TY_DECLARE_IMAGE_MODE0(pix, 2592x1944)</div></div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="a00002_source.html#l00372">372</a> of file <a class="el" href="a00002_source.html">TYApi.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00002_source.html#l00382">382</a> of file <a class="el" href="a00002_source.html">TYApi.h</a>.</p>
 
 </div>
 </div>
@@ -935,7 +963,7 @@ TY_CAPI&#160;</td><td class="memItemRight" valign="bottom"><b>_TYInitLib</b> (vo
 <p>feature unique id </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124" title="feature for component definitions ">TY_FEATURE_ID_LIST</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="a00002_source.html#l00289">289</a> of file <a class="el" href="a00002_source.html">TYApi.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00002_source.html#l00292">292</a> of file <a class="el" href="a00002_source.html">TYApi.h</a>.</p>
 
 </div>
 </div>
@@ -951,23 +979,6 @@ TY_CAPI&#160;</td><td class="memItemRight" valign="bottom"><b>_TYInitLib</b> (vo
       </table>
 </div><div class="memdoc">
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="a00002.html#ac8015a333965f280d5ae4d26e7a15ddb" title="Get interface info list. ">TYGetInterfaceList</a> </dd></dl>
-
-</div>
-</div>
-<a id="a99332248330cc43697f159988da15d35"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a99332248330cc43697f159988da15d35">&#9670;&nbsp;</a></span>TY_TRIGGER_ACTIVATION_LIST</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">typedef enum <a class="el" href="a00002.html#a4839e5c5f94e5e6b4b4084495a65cc4f">TY_TRIGGER_ACTIVATION_LIST</a> <a class="el" href="a00002.html#a4839e5c5f94e5e6b4b4084495a65cc4f">TY_TRIGGER_ACTIVATION_LIST</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>set external trigger signal edge </p>
-<dl class="section see"><dt>See also</dt><dd>refer to sample SimpleView_TriggerMode for detail usage </dd></dl>
 
 </div>
 </div>
@@ -1058,7 +1069,7 @@ TY_CAPI&#160;</td><td class="memItemRight" valign="bottom"><b>_TYInitLib</b> (vo
 </td></tr>
 <tr><td class="fieldname"><a id="ad106ea6dcff8f708ca26b57c430f9124ac7562e117a75e3cfd2af160e524580f6"></a>TY_INT_NTP_SERVER_IP&#160;</td><td class="fielddoc"><p>Ntp server IP. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="ad106ea6dcff8f708ca26b57c430f9124a152803e3954af9489fab0c88c942d5ad"></a>TY_STRUCT_CAM_STATISTICS&#160;</td><td class="fielddoc"><p>statistical information, see <a class="el" href="a00085.html">TY_CAMERA_STATISTICS</a> </p>
+<tr><td class="fieldname"><a id="ad106ea6dcff8f708ca26b57c430f9124a152803e3954af9489fab0c88c942d5ad"></a>TY_STRUCT_CAM_STATISTICS&#160;</td><td class="fielddoc"><p>statistical information, see <a class="el" href="a00089.html">TY_CAMERA_STATISTICS</a> </p>
 </td></tr>
 <tr><td class="fieldname"><a id="ad106ea6dcff8f708ca26b57c430f9124a5e9205c48d12b22e4982a04b90f0be7c"></a>TY_INT_WIDTH&#160;</td><td class="fielddoc"><p>Image width. </p>
 </td></tr>
@@ -1066,7 +1077,7 @@ TY_CAPI&#160;</td><td class="memItemRight" valign="bottom"><b>_TYInitLib</b> (vo
 </td></tr>
 <tr><td class="fieldname"><a id="ad106ea6dcff8f708ca26b57c430f9124a0519147c7e082603a4405054e2290bcc"></a>TY_ENUM_IMAGE_MODE&#160;</td><td class="fielddoc"><p>Resolution-PixelFromat mode, see TY_IMAGE_MODE_LIST. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="ad106ea6dcff8f708ca26b57c430f9124a564ff79d426f8895dcca8e41afb5b17d"></a>TY_ENUM_TRIGGER_ACTIVATION&#160;</td><td class="fielddoc"><p>Trigger activation, see TY_TRIGGER_ACTIVATION_LIST. </p>
+<tr><td class="fieldname"><a id="ad106ea6dcff8f708ca26b57c430f9124a3fb92b22db4f01daa1bacdc8048ba954"></a>TY_ENUM_TRIGGER_POL&#160;</td><td class="fielddoc"><p>Trigger POL, see TY_TRIGGER_POL_LIST. </p>
 </td></tr>
 <tr><td class="fieldname"><a id="ad106ea6dcff8f708ca26b57c430f9124af323a74de002972f3d0201cdb5f53f09"></a>TY_INT_FRAME_PER_TRIGGER&#160;</td><td class="fielddoc"><p>Number of frames captured per trigger. </p>
 </td></tr>
@@ -1086,6 +1097,10 @@ TY_CAPI&#160;</td><td class="memItemRight" valign="bottom"><b>_TYInitLib</b> (vo
 </td></tr>
 <tr><td class="fieldname"><a id="ad106ea6dcff8f708ca26b57c430f9124aa9e38f8e3474121523cba4097a4ae271"></a>TY_INT_TRIGGER_DURATION_US&#160;</td><td class="fielddoc"><p>Trigger duration time, in microseconds. </p>
 </td></tr>
+<tr><td class="fieldname"><a id="ad106ea6dcff8f708ca26b57c430f9124a1c5eb0221113b2c7608dad10b37bc1d6"></a>TY_ENUM_STREAM_ASYNC&#160;</td><td class="fielddoc"><p>stream async switch, see TY_STREAM_ASYNC_MODE </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ad106ea6dcff8f708ca26b57c430f9124a4b0d37a5d86dbceb5dafc969f34c5e75"></a>TY_INT_CAPTURE_TIME_US&#160;</td><td class="fielddoc"><p>capture time in multi-ir </p>
+</td></tr>
 <tr><td class="fieldname"><a id="ad106ea6dcff8f708ca26b57c430f9124a7111399fbe52bfec363fbcc3a84165db"></a>TY_BOOL_AUTO_EXPOSURE&#160;</td><td class="fielddoc"><p>Auto exposure switch. </p>
 </td></tr>
 <tr><td class="fieldname"><a id="ad106ea6dcff8f708ca26b57c430f9124a800000a3782afc0c64a37494bd95968a"></a>TY_INT_EXPOSURE_TIME&#160;</td><td class="fielddoc"><p>Exposure time in percentage. </p>
@@ -1095,6 +1110,8 @@ TY_CAPI&#160;</td><td class="memItemRight" valign="bottom"><b>_TYInitLib</b> (vo
 <tr><td class="fieldname"><a id="ad106ea6dcff8f708ca26b57c430f9124af5848aa7ee4ab4356fa00ac3b73800d6"></a>TY_INT_GAIN&#160;</td><td class="fielddoc"><p>Sensor Gain. </p>
 </td></tr>
 <tr><td class="fieldname"><a id="ad106ea6dcff8f708ca26b57c430f9124ad49dbc7de890a43620c6848d241b0720"></a>TY_BOOL_AUTO_AWB&#160;</td><td class="fielddoc"><p>Auto white balance. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ad106ea6dcff8f708ca26b57c430f9124aa93143eafabddc82a4285efc0ec564ba"></a>TY_STRUCT_AEC_ROI&#160;</td><td class="fielddoc"><p>region of aec statistics, see <a class="el" href="a00085.html">TY_AEC_ROI_PARAM</a> </p>
 </td></tr>
 <tr><td class="fieldname"><a id="ad106ea6dcff8f708ca26b57c430f9124a39f1bae0a509f8b917f3d2e46ac66446"></a>TY_INT_LASER_POWER&#160;</td><td class="fielddoc"><p>Laser power level. </p>
 </td></tr>
@@ -1154,7 +1171,7 @@ TY_CAPI&#160;</td><td class="memItemRight" valign="bottom"><b>_TYInitLib</b> (vo
 </td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="a00002_source.html#l00334">334</a> of file <a class="el" href="a00002_source.html">TYApi.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00002_source.html#l00344">344</a> of file <a class="el" href="a00002_source.html">TYApi.h</a>.</p>
 
 </div>
 </div>
@@ -1202,26 +1219,7 @@ TY_CAPI&#160;</td><td class="memItemRight" valign="bottom"><b>_TYInitLib</b> (vo
 </td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="a00002_source.html#l00350">350</a> of file <a class="el" href="a00002_source.html">TYApi.h</a>.</p>
-
-</div>
-</div>
-<a id="a4839e5c5f94e5e6b4b4084495a65cc4f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4839e5c5f94e5e6b4b4084495a65cc4f">&#9670;&nbsp;</a></span>TY_TRIGGER_ACTIVATION_LIST</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">enum <a class="el" href="a00002.html#a4839e5c5f94e5e6b4b4084495a65cc4f">TY_TRIGGER_ACTIVATION_LIST</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>set external trigger signal edge </p>
-<dl class="section see"><dt>See also</dt><dd>refer to sample SimpleView_TriggerMode for detail usage </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="a00002_source.html#l00294">294</a> of file <a class="el" href="a00002_source.html">TYApi.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00002_source.html#l00360">360</a> of file <a class="el" href="a00002_source.html">TYApi.h</a>.</p>
 
 </div>
 </div>
@@ -1248,7 +1246,7 @@ TY_CAPI&#160;</td><td class="memItemRight" valign="bottom"><b>_TYInitLib</b> (vo
 </td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="a00002_source.html#l00406">406</a> of file <a class="el" href="a00002_source.html">TYApi.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00002_source.html#l00416">416</a> of file <a class="el" href="a00002_source.html">TYApi.h</a>.</p>
 
 </div>
 </div>
@@ -1569,7 +1567,7 @@ TY_CAPI&#160;</td><td class="memItemRight" valign="bottom"><b>_TYInitLib</b> (vo
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="a00093.html">TY_FRAME_DATA</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="a00097.html">TY_FRAME_DATA</a> *&#160;</td>
           <td class="paramname"><em>frame</em>, </td>
         </tr>
         <tr>

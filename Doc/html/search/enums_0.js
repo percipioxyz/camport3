@@ -11,6 +11,7 @@ var searchData=
   ['ty_5fpixel_5fformat_5flist',['TY_PIXEL_FORMAT_LIST',['../a00002.html#a3dd8e54985f49764a853f34728cd220f',1,'TYApi.h']]],
   ['ty_5fresolution_5fmode_5flist',['TY_RESOLUTION_MODE_LIST',['../a00002.html#a672706b9f41df147ac9709343ba1287b',1,'TYApi.h']]],
   ['ty_5fstatus_5flist',['TY_STATUS_LIST',['../a00002.html#a09671bb43e14fcbe9052793dcb80aa51',1,'TYApi.h']]],
-  ['ty_5ftrigger_5factivation_5flist',['TY_TRIGGER_ACTIVATION_LIST',['../a00002.html#a4839e5c5f94e5e6b4b4084495a65cc4f',1,'TYApi.h']]],
-  ['ty_5ftrigger_5fmode_5flist',['TY_TRIGGER_MODE_LIST',['../a00002.html#a02513e8af0f5898d86aa8ada972f5fb9',1,'TYApi.h']]]
+  ['ty_5fstream_5fasync_5fmode_5flist',['TY_STREAM_ASYNC_MODE_LIST',['../a00002.html#ab31f4b37998ea99deb46bc4d1c0e0824',1,'TYApi.h']]],
+  ['ty_5ftrigger_5fmode_5flist',['TY_TRIGGER_MODE_LIST',['../a00002.html#a02513e8af0f5898d86aa8ada972f5fb9',1,'TYApi.h']]],
+  ['ty_5ftrigger_5fpol_5flist',['TY_TRIGGER_POL_LIST',['../a00002.html#ac9e301e24ed27508226f1e0eaa4175c8',1,'TYApi.h']]]
 ];

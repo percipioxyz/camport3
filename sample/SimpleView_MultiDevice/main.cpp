@@ -202,7 +202,7 @@ int main(int argc, char* argv[])
             LOGD("triggered once");
         }
 
-        int err = TYFetchFrame(cams[cam_index].hDev, &cams[cam_index].frame, 1000);
+        int err = TYFetchFrame(cams[cam_index].hDev, &cams[cam_index].frame, 10000);
         if( err != TY_STATUS_OK ) {
             LOGD("cam %s %d ... Drop one frame", cams[cam_index].sn, cams[cam_index].idx);
         } else {

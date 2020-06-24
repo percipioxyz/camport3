@@ -5,7 +5,9 @@
 void dumpFeature(TY_DEV_HANDLE handle, TY_COMPONENT_ID compID, TY_FEATURE_ID featID, const char* name)
 {
     TY_FEATURE_INFO featInfo;
-    ASSERT_OK(TYGetFeatureInfo(handle, compID, featID, &featInfo));
+    if (TYGetFeatureInfo(handle, compID, featID, &featInfo) != TY_STATUS_OK) {
+        return;
+    }
 
     if(featInfo.isValid && (featInfo.accessMode&TY_ACCESS_READABLE)){
         LOGD("===         %s: comp(0x%x) feat(0x%x) name(%s) access(%d) bindComponent(0x%x) bindFeature(0x%x)"
@@ -107,7 +109,7 @@ void dumpComponentFeatures(TY_DEV_HANDLE handle, TY_COMPONENT_ID compID)
     DUMP_FEATURE(handle, compID, TY_INT_HEIGHT);
     DUMP_FEATURE(handle, compID, TY_ENUM_IMAGE_MODE);
                                                                 
-    DUMP_FEATURE(handle, compID, TY_ENUM_TRIGGER_ACTIVATION);
+    DUMP_FEATURE(handle, compID, TY_ENUM_TRIGGER_POL);
     DUMP_FEATURE(handle, compID, TY_INT_FRAME_PER_TRIGGER);
     DUMP_FEATURE(handle, compID, TY_BOOL_KEEP_ALIVE_ONOFF);
     DUMP_FEATURE(handle, compID, TY_INT_KEEP_ALIVE_TIMEOUT);

@@ -17,6 +17,8 @@ static inline int parseFrame(const TY_FRAME_DATA& frame, cv::Mat* pDepth
                              , cv::Mat* pColor, TY_ISP_HANDLE color_isp_handle = NULL)
 {
     for (int i = 0; i < frame.validCount; i++){
+        if (frame.image[i].status != TY_STATUS_OK) continue;
+
         // get depth image
         if (pDepth && frame.image[i].componentID == TY_COMPONENT_DEPTH_CAM){
             *pDepth = cv::Mat(frame.image[i].height, frame.image[i].width

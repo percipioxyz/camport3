@@ -20,6 +20,8 @@ set(ALL_SAMPLES
     SimpleView_TriggerMode_M3S1
     SimpleView_KeepAlive
     SimpleView_TriggerDelay
+    SimpleView_StreamAsync
+    SimpleView_StreamAsync1
     )
 
 set(SAMPLES_USED_GLUT
