@@ -80,9 +80,22 @@ int main(int argc, char* argv[])
 
     ASSERT_OK( TYEnableComponents(hDevice, componentIDs) );
 
-    LOGD("=== Configure feature, set resolution to 640x480.");
-    int err = TYSetEnum(hDevice, TY_COMPONENT_DEPTH_CAM, TY_ENUM_IMAGE_MODE, TY_IMAGE_MODE_DEPTH16_640x480);
-    ASSERT(err == TY_STATUS_OK || err == TY_STATUS_NOT_PERMITTED);
+    //try to enable depth map
+    LOGD("Configure components, open depth cam");
+    DepthViewer depthViewer("Depth");
+    if (allComps & TY_COMPONENT_DEPTH_CAM && depth) {
+        int32_t image_mode;
+        ASSERT_OK(get_default_image_mode(hDevice, TY_COMPONENT_DEPTH_CAM, image_mode));
+        LOGD("Select Depth Image Mode: %dx%d", TYImageWidth(image_mode), TYImageHeight(image_mode));
+        ASSERT_OK(TYSetEnum(hDevice, TY_COMPONENT_DEPTH_CAM, TY_ENUM_IMAGE_MODE, image_mode));
+        ASSERT_OK(TYEnableComponents(hDevice, TY_COMPONENT_DEPTH_CAM));
+
+        //depth map pixel format is uint16_t ,which default unit is  1 mm
+        //the acutal depth (mm)= PixelValue * ScaleUnit 
+        float scale_unit = 1.;
+        TYGetFloat(hDevice, TY_COMPONENT_DEPTH_CAM, TY_FLOAT_SCALE_UNIT, &scale_unit);
+        depthViewer.depth_scale_unit = scale_unit;
+    }
 
     LOGD("=== Prepare image buffer");
     uint32_t frameSize;
@@ -121,7 +134,6 @@ int main(int argc, char* argv[])
     LOGD("=== While loop to fetch frame");
     bool exit_main = false;
     TY_FRAME_DATA frame;
-    DepthViewer depthViewer("Depth");
     int index = 0;
 
     LOGD("=== Send Trigger Command");

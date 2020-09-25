@@ -96,15 +96,6 @@ int main(int argc, char* argv[])
             continue;
         }
 
-        LOGD("=== Configure feature, set resolution to 640x480.");
-        ret = TYSetEnum(hDevice, TY_COMPONENT_DEPTH_CAM, TY_ENUM_IMAGE_MODE, TY_IMAGE_MODE_DEPTH16_640x480);
-        if (ret < 0) {
-            LOGD("Failed!");
-            ASSERT_OK(TYCloseDevice(hDevice));
-            ASSERT_OK(TYCloseInterface(hIface));
-            continue;
-        }
-
         LOGD("=== Prepare image buffer");
         uint32_t frameSize;
         ret = TYGetFrameBufferSize(hDevice, &frameSize);

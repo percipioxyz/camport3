@@ -144,9 +144,15 @@ int main(int argc, char* argv[])
         int componentIDs = TY_COMPONENT_DEPTH_CAM;
         ASSERT_OK( TYEnableComponents(cams[count].hDev, componentIDs) );
 
-        LOGD("=== Configure feature, set resolution to 640x480.");
-        int err = TYSetEnum(cams[count].hDev, TY_COMPONENT_DEPTH_CAM, TY_ENUM_IMAGE_MODE, TY_IMAGE_MODE_DEPTH16_640x480);
-        ASSERT(err == TY_STATUS_OK || err == TY_STATUS_NOT_PERMITTED);
+        //try to enable depth map
+        LOGD("Configure components, open depth cam");
+        if (componentIDs & TY_COMPONENT_DEPTH_CAM) {
+            int32_t image_mode;
+            ASSERT_OK(get_default_image_mode(cams[count].hDev, TY_COMPONENT_DEPTH_CAM, image_mode));
+            LOGD("Select Depth Image Mode: %dx%d", TYImageWidth(image_mode), TYImageHeight(image_mode));
+            ASSERT_OK(TYSetEnum(cams[count].hDev, TY_COMPONENT_DEPTH_CAM, TY_ENUM_IMAGE_MODE, image_mode));
+            ASSERT_OK(TYEnableComponents(cams[count].hDev, TY_COMPONENT_DEPTH_CAM));
+        }
 
         LOGD("=== Prepare image buffer");
         uint32_t frameSize;

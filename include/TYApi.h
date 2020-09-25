@@ -82,7 +82,7 @@
 // copy stdbool.h here in case bool not defined or <stdbool.h> cant be found
 #ifndef _STDBOOL_H
 # define _STDBOOL_H
-# define __bool_true_false_are_defined	1
+# define __bool_true_false_are_defined  1
 # ifndef __cplusplus
 #  define bool  _Bool
 #  define true  1
@@ -129,17 +129,17 @@
 #endif
 
 #if !defined(TY_EXTC)
-#	if defined(__cplusplus)
-#	  define TY_EXTC extern "C"
-#	else
-#	  define TY_EXTC
-#	endif
+#   if defined(__cplusplus)
+#     define TY_EXTC extern "C"
+#   else
+#     define TY_EXTC
+#   endif
 #endif
 
 
 #define TY_LIB_VERSION_MAJOR       3
-#define TY_LIB_VERSION_MINOR       4 
-#define TY_LIB_VERSION_PATCH       7 
+#define TY_LIB_VERSION_MINOR       5 
+#define TY_LIB_VERSION_PATCH       3 
 
 
 //------------------------------------------------------------------------------
@@ -253,7 +253,7 @@ typedef enum TY_FEATURE_ID_LIST
 
     //@brief scale unit
     //depth image is uint16 pixel format with default millimeter unit ,for some device  can output Sub-millimeter accuracy data
-    //the acutal depth (mm)= PxielValue * ScaleUnit 
+    //the acutal depth (mm)= PixelValue * ScaleUnit 
     TY_FLOAT_SCALE_UNIT             = 0x010a | TY_FEATURE_FLOAT, 
 
     TY_ENUM_TRIGGER_POL             = 0x3201 | TY_FEATURE_ENUM,  ///< Trigger POL, see TY_TRIGGER_POL_LIST
@@ -288,6 +288,16 @@ typedef enum TY_FEATURE_ID_LIST
     TY_INT_B_GAIN                   = 0x0522 | TY_FEATURE_INT,  ///< Gain of B channel
 
     TY_INT_ANALOG_GAIN              = 0x0524 | TY_FEATURE_INT,  ///< Analog gain
+
+    TY_BOOL_IMU_DATA_ONOFF          = 0x0600 | TY_FEATURE_BOOL, ///< IMU Data Onoff
+    TY_STRUCT_IMU_ACC_BIAS          = 0x0601 | TY_FEATURE_STRUCT, ///< IMU acc bias matrix, see TY_ACC_BIAS
+    TY_STRUCT_IMU_ACC_MISALIGNMENT  = 0x0602 | TY_FEATURE_STRUCT, ///< IMU acc misalignment matrix, see TY_ACC_MISALIGNMENT
+    TY_STRUCT_IMU_ACC_SCALE         = 0x0603 | TY_FEATURE_STRUCT, ///< IMU acc scale matrix, see TY_ACC_SCALE
+    TY_STRUCT_IMU_GYRO_BIAS         = 0x0604 | TY_FEATURE_STRUCT, ///< IMU gyro bias matrix, see TY_GYRO_BIAS
+    TY_STRUCT_IMU_GYRO_MISALIGNMENT = 0x0605 | TY_FEATURE_STRUCT, ///< IMU gyro misalignment matrix, see TY_GYRO_MISALIGNMENT
+    TY_STRUCT_IMU_GYRO_SCALE        = 0x0606 | TY_FEATURE_STRUCT, ///< IMU gyro scale matrix, see TY_GYRO_SCALE
+    TY_STRUCT_IMU_CAM_TO_IMU        = 0x0607 | TY_FEATURE_STRUCT, ///< IMU camera to imu matrix, see TY_CAMERA_TO_IMU
+    TY_ENUM_IMU_FPS                 = 0x0608 | TY_FEATURE_ENUM, ///< IMU fps, see TY_IMU_FPS_LIST
 }TY_FEATURE_ID_LIST;
 typedef int32_t TY_FEATURE_ID;///< feature unique id @see TY_FEATURE_ID_LIST
 
@@ -372,6 +382,7 @@ typedef enum TY_RESOLUTION_MODE_LIST
     TY_RESOLUTION_MODE_1280x720     = (1280<<12)+720,   ///< 0x005002d0
     TY_RESOLUTION_MODE_1280x800     = (1280<<12)+800,   ///< 0x00500320
     TY_RESOLUTION_MODE_1280x960     = (1280<<12)+960,   ///< 0x005003c0
+    TY_RESOLUTION_MODE_1920x1080    = (1920<<12)+1080,   ///< 0x00780438
     TY_RESOLUTION_MODE_2592x1944    = (2592<<12)+1944,  ///< 0x00a20798
 }TY_RESOLUTION_MODE_LIST;
 typedef int32_t TY_RESOLUTION_MODE;
@@ -392,6 +403,7 @@ typedef int32_t TY_RESOLUTION_MODE;
             TY_DECLARE_IMAGE_MODE0(pix, 1280x720), \
             TY_DECLARE_IMAGE_MODE0(pix, 1280x960), \
             TY_DECLARE_IMAGE_MODE0(pix, 1280x800), \
+            TY_DECLARE_IMAGE_MODE0(pix, 1920x1080), \
             TY_DECLARE_IMAGE_MODE0(pix, 2592x1944)
 
 
@@ -475,6 +487,8 @@ typedef struct TY_DEVICE_BASE_INFO
       TY_DEVICE_NET_INFO netInfo;
       TY_DEVICE_USB_INFO usbInfo;
     };
+    char                buildHash[256];
+    char                configVersion[256];
     char                reserved[256];
 }TY_DEVICE_BASE_INFO;
 
@@ -604,6 +618,100 @@ typedef struct TY_CAMERA_STATISTICS
     uint8_t   rsvd[1024];
 }TY_CAMERA_STATISTICS;
 
+typedef struct TY_IMU_DATA
+{
+    uint64_t    timestamp;
+    float       acc_x;
+    float       acc_y;
+    float       acc_z;
+    float       gyro_x;
+    float       gyro_y;
+    float       gyro_z;
+    float       temperature;
+    float       reserved[1];
+}TY_IMU_DATA;
+
+///  a 3x3 matrix  
+/// |.|.|.|
+/// | --    |   ---- |   --- |
+/// | BIASx | BIASy  | BIASz |
+typedef struct TY_ACC_BIAS
+{
+    float data[3];
+}TY_ACC_BIAS;
+
+///  a 3x3 matrix  
+/// |.|.|.|
+/// |.|.|.|
+/// | --     |   ----  |   ----  |
+/// | 1      | -GAMAyz | GAMAzy  |
+/// | GAMAxz | 1       | -GAMAzx |
+/// | -GAMAxy| GAMAyx  | 1       |
+typedef struct TY_ACC_MISALIGNMENT
+{
+    float data[3 * 3];
+}TY_ACC_MISALIGNMENT;
+
+///  a 3x3 matrix  
+/// |.|.|.|
+/// | ----  |----  |----   |
+/// | SCALEx|  0   | 0     |
+/// |  0    |SCALEy| 0     |
+/// |  0    |  0   | SCALEz|
+typedef struct TY_ACC_SCALE
+{
+    float data[3 * 3];
+}TY_ACC_SCALE;
+
+///  a 3x3 matrix  
+/// |.|.|.|
+/// | --    |   ---- |   --- |
+/// | BIASx | BIASy  | BIASz |
+typedef struct TY_GYRO_BIAS
+{
+    float data[3];
+}TY_GYRO_BIAS;
+
+///  a 3x3 matrix  
+/// |.|.|.|
+/// | --|   ----  |   ----   |
+/// | 1 | -ALPHAyz| ALPHAzy  |
+/// | 0 | 1       | -ALPHAzx |
+/// | 0 | 0       | 1        |
+typedef struct TY_GYRO_MISALIGNMENT
+{
+    float data[3 * 3];
+}TY_GYRO_MISALIGNMENT;
+
+///  a 3x3 matrix  
+/// |.|.|.|
+/// | ----  |----  |----   |
+/// | SCALEx|  0   | 0     |
+/// |  0    |SCALEy| 0     |
+/// |  0    |  0   | SCALEz|
+typedef struct TY_GYRO_SCALE
+{
+    float data[3 * 3];
+}TY_GYRO_SCALE;
+
+/// a 4x4 matrix
+///  |.|.|.|.|
+///  |---|----|----|---|
+///  |r11| r12| r13| t1|
+///  |r21| r22| r23| t2|
+///  |r31| r32| r33| t3|
+///  | 0 |   0|   0|  1|
+typedef struct TY_CAMERA_TO_IMU
+{
+    float data[4 * 4];
+}TY_CAMERA_TO_IMU;
+
+typedef enum TY_IMU_FPS_LIST
+{
+    TY_IMU_FPS_100HZ = 0,
+    TY_IMU_FPS_200HZ,
+    TY_IMU_FPS_400HZ,
+}TY_IMU_FPS_LIST;
 
 //------------------------------------------------------------------------------
 //  Buffer & Callback
@@ -641,6 +749,7 @@ typedef struct TY_EVENT_INFO
 
 
 typedef void (*TY_EVENT_CALLBACK) (TY_EVENT_INFO*, void* userdata);
+typedef void (*TY_IMU_CALLBACK) (TY_IMU_DATA*, void* userdata);
 
 
 //------------------------------------------------------------------------------
@@ -1021,6 +1130,15 @@ TY_CAPI TYSendSoftTrigger         (TY_DEV_HANDLE hDevice);
 /// @retval TY_STATUS_BUSY      Device is capturing.
 TY_CAPI TYRegisterEventCallback   (TY_DEV_HANDLE hDevice, TY_EVENT_CALLBACK callback, void* userdata);
 
+/// @brief Register imu callback. Register NULL to clean callback.
+/// @param  [in]  hDevice       Device handle.
+/// @param  [in]  callback      Callback function.
+/// @param  [in]  userdata      User private data.
+/// @retval TY_STATUS_OK        Succeed.
+/// @retval TY_STATUS_INVALID_HANDLE    Invalid device handle.
+/// @retval TY_STATUS_BUSY      Device is capturing.
+TY_CAPI TYRegisterImuCallback     (TY_DEV_HANDLE hDevice, TY_IMU_CALLBACK callback, void* userdata);
+
 /// @brief Fetch one frame.
 /// @param  [in]  hDevice       Device handle.
 /// @param  [out] frame         Frame data to be filled.
@@ -1399,6 +1517,7 @@ TY_CAPI             TYStartCapture            (TY_DEV_HANDLE hDevice);
 TY_CAPI             TYStopCapture             (TY_DEV_HANDLE hDevice);
 TY_CAPI             TYSendSoftTrigger         (TY_DEV_HANDLE hDevice);
 TY_CAPI             TYRegisterEventCallback   (TY_DEV_HANDLE hDevice, TY_EVENT_CALLBACK callback, void* userdata);
+TY_CAPI             TYRegisterImuCallback     (TY_DEV_HANDLE hDevice, TY_IMU_CALLBACK callback, void* userdata);
 TY_CAPI             TYFetchFrame              (TY_DEV_HANDLE hDevice, TY_FRAME_DATA* frame, int32_t timeout);
 
 TY_CAPI             TYHasFeature              (TY_DEV_HANDLE hDevice, TY_COMPONENT_ID componentID, TY_FEATURE_ID featureID, bool* value);

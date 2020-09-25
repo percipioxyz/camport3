@@ -238,7 +238,7 @@ static inline TY_STATUS selectDevice(TY_INTERFACE_TYPE iface
     return TY_STATUS_OK;
 }
 
-static TY_STATUS get_feature_enum_list(TY_DEV_HANDLE handle,
+static inline TY_STATUS get_feature_enum_list(TY_DEV_HANDLE handle,
                                        TY_COMPONENT_ID compID,
                                        TY_FEATURE_ID featID,
                                        std::vector<TY_ENUM_ENTRY> &feature_info){
@@ -254,5 +254,17 @@ static TY_STATUS get_feature_enum_list(TY_DEV_HANDLE handle,
     return TY_STATUS_OK;
 }
 
+static inline TY_STATUS get_default_image_mode(TY_DEV_HANDLE handle
+    , TY_COMPONENT_ID compID
+    , int32_t &image_mode)
+{
+    std::vector<TY_ENUM_ENTRY> image_mode_list;
+    ASSERT_OK(get_feature_enum_list(handle, compID, TY_ENUM_IMAGE_MODE, image_mode_list));
+    if (image_mode_list.size() == 0){
+        return TY_STATUS_ERROR;
+    }
+    image_mode = image_mode_list[0].value;
+    return TY_STATUS_OK;
+}
 
 #endif

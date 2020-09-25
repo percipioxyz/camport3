@@ -1,7 +1,4 @@
 var a00113 =
 [
-    [ "outlier_rate", "a00113.html#ac9d2fb2f66185d5e4e362fd68c688c1b", null ],
-    [ "outlier_win_sz", "a00113.html#ae710febd7b70a95c1ec51e8721cb4d6e", null ],
-    [ "sigma_r", "a00113.html#a307c0f2750006519986ede18f461a33f", null ],
-    [ "sigma_s", "a00113.html#a005d6e28cca77a5964b0c588ee3839e9", null ]
+    [ "data", "a00113.html#acaea7dafe6db85c35b410e83e150df7f", null ]
 ];

@@ -51,6 +51,7 @@ var searchData=
   ['tyopendevicewithip',['TYOpenDeviceWithIP',['../a00002.html#a4fa6f168a472898ebd51f4fa473f961e',1,'TYApi.h']]],
   ['tyopeninterface',['TYOpenInterface',['../a00002.html#aa75aa3d7f11922855c0f5cd39eb529e9',1,'TYApi.h']]],
   ['tyregistereventcallback',['TYRegisterEventCallback',['../a00002.html#a1a413221c79c9516ea90d7252b671076',1,'TYApi.h']]],
+  ['tyregisterimucallback',['TYRegisterImuCallback',['../a00002.html#adc75d5a565b8ff0ba9eabac4fe751d76',1,'TYApi.h']]],
   ['tysendsofttrigger',['TYSendSoftTrigger',['../a00002.html#afd5565df7f7b9387bfd267a0d749530e',1,'TYApi.h']]],
   ['tysetbool',['TYSetBool',['../a00002.html#a34265b26ff5c00dc958a7b0b191d3dd0',1,'TYApi.h']]],
   ['tysetbytearray',['TYSetByteArray',['../a00002.html#a6a40ab2a2d531a6c5e6efa09ffa6502e',1,'TYApi.h']]],

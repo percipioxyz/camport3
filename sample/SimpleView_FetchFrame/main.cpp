@@ -88,28 +88,21 @@ int main(int argc, char* argv[])
 
     if (allComps & TY_COMPONENT_IR_CAM_RIGHT && ir) {
         LOGD("Has IR right camera, open IR right cam");
-		    ASSERT_OK(TYEnableComponents(hDevice, TY_COMPONENT_IR_CAM_RIGHT));
+        ASSERT_OK(TYEnableComponents(hDevice, TY_COMPONENT_IR_CAM_RIGHT));
     }
 
     //try to enable depth map
     LOGD("Configure components, open depth cam");
     DepthViewer depthViewer("Depth");
     if (allComps & TY_COMPONENT_DEPTH_CAM && depth) {
-        std::vector<TY_ENUM_ENTRY> image_mode_list;
-        ASSERT_OK(get_feature_enum_list(hDevice, TY_COMPONENT_DEPTH_CAM, TY_ENUM_IMAGE_MODE, image_mode_list));
-        for (int idx = 0; idx < image_mode_list.size(); idx++){
-            TY_ENUM_ENTRY &entry = image_mode_list[idx];
-            //try to select a VGA resolution
-            if (TYImageWidth(entry.value) == 640 || TYImageHeight(entry.value) == 640){
-                LOGD("Select Depth Image Mode: %s", entry.description);
-                int err = TYSetEnum(hDevice, TY_COMPONENT_DEPTH_CAM, TY_ENUM_IMAGE_MODE, entry.value);
-                ASSERT(err == TY_STATUS_OK || err == TY_STATUS_NOT_PERMITTED);
-                break;
-            }
-        }
+        int32_t image_mode;
+        ASSERT_OK(get_default_image_mode(hDevice, TY_COMPONENT_DEPTH_CAM, image_mode));
+        LOGD("Select Depth Image Mode: %dx%d", TYImageWidth(image_mode), TYImageHeight(image_mode));
+        ASSERT_OK(TYSetEnum(hDevice, TY_COMPONENT_DEPTH_CAM, TY_ENUM_IMAGE_MODE, image_mode));
         ASSERT_OK(TYEnableComponents(hDevice, TY_COMPONENT_DEPTH_CAM));
+
         //depth map pixel format is uint16_t ,which default unit is  1 mm
-        //the acutal depth (mm)= PxielValue * ScaleUnit 
+        //the acutal depth (mm)= PixelValue * ScaleUnit 
         float scale_unit = 1.;
         TYGetFloat(hDevice, TY_COMPONENT_DEPTH_CAM, TY_FLOAT_SCALE_UNIT, &scale_unit);
         depthViewer.depth_scale_unit = scale_unit;

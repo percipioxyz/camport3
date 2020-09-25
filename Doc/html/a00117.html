@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.14"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>TYCamport3: TY_ISP_FEATURE_INFO Struct Reference</title>
+<title>TYCamport3: TY_GYRO_SCALE Struct Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -90,40 +90,41 @@ $(document).ready(function(){initNavTree('a00117.html','');});
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="a00114.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">TY_ISP_FEATURE_INFO Struct Reference</div>  </div>
+<div class="title">TY_GYRO_SCALE Struct Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p><code>#include &lt;<a class="el" href="a00002_source.html">TYApi.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a8f7eb41b65e744e3c938509f38c79116"><td class="memItemLeft" align="right" valign="top"><a id="a8f7eb41b65e744e3c938509f38c79116"></a>
-<a class="el" href="a00011.html#ab9368908bb0baf2d31dc950142e470b4">TY_ISP_FEATURE_ID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>id</b></td></tr>
-<tr class="separator:a8f7eb41b65e744e3c938509f38c79116"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1df1baa91b37221ea7f8ef5baf5962ba"><td class="memItemLeft" align="right" valign="top"><a id="a1df1baa91b37221ea7f8ef5baf5962ba"></a>
-int32_t&#160;</td><td class="memItemRight" valign="bottom"><b>size</b></td></tr>
-<tr class="separator:a1df1baa91b37221ea7f8ef5baf5962ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7be49a34394abee7d93c555c42ce4de9"><td class="memItemLeft" align="right" valign="top"><a id="a7be49a34394abee7d93c555c42ce4de9"></a>
-const char *&#160;</td><td class="memItemRight" valign="bottom"><b>name</b></td></tr>
-<tr class="separator:a7be49a34394abee7d93c555c42ce4de9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a76a438eeadaa1701b87e250c5c6cb412"><td class="memItemLeft" align="right" valign="top"><a id="a76a438eeadaa1701b87e250c5c6cb412"></a>
-const char *&#160;</td><td class="memItemRight" valign="bottom"><b>value_type</b></td></tr>
-<tr class="separator:a76a438eeadaa1701b87e250c5c6cb412"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae4681d208e43c70c2320b9f2333e4db8"><td class="memItemLeft" align="right" valign="top"><a id="ae4681d208e43c70c2320b9f2333e4db8"></a>
-TY_ACCESS_MODE&#160;</td><td class="memItemRight" valign="bottom"><b>mode</b></td></tr>
-<tr class="separator:ae4681d208e43c70c2320b9f2333e4db8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac612d69581074cebf4a840b4b7de4ed0"><td class="memItemLeft" align="right" valign="top"><a id="ac612d69581074cebf4a840b4b7de4ed0"></a>
+float&#160;</td><td class="memItemRight" valign="bottom"><b>data</b> [3 *3]</td></tr>
+<tr class="separator:ac612d69581074cebf4a840b4b7de4ed0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock">
-<p class="definition">Definition at line <a class="el" href="a00011_source.html#l00063">63</a> of file <a class="el" href="a00011_source.html">TyIsp.h</a>.</p>
+<div class="textblock"><p>a 3x3 matrix <br />
+</p><table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">.  </th><th class="markdownTableHeadNone">.  </th><th class="markdownTableHeadNone">.   </th></tr>
+<tr class="markdownTableBody" class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">SCALEx  </td><td class="markdownTableBodyNone">0  </td><td class="markdownTableBodyNone">0   </td></tr>
+<tr class="markdownTableBody" class="markdownTableRowEven">
+<td class="markdownTableBodyNone">0  </td><td class="markdownTableBodyNone">SCALEy  </td><td class="markdownTableBodyNone">0   </td></tr>
+<tr class="markdownTableBody" class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">0  </td><td class="markdownTableBodyNone">0  </td><td class="markdownTableBodyNone">SCALEz   </td></tr>
+</table>
+
+<p class="definition">Definition at line <a class="el" href="a00002_source.html#l00692">692</a> of file <a class="el" href="a00002_source.html">TYApi.h</a>.</p>
 </div><hr/>The documentation for this struct was generated from the following file:<ul>
-<li><a class="el" href="a00011_source.html">TyIsp.h</a></li>
+<li><a class="el" href="a00002_source.html">TYApi.h</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="a00117.html">TY_ISP_FEATURE_INFO</a></li>
+    <li class="navelem"><a class="el" href="a00117.html">TY_GYRO_SCALE</a></li>
     <li class="footer">Generated by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.14 </li>

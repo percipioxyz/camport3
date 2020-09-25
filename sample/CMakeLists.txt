@@ -22,11 +22,16 @@ set(ALL_SAMPLES
     SimpleView_TriggerDelay
     SimpleView_StreamAsync
     SimpleView_StreamAsync1
+    SimpleView_ImuData
     )
 
 set(SAMPLES_USED_GLUT
     SimpleView_Point3D
     )
+
+if (MSVC)
+    option(OpenCV_STATIC "Using static opencv" OFF)
+endif()
 
 option(OPENGL_VIEW "Enable GLUT OpenGL point cloud view " OFF)
 if (NOT TARGET tycam) 

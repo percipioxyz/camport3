@@ -1,5 +1,7 @@
 var a00033 =
 [
+    [ "buildHash", "a00033.html#aa725db32ecbcabc59ab759b294b5cd1d", null ],
+    [ "configVersion", "a00033.html#a2e245f0076c559aeb469fa48e799b84a", null ],
     [ "firmwareVersion", "a00033.html#a2570cb515298d3174ab2028af340fe76", null ],
     [ "hardwareVersion", "a00033.html#adbe5206936aa801586075fb70dec83d5", null ],
     [ "id", "a00033.html#adf4cc367429f25e9fc8a5e96b94da073", null ],
