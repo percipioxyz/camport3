@@ -1,12 +1,7 @@
 var a00093 =
 [
-    [ "acc_x", "a00093.html#a3c824136ab280902a33cb54662a945d2", null ],
-    [ "acc_y", "a00093.html#a340b36c5afced446d418c6be499b2a32", null ],
-    [ "acc_z", "a00093.html#a95499999722a20b1bb370099e932eded", null ],
-    [ "gyro_x", "a00093.html#a88138794516e73364197d1937d9cc644", null ],
-    [ "gyro_y", "a00093.html#a33113d7e8364a8c97ec83e40b17dce6a", null ],
-    [ "gyro_z", "a00093.html#ad328c14fd1b02cdf06097a18b5c94523", null ],
-    [ "reserved", "a00093.html#aa835e231575eb5a07f8be12de6f1d72e", null ],
-    [ "temperature", "a00093.html#ade308c4ba37af3a11ff92c4f5ae2be59", null ],
-    [ "timestamp", "a00093.html#a33ba3f9e3c826744623d71f413f49ce8", null ]
+    [ "h", "a00093.html#a936708e6ffb152628d8269cb8ef17862", null ],
+    [ "w", "a00093.html#a28ff34b7b4ac617379f614bd12040be5", null ],
+    [ "x", "a00093.html#ab458b9efaff3f1ee28728ee4845a518f", null ],
+    [ "y", "a00093.html#a06ab60ccb6a66df98bd3012907dfe192", null ]
 ];

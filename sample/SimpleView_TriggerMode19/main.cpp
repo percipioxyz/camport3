@@ -144,7 +144,7 @@ int main(int argc, char* argv[])
         if (err == TY_STATUS_OK) {
             LOGD("=== Get frame %d", ++index);
             for (int32_t i=0; i<frame.validCount; i++) {
-                LOGD("    [%d]%4d*%4d (%d)", i,
+                LOGD("    iamge [%d] width %4d  height %4d (Laser_val %d)", i,
                     frame.image[i].width, frame.image[i].height, frame.image[i].reserved[0]); // laser_val: frame.image[i].reserved[0]
             }
 

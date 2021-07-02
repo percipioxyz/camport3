@@ -64,9 +64,13 @@ int main(int argc, char* argv[])
         TYGetDeviceList(hIface, &devs[0], n, &n);
         ASSERT(n == devs.size());
         for (uint32_t j = 0; j < n; j++) {
-           if (TYIsNetworkInterface(devs[j].iface.type)) {
+            if (TYIsNetworkInterface(devs[j].iface.type)) {
                 LOGD("    - device %s:", devs[j].id);
-                LOGD("          vendor     : %s", devs[j].vendorName);
+                if (strlen(devs[j].userDefinedName) != 0) {
+                    LOGD("          vendor     : %s", devs[j].userDefinedName);
+                } else {
+                    LOGD("          vendor     : %s", devs[j].vendorName);
+                }
                 LOGD("          model      : %s", devs[j].modelName);
 
                 LOGD("          device MAC : %s", devs[j].netInfo.mac);
@@ -86,8 +90,11 @@ int main(int argc, char* argv[])
                 } else {
                     LOGD("    - device %s(open failed, error: %d)", devs[j].id, ret);
                 }
-
-                LOGD("          vendor     : %s", devs[j].vendorName);
+                if (strlen(devs[j].userDefinedName) != 0) {
+                    LOGD("          vendor     : %s", devs[j].userDefinedName);
+                } else {
+                    LOGD("          vendor     : %s", devs[j].vendorName);
+                }
                 LOGD("          model      : %s", devs[j].modelName);
 
                 if (save) {

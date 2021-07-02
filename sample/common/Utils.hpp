@@ -10,6 +10,7 @@
 #include <string.h>
 #include <string>
 #include <vector>
+#include <inttypes.h>
 #include "TYApi.h"
 
 #ifndef ASSERT
@@ -51,12 +52,12 @@
       tm.tm_sec     = wtm.wSecond;
       tm.tm_isdst    = -1;
   
-	  strftime(local, 26, "%Y-%m-%d %H:%M:%S", &tm);
+      strftime(local, 26, "%Y-%m-%d %H:%M:%S", &tm);
 
       return local;
   }
 
-  static inline uint32_t getSystemTime()
+  static inline uint64_t getSystemTime()
   {
       SYSTEMTIME wtm;
       struct tm tm;
@@ -92,7 +93,7 @@
       return local; 
   }
 
-  static inline uint32_t getSystemTime()
+  static inline uint64_t getSystemTime()
   {
       struct timeval tv;
       gettimeofday(&tv, NULL);
@@ -105,10 +106,10 @@
 #endif
 
 
-#define LOGD(fmt,...)  printf("%u (%s) " fmt "\n", getSystemTime(), getLocalTime(), ##__VA_ARGS__)
-#define LOGI(fmt,...)  printf("%u (%s) " fmt "\n", getSystemTime(), getLocalTime(), ##__VA_ARGS__)
-#define LOGW(fmt,...)  printf("%u (%s) " fmt "\n", getSystemTime(), getLocalTime(), ##__VA_ARGS__)
-#define LOGE(fmt,...)  printf("%u (%s) Error: " fmt "\n", getSystemTime(), getLocalTime(), ##__VA_ARGS__)
+#define LOGD(fmt,...)  printf("%" PRIu64 " (%s) " fmt "\n", getSystemTime(), getLocalTime(), ##__VA_ARGS__)
+#define LOGI(fmt,...)  printf("%" PRIu64 " (%s) " fmt "\n", getSystemTime(), getLocalTime(), ##__VA_ARGS__)
+#define LOGW(fmt,...)  printf("%" PRIu64 " (%s) " fmt "\n", getSystemTime(), getLocalTime(), ##__VA_ARGS__)
+#define LOGE(fmt,...)  printf("%" PRIu64 " (%s) Error: " fmt "\n", getSystemTime(), getLocalTime(), ##__VA_ARGS__)
 #define xLOGD(fmt,...)
 #define xLOGI(fmt,...)
 #define xLOGW(fmt,...)

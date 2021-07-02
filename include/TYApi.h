@@ -139,7 +139,7 @@
 
 #define TY_LIB_VERSION_MAJOR       3
 #define TY_LIB_VERSION_MINOR       5 
-#define TY_LIB_VERSION_PATCH       3 
+#define TY_LIB_VERSION_PATCH       11
 
 
 //------------------------------------------------------------------------------
@@ -228,7 +228,8 @@ typedef int32_t TY_FEATURE_TYPE;
 typedef enum TY_FEATURE_ID_LIST
 {
     TY_STRUCT_CAM_INTRINSIC         = 0x0000 | TY_FEATURE_STRUCT, ///< see TY_CAMERA_INTRINSIC
-    TY_STRUCT_EXTRINSIC_TO_LEFT_IR  = 0x0001 | TY_FEATURE_STRUCT, ///< extrinsic from current component to left IR, see TY_CAMERA_EXTRINSIC
+    TY_STRUCT_EXTRINSIC_TO_DEPTH    = 0x0001 | TY_FEATURE_STRUCT, ///< extrinsic between  depth cam and current component , see TY_CAMERA_EXTRINSIC
+    TY_STRUCT_EXTRINSIC_TO_IR_LEFT  = 0x0002 | TY_FEATURE_STRUCT, ///< extrinsic between  left IR and current compoent, see TY_CAMERA_EXTRINSIC
     TY_STRUCT_CAM_DISTORTION        = 0x0006 | TY_FEATURE_STRUCT, ///< see TY_CAMERA_DISTORTION
     TY_STRUCT_CAM_CALIB_DATA        = 0x0007 | TY_FEATURE_STRUCT, ///< see TY_CAMERA_CALIB_INFO
     TY_BYTEARRAY_CUSTOM_BLOCK       = 0x000A | TY_FEATURE_BYTEARRAY, ///< used for reading/writing custom block
@@ -241,6 +242,7 @@ typedef enum TY_FEATURE_ID_LIST
     TY_INT_PACKET_DELAY             = 0x0014 | TY_FEATURE_INT,    ///< microseconds
     TY_INT_ACCEPTABLE_PERCENT       = 0x0015 | TY_FEATURE_INT,
     TY_INT_NTP_SERVER_IP            = 0x0016 | TY_FEATURE_INT,    ///< Ntp server IP
+    TY_INT_PACKET_SIZE              = 0x0017 | TY_FEATURE_INT,
     TY_STRUCT_CAM_STATISTICS        = 0x00ff | TY_FEATURE_STRUCT, ///< statistical information, see TY_CAMERA_STATISTICS
 
     TY_INT_WIDTH_MAX                = 0x0100 | TY_FEATURE_INT,
@@ -256,10 +258,12 @@ typedef enum TY_FEATURE_ID_LIST
     //the acutal depth (mm)= PixelValue * ScaleUnit 
     TY_FLOAT_SCALE_UNIT             = 0x010a | TY_FEATURE_FLOAT, 
 
-    TY_ENUM_TRIGGER_POL             = 0x3201 | TY_FEATURE_ENUM,  ///< Trigger POL, see TY_TRIGGER_POL_LIST
+    TY_ENUM_TRIGGER_POL             = 0x0201 | TY_FEATURE_ENUM,  ///< Trigger POL, see TY_TRIGGER_POL_LIST
     TY_INT_FRAME_PER_TRIGGER        = 0x0202 | TY_FEATURE_INT,  ///< Number of frames captured per trigger
     TY_STRUCT_TRIGGER_PARAM         = 0x0523 | TY_FEATURE_STRUCT,  ///< param of trigger, see TY_TRIGGER_PARAM
     TY_STRUCT_TRIGGER_PARAM_EX      = 0x0525 | TY_FEATURE_STRUCT,  ///< param of trigger, see TY_TRIGGER_PARAM_EX
+    TY_STRUCT_TRIGGER_TIMER_LIST    = 0x0526 | TY_FEATURE_STRUCT,  ///< param of trigger mode 20, see TY_TRIGGER_TIMER_LIST
+    TY_STRUCT_TRIGGER_TIMER_PERIOD  = 0x0527 | TY_FEATURE_STRUCT,  ///< param of trigger mode 21, see TY_TRIGGER_TIMER_PERIOD
     TY_BOOL_KEEP_ALIVE_ONOFF        = 0x0203 | TY_FEATURE_BOOL, ///< Keep Alive switch
     TY_INT_KEEP_ALIVE_TIMEOUT       = 0x0204 | TY_FEATURE_INT,  ///< Keep Alive timeout
     TY_BOOL_CMOS_SYNC               = 0x0205 | TY_FEATURE_BOOL, ///< Cmos sync switch
@@ -268,6 +272,8 @@ typedef enum TY_FEATURE_ID_LIST
     TY_INT_TRIGGER_DURATION_US      = 0x0208 | TY_FEATURE_INT,  ///< Trigger duration time, in microseconds
     TY_ENUM_STREAM_ASYNC            = 0x0209 | TY_FEATURE_ENUM,  ///< stream async switch, see TY_STREAM_ASYNC_MODE
     TY_INT_CAPTURE_TIME_US          = 0x0210 | TY_FEATURE_INT,  ///< capture time in multi-ir 
+    TY_ENUM_TIME_SYNC_TYPE          = 0x0211 | TY_FEATURE_ENUM, ///< see TY_TIME_SYNC_TYPE
+    TY_BOOL_TIME_SYNC_READY         = 0x0212 | TY_FEATURE_BOOL,
 
     TY_BOOL_AUTO_EXPOSURE           = 0x0300 | TY_FEATURE_BOOL, ///< Auto exposure switch
     TY_INT_EXPOSURE_TIME            = 0x0301 | TY_FEATURE_INT,  ///< Exposure time in percentage
@@ -358,6 +364,7 @@ typedef enum TY_PIXEL_FORMAT_LIST{
     TY_PIXEL_FORMAT_DEPTH16     = (TY_PIXEL_16BIT | (0x0 << 24)), ///< 0x20000000
     TY_PIXEL_FORMAT_YVYU        = (TY_PIXEL_16BIT | (0x1 << 24)), ///< 0x21000000, yvyu422
     TY_PIXEL_FORMAT_YUYV        = (TY_PIXEL_16BIT | (0x2 << 24)), ///< 0x22000000, yuyv422
+    TY_PIXEL_FORMAT_MONO16      = (TY_PIXEL_16BIT | (0x3 << 24)), ///< 0x23000000, 
     TY_PIXEL_FORMAT_RGB         = (TY_PIXEL_24BIT | (0x0 << 24)), ///< 0x30000000
     TY_PIXEL_FORMAT_BGR         = (TY_PIXEL_24BIT | (0x1 << 24)), ///< 0x31000000
     TY_PIXEL_FORMAT_JPEG        = (TY_PIXEL_24BIT | (0x2 << 24)), ///< 0x32000000
@@ -433,8 +440,24 @@ typedef enum TY_TRIGGER_MODE_LIST
     TY_TRIGGER_MODE_M_PER       = 3, ///<master mode 2, periodic sending one trigger signals, 'fps' param should be set
     TY_TRIGGER_MODE_SIG_PASS    = 18,
     TY_TRIGGER_MODE_PER_PASS    = 19,
+    TY_TRIGGER_MODE_TIMER_LIST  = 20,
+    TY_TRIGGER_MODE_TIMER_PERIOD= 21,
+    TY_TRIGGER_MODE_PER_PASS2   = 30,///<trigger mode 30,Alternate output depth image/ir image
+    TY_TRIGGER_MODE_SIG_LASER   = 34,
 }TY_TRIGGER_MODE_LIST;
 typedef int16_t TY_TRIGGER_MODE;
+
+///@brief type of time sync
+typedef enum TY_TIME_SYNC_TYPE_LIST
+{
+    TY_TIME_SYNC_TYPE_NONE = 0,
+    TY_TIME_SYNC_TYPE_HOST = 1,
+    TY_TIME_SYNC_TYPE_NTP = 2,
+    TY_TIME_SYNC_TYPE_PTP = 3,
+    TY_TIME_SYNC_TYPE_CAN = 4,
+    TY_TIME_SYNC_TYPE_PTP_MASTER = 5,
+}TY_TIME_SYNC_TYPE_LIST;
+typedef int32_t TY_TIME_SYNC_TYPE;
 
 //------------------------------------------------------------------------------
 //  Struct
@@ -479,7 +502,8 @@ typedef struct TY_DEVICE_BASE_INFO
 {
     TY_INTERFACE_INFO   iface;
     char                id[32];///<device serial number
-    char                vendorName[32];     
+    char                vendorName[32];
+    char                userDefinedName[32];
     char                modelName[32];///<device model name
     TY_VERSION_INFO     hardwareVersion; ///<deprecated
     TY_VERSION_INFO     firmwareVersion;///<deprecated
@@ -600,6 +624,22 @@ typedef struct TY_TRIGGER_PARAM_EX
     int32_t   led_gain;
     int32_t   rsvd[20];
 }TY_TRIGGER_PARAM_EX;
+
+//@see sample SimpleView_TriggerMode, only for TY_TRIGGER_MODE_TIMER_LIST
+typedef struct TY_TRIGGER_TIMER_LIST
+{
+    uint64_t  start_time_us; // 0 for disable
+    uint32_t  offset_us_count; // length of offset_us_list
+    uint32_t  offset_us_list[50]; // used in TY_TRIGGER_MODE_TIMER_LIST mode
+}TY_TRIGGER_TIMER_LIST;
+
+//@see sample SimpleView_TriggerMode, only for TY_TRIGGER_MODE_TIMER_PERIOD
+typedef struct TY_TRIGGER_TIMER_PERIOD
+{
+    uint64_t  start_time_us; // 0 for disable
+    uint32_t  trigger_count;
+    uint32_t  period_us; // used in TY_TRIGGER_MODE_TIMER_PERIOD mode
+}TY_TRIGGER_TIMER_PERIOD;
 
 typedef struct TY_AEC_ROI_PARAM
 {
@@ -736,7 +776,7 @@ typedef struct TY_FRAME_DATA
     void*           userBuffer;     ///< Pointer to user enqueued buffer, user should enqueue this buffer in the end of callback
     int32_t         bufferSize;     ///< Size of userBuffer
     int32_t         validCount;     ///< Number of valid data
-    int32_t         reserved[6];    ///< Reserved
+    int32_t         reserved[6];    ///< Reserved: reserved[0],laser_val;
     TY_IMAGE_DATA   image[10];      ///< Buffer data, max to 10 images per frame, each buffer data could be an image or something else.
 }TY_FRAME_DATA;
 

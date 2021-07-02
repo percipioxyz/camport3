@@ -10,5 +10,6 @@ var a00033 =
     [ "netInfo", "a00033.html#a94ee8e3aab3e6da1f850d5dee38eca9e", null ],
     [ "reserved", "a00033.html#a5460e331f093c941417122d53394ab46", null ],
     [ "usbInfo", "a00033.html#a703b6780753147d26ad08d2cb91d3a72", null ],
+    [ "userDefinedName", "a00033.html#aec6d14a60caf1b1291fd2165fed8d4e1", null ],
     [ "vendorName", "a00033.html#ae619f10d791f69550d3fc5396c5c5d2c", null ]
 ];

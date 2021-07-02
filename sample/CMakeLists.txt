@@ -10,12 +10,16 @@ set(ALL_SAMPLES
     SimpleView_FetchFrame
     SimpleView_Callback
     SimpleView_Registration
+    SimpleView_PixelsRegistration
     SimpleView_FetchHisto
     SimpleView_MultiDevice
     SimpleView_TriggerMode0
     SimpleView_TriggerMode1
     SimpleView_TriggerMode18
     SimpleView_TriggerMode19
+    SimpleView_TriggerMode20
+    SimpleView_TriggerMode21
+    SimpleView_TriggerMode30
     SimpleView_TriggerMode_M2S1
     SimpleView_TriggerMode_M3S1
     SimpleView_KeepAlive

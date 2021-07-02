@@ -19,7 +19,7 @@ void imuCallback(TY_IMU_DATA* imu_data, void* userdata)
 
     imu_data_count++;
     if ((imu_data_count % 400) == 0) {
-        LOGD("[COUNT] %d [ACC] %4.2f %4.2f %4.2f [GYRO] %4.2f %4.2f %4.2f [TEMP] %4.2f [TS] %"PRIu64"",
+        LOGD("[COUNT] %d [ACC] %4.2f %4.2f %4.2f [GYRO] %4.2f %4.2f %4.2f [TEMP] %4.2f [TS] %" PRIu64 "",
             imu_data_count,
             imu_data->acc_x,
             imu_data->acc_y,
@@ -268,7 +268,7 @@ int main(int argc, char* argv[])
     while (!exit_main) {
         int err = TYFetchFrame(hDevice, &frame, -1);
         if (err == TY_STATUS_OK) {
-            LOGD("=== Get frame %d(%"PRIu64")", ++index, frame.image[0].timestamp);
+            LOGD("=== Get frame %d(%" PRIu64 ")", ++index, frame.image[0].timestamp);
 
             int fps = get_fps();
             if (fps > 0) {

@@ -76,9 +76,14 @@ static void handleFrame(TY_FRAME_DATA* frame, void* userdata) {
         uint8_t *color_data = NULL;
         cv::Mat color_data_mat;
         if (!color.empty()){
-            doRgbRegister(pData->depth_calib, pData->color_calib, depth, color, color_data_mat);
-            cv::cvtColor(color_data_mat, color_data_mat, CV_BGR2RGB);
-            color_data = color_data_mat.ptr<uint8_t>();
+            bool hasColorCalib;
+            ASSERT_OK(TYHasFeature(pData->hDevice, TY_COMPONENT_RGB_CAM, TY_STRUCT_CAM_CALIB_DATA, &hasColorCalib));
+            if (hasColorCalib)
+            {
+                doRgbRegister(pData->depth_calib, pData->color_calib, depth, color, color_data_mat);
+                cv::cvtColor(color_data_mat, color_data_mat, cv::COLOR_BGR2RGB);
+                color_data = color_data_mat.ptr<uint8_t>();
+            }
         }
         if (pData->saveOneFramePoint3d){
             char file[32];
@@ -194,8 +199,14 @@ int main(int argc, char* argv[])
     if ((allComps & TY_COMPONENT_RGB_CAM) && (with_color_cam)){
         LOGD("=== Has internal RGB camera, try to open it");
         ASSERT_OK(TYEnableComponents(hDevice, TY_COMPONENT_RGB_CAM));
-        ASSERT_OK(TYGetStruct(hDevice, TY_COMPONENT_RGB_CAM, TY_STRUCT_CAM_CALIB_DATA
-            , &cb_data.color_calib, sizeof(cb_data.color_calib)));
+
+        bool hasColorCalib;
+        ASSERT_OK(TYHasFeature(hDevice, TY_COMPONENT_RGB_CAM, TY_STRUCT_CAM_CALIB_DATA, &hasColorCalib));
+        if (hasColorCalib)
+        {
+            ASSERT_OK(TYGetStruct(hDevice, TY_COMPONENT_RGB_CAM, TY_STRUCT_CAM_CALIB_DATA
+                , &cb_data.color_calib, sizeof(cb_data.color_calib)));
+        }
         ASSERT_OK(TYISPCreate(&isp_handle)); //create a default isp handle for bayer rgb images
         cb_data.isp_handle = isp_handle;
         ASSERT_OK(ColorIspInitSetting(isp_handle, hDevice));
@@ -227,10 +238,14 @@ int main(int argc, char* argv[])
     LOGD("=== Register event callback");
     ASSERT_OK(TYRegisterEventCallback(hDevice, eventCallback, NULL));
 
-    LOGD("=== Disable trigger mode");
-    TY_TRIGGER_PARAM trigger;
-    trigger.mode = TY_TRIGGER_MODE_OFF;
-    ASSERT_OK(TYSetStruct(hDevice, TY_COMPONENT_DEVICE, TY_STRUCT_TRIGGER_PARAM, &trigger, sizeof(trigger)));
+    bool hasTrigger;
+    ASSERT_OK(TYHasFeature(hDevice, TY_COMPONENT_DEVICE, TY_STRUCT_TRIGGER_PARAM, &hasTrigger));
+    if (hasTrigger) {
+        LOGD("=== Disable trigger mode");
+        TY_TRIGGER_PARAM trigger;
+        trigger.mode = TY_TRIGGER_MODE_OFF;
+        ASSERT_OK(TYSetStruct(hDevice, TY_COMPONENT_DEVICE, TY_STRUCT_TRIGGER_PARAM, &trigger, sizeof(trigger)));
+    }
 
     LOGD("=== Start capture");
     ASSERT_OK( TYStartCapture(hDevice) );

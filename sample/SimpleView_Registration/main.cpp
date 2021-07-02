@@ -11,6 +11,8 @@ struct CallbackData {
   DepthViewer*    depthViewer;
   bool            needUndistort;
 
+  float           scale_unit;
+
   TY_CAMERA_CALIB_INFO depth_calib;
   TY_CAMERA_CALIB_INFO color_calib;
 };
@@ -19,6 +21,7 @@ struct CallbackData {
 static void doRegister(const TY_CAMERA_CALIB_INFO& depth_calib
                       , const TY_CAMERA_CALIB_INFO& color_calib
                       , const cv::Mat& depth
+	                  , const float f_scale_unit
                       , const cv::Mat& color
                       , bool needUndistort
                       , cv::Mat& undistort_color
@@ -56,7 +59,7 @@ static void doRegister(const TY_CAMERA_CALIB_INFO& depth_calib
         &depth_calib,
         depth.cols, depth.rows, depth.ptr<uint16_t>(),
         &color_calib,
-        out.cols, out.rows, out.ptr<uint16_t>()
+        out.cols, out.rows, out.ptr<uint16_t>(), f_scale_unit
       )
     );
     cv::Mat temp;
@@ -73,7 +76,7 @@ static void doRegister(const TY_CAMERA_CALIB_INFO& depth_calib
         depth.cols, depth.rows, depth.ptr<uint16_t>(),
         &color_calib,
         undistort_color.cols, undistort_color.rows, undistort_color.ptr<uint8_t>(),
-        out.ptr<uint8_t>()
+        out.ptr<uint8_t>(), f_scale_unit
       )
     );
   }
@@ -97,7 +100,7 @@ void handleFrame(TY_FRAME_DATA* frame, void* userdata)
   if (!depth.empty() && !color.empty()) {
     cv::Mat undistort_color, out;
     if (pData->needUndistort || MAP_DEPTH_TO_COLOR) {
-      doRegister(pData->depth_calib, pData->color_calib, depth, color, pData->needUndistort, undistort_color, out, MAP_DEPTH_TO_COLOR);
+      doRegister(pData->depth_calib, pData->color_calib, depth, pData->scale_unit, color, pData->needUndistort, undistort_color, out, MAP_DEPTH_TO_COLOR);
     }
     else {
       undistort_color = color;
@@ -227,6 +230,10 @@ int main(int argc, char* argv[])
     cb_data.render = &render;
     cb_data.needUndistort = !hasUndistortSwitch && hasDistortionCoef;
     cb_data.IspHandle = isp_handle;
+
+	float scale_unit = 1.;
+	TYGetFloat(hDevice, TY_COMPONENT_DEPTH_CAM, TY_FLOAT_SCALE_UNIT, &scale_unit);
+	cb_data.scale_unit = scale_unit;
 
     LOGD("=== Read depth calib info");
     ASSERT_OK( TYGetStruct(hDevice, TY_COMPONENT_DEPTH_CAM, TY_STRUCT_CAM_CALIB_DATA

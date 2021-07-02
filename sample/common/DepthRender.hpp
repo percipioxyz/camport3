@@ -2,8 +2,15 @@
 #define PERCIPIO_SAMPLE_COMMON_DEPTH_RENDER_HPP_
 
 #include <opencv2/opencv.hpp>
+#ifndef CV_VERSION_EPOCH
+#if defined (CV_MAJOR_VERSION) && (CV_VERSION_MAJOR == 4)
+#include <opencv2/imgproc/types_c.h>
+#include <opencv2/imgcodecs/legacy/constants_c.h>
+#endif
+#endif
 #include <map>
 #include <vector>
+
 
 class DepthRender {
 public:
@@ -82,7 +89,7 @@ public:
                 switch (color_type) {
                 case COLORTYPE_GRAY:
                     clr_disp = 255 - clr_disp;
-                    cv::cvtColor(clr_disp, dst, CV_GRAY2BGR);
+                    cv::cvtColor(clr_disp, dst, cv::COLOR_GRAY2BGR);
                     break;
                 case COLORTYPE_BLUERED:
                     //temp = 255 - clr_disp;

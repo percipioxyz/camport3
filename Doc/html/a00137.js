@@ -1,7 +1,8 @@
 var a00137 =
 [
-    [ "depth", "a00137.html#a5c2c74e1aa19e036ec78459623f3d1aa", null ],
-    [ "rsvd", "a00137.html#a34a4bba880ce9c62e6f8fd05c077060e", null ],
-    [ "x", "a00137.html#a86e54f296eb1afe8964402379feb3961", null ],
-    [ "y", "a00137.html#aff6686623101300f50db5106c28bc4f0", null ]
+    [ "bufferSize", "a00137.html#ac8ca7f4c699ee7fa6a3ee8ed65e5236a", null ],
+    [ "image", "a00137.html#adaef6497e00abdb25f67c241acc789a0", null ],
+    [ "reserved", "a00137.html#a69f7bd4ad45a0700f4e53159230e0cc9", null ],
+    [ "userBuffer", "a00137.html#a91bf938ad9164a5f56a5798f5081295f", null ],
+    [ "validCount", "a00137.html#a8e3a508ddd5eec680fc5c114dd297fe3", null ]
 ];

@@ -46,7 +46,7 @@ int main(int argc, char* argv[])
         std::vector<TY_DEVICE_BASE_INFO> selected;
 
         int ret = 0;
-        ret = selectDevice(TY_INTERFACE_ALL, ID, IP, 1, selected);
+        ret = selectDevice(TY_INTERFACE_ALL, ID, IP, 100, selected);
         if (ret < 0) {
             MSleep(2000);
             continue;
@@ -61,7 +61,7 @@ int main(int argc, char* argv[])
         LOGD("=== Open device: %s", selectedDev.id);
         ret = TYOpenDevice(hIface, selectedDev.id, &hDevice);
         if (ret < 0) {
-            LOGD("Failed!");
+            LOGD("Open device %s failed!", selectedDev.id);
             ASSERT_OK(TYCloseInterface(hIface));
             continue;
         }
@@ -69,38 +69,40 @@ int main(int argc, char* argv[])
         int32_t allComps;
         ret = TYGetComponentIDs(hDevice, &allComps);
         if (ret < 0) {
-            LOGD("Failed!");
+            LOGD("Get component failed!");
             ASSERT_OK(TYCloseDevice(hDevice));
             ASSERT_OK(TYCloseInterface(hIface));
             continue;
         }
 
-        if(allComps & TY_COMPONENT_RGB_CAM){
+        if(allComps & TY_COMPONENT_RGB_CAM) {
             LOGD("=== Has RGB camera, open RGB cam");
             ret = TYEnableComponents(hDevice, TY_COMPONENT_RGB_CAM);
             if (ret < 0) {
-                LOGD("Failed!");
+                LOGD("Enable RGB component failed!");
                 ASSERT_OK(TYCloseDevice(hDevice));
                 ASSERT_OK(TYCloseInterface(hIface));
                 continue;
             }
         }
 
-        LOGD("=== Configure components, open depth cam");
-        int32_t componentIDs = TY_COMPONENT_DEPTH_CAM;
-        ret = TYEnableComponents(hDevice, componentIDs);
-        if (ret < 0) {
-            LOGD("Failed!");
-            ASSERT_OK(TYCloseDevice(hDevice));
-            ASSERT_OK(TYCloseInterface(hIface));
-            continue;
-        }
+		if (allComps & TY_COMPONENT_DEPTH_CAM) {
+			LOGD("=== Has depth camera, open depth cam");
+			ret = TYEnableComponents(hDevice, TY_COMPONENT_DEPTH_CAM);
+			if (ret < 0) {
+				LOGD("Enable depth component failed!");
+				ASSERT_OK(TYCloseDevice(hDevice));
+				ASSERT_OK(TYCloseInterface(hIface));
+				continue;
+			}
+		}
+
 
         LOGD("=== Prepare image buffer");
         uint32_t frameSize;
         ret = TYGetFrameBufferSize(hDevice, &frameSize);
         if (ret < 0) {
-            LOGD("Failed!");
+            LOGD("Get frame buffer size failed!");
             ASSERT_OK(TYCloseDevice(hDevice));
             ASSERT_OK(TYCloseInterface(hIface));
             continue;
@@ -121,23 +123,27 @@ int main(int argc, char* argv[])
         LOGD("      so that user should not do long time work in callback.");
         ASSERT_OK(TYRegisterEventCallback(hDevice, eventCallback, &device_offline));
 
-        LOGD("=== Disable trigger mode");
-        TY_TRIGGER_PARAM trigger;
-        trigger.mode = TY_TRIGGER_MODE_OFF;
-        ret = TYSetStruct(hDevice, TY_COMPONENT_DEVICE, TY_STRUCT_TRIGGER_PARAM, &trigger, sizeof(trigger));
-        if (ret < 0) {
-            LOGD("Failed!");
-            ASSERT_OK(TYCloseDevice(hDevice));
-            ASSERT_OK(TYCloseInterface(hIface));
-            delete frameBuffer[0];
-            delete frameBuffer[1];            
-            continue;
+        bool hasTrigger;
+        ASSERT_OK(TYHasFeature(hDevice, TY_COMPONENT_DEVICE, TY_STRUCT_TRIGGER_PARAM, &hasTrigger));
+        if (hasTrigger) {
+            LOGD("=== Disable trigger mode");
+            TY_TRIGGER_PARAM trigger;
+            trigger.mode = TY_TRIGGER_MODE_OFF;
+            ret = TYSetStruct(hDevice, TY_COMPONENT_DEVICE, TY_STRUCT_TRIGGER_PARAM, &trigger, sizeof(trigger));
+            if (ret < 0) {
+                LOGD("Set trigger mode failed!");
+                ASSERT_OK(TYCloseDevice(hDevice));
+                ASSERT_OK(TYCloseInterface(hIface));
+                delete frameBuffer[0];
+                delete frameBuffer[1];
+                continue;
+            }
         }
 
         LOGD("=== Start capture");
         ret = TYStartCapture(hDevice);
         if (ret < 0) {
-            LOGD("Failed!");
+            LOGD("Start capture failed!");
             ASSERT_OK(TYCloseDevice(hDevice));
             ASSERT_OK(TYCloseInterface(hIface));
             delete frameBuffer[0];

@@ -95,7 +95,7 @@ int main(int argc, char* argv[])
         TY_INTERFACE_HANDLE hIface;
         ASSERT_OK( TYOpenInterface(ifaces[i].id, &hIface) );
         if (TYForceDeviceIP(hIface, mac, newIP, newNetmask, newGateway) == TY_STATUS_OK) {
-            LOGD("**** Force device IP/Netmask/Gateway ...Done! ****");
+            LOGD("**** Set Temporary IP/Netmask/Gateway ...Done! ****");
 
             bool   open_needed  = false;
             const char * ip_save      = newIP;
@@ -132,9 +132,10 @@ int main(int argc, char* argv[])
                 ip32 = TYIPv4ToInt(ip_b);
                 LOGI("Set persistent Gateway 0x%x(%d.%d.%d.%d)", ip32, ip_b[0], ip_b[1], ip_b[2], ip_b[3]);
                 ASSERT_OK( TYSetInt(hDev, TY_COMPONENT_DEVICE, TY_INT_PERSISTENT_GATEWAY, ip32) );
+
+                LOGD("**** Set Persistent IP/Netmask/Gateway ...Done! ****");
               }
             }
-
         } else {
             LOGW("Force ip failed on interface %s", ifaces[i].id);
         }

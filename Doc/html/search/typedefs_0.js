@@ -29,6 +29,7 @@ var searchData=
   ['ty_5fresolution_5fmode_5flist',['TY_RESOLUTION_MODE_LIST',['../a00002.html#aea92913e44fc4bb273f311fe0a6daf4a',1,'TYApi.h']]],
   ['ty_5fstatus_5flist',['TY_STATUS_LIST',['../a00002.html#adee260e5d66e2e89973c04a023508a20',1,'TYApi.h']]],
   ['ty_5fstream_5fasync_5fmode_5flist',['TY_STREAM_ASYNC_MODE_LIST',['../a00002.html#a7ddb964a16e51cccabc848f604e507d3',1,'TYApi.h']]],
+  ['ty_5ftime_5fsync_5ftype_5flist',['TY_TIME_SYNC_TYPE_LIST',['../a00002.html#a73a08eb6dec68691030c74d15543915a',1,'TYApi.h']]],
   ['ty_5ftrigger_5fmode_5flist',['TY_TRIGGER_MODE_LIST',['../a00002.html#a196e4be51ec352e9cc6bd22cae206df3',1,'TYApi.h']]],
   ['ty_5ftrigger_5fpol_5flist',['TY_TRIGGER_POL_LIST',['../a00002.html#a28ababfeaa291222b940ff7b117d2127',1,'TYApi.h']]]
 ];

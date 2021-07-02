@@ -1,8 +1,6 @@
 var a00089 =
 [
-    [ "imageDropped", "a00089.html#a9d598d1da279e2172adca52c5db566b5", null ],
-    [ "imageOutputed", "a00089.html#a7ff234622751a487a2f85cd56bc60aa3", null ],
-    [ "packetLost", "a00089.html#a902fba1b575115e64aa839108d002e8e", null ],
-    [ "packetReceived", "a00089.html#ab3099957df1c4a18082c27c558341a31", null ],
-    [ "rsvd", "a00089.html#afd3df8f7bd491b68b5d0416680a114e1", null ]
+    [ "period_us", "a00089.html#a4f27e7f14fcdd220c1e0f6c00809c2b2", null ],
+    [ "start_time_us", "a00089.html#a2ed27b7603c8040f2dd1f4df341c3d1f", null ],
+    [ "trigger_count", "a00089.html#a4025d2625b859be61306e703eb72fce4", null ]
 ];

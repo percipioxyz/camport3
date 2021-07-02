@@ -60,7 +60,7 @@ void dumpFeature(TY_DEV_HANDLE handle, TY_COMPONENT_ID compID, TY_FEATURE_ID fea
                     LOGD("===%23s%f %f %f", "", intri.data[6], intri.data[7], intri.data[8]);
                     return;
                 }
-                case TY_STRUCT_EXTRINSIC_TO_LEFT_IR: {
+                case TY_STRUCT_EXTRINSIC_TO_DEPTH: {
                     TY_CAMERA_EXTRINSIC extri;
                     ASSERT_OK(TYGetStruct(handle, compID, featID, &extri
                                 , sizeof(TY_CAMERA_EXTRINSIC)));
@@ -92,7 +92,7 @@ void dumpFeature(TY_DEV_HANDLE handle, TY_COMPONENT_ID compID, TY_FEATURE_ID fea
 void dumpComponentFeatures(TY_DEV_HANDLE handle, TY_COMPONENT_ID compID)
 {
     DUMP_FEATURE(handle, compID, TY_STRUCT_CAM_INTRINSIC );
-    DUMP_FEATURE(handle, compID, TY_STRUCT_EXTRINSIC_TO_LEFT_IR );
+    DUMP_FEATURE(handle, compID, TY_STRUCT_EXTRINSIC_TO_DEPTH);
     DUMP_FEATURE(handle, compID, TY_STRUCT_CAM_DISTORTION);
 
     DUMP_FEATURE(handle, compID, TY_INT_PERSISTENT_IP);
