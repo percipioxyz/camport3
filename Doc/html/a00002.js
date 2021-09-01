@@ -61,6 +61,8 @@ var a00002 =
     [ "TY_CAMERA_STATISTICS", "a00002.html#a7b815baf02c85cc0c8501afb08bebe47", null ],
     [ "TY_CAMERA_TO_IMU", "a00002.html#a85e8a1779098a5fdbe9dc98033e8992c", null ],
     [ "TY_COMPONENT_ID", "a00002.html#aedb134adb4c20d3438db3019a72611d5", null ],
+    [ "TY_DEPTH_QUALITY", "a00002.html#a00673d9aabf9dd29b0ed4b3b970bc180", null ],
+    [ "TY_DEPTH_QUALITY_LIST", "a00002.html#a7466e8824363816865f9d5f043630c41", null ],
     [ "TY_DEV_HANDLE", "a00002.html#a87e3bf5de81e300fe8fd1e548de1e9a0", null ],
     [ "TY_DEVICE_BASE_INFO", "a00002.html#a5518cde221446b7cdcebd9b8657c1968", null ],
     [ "TY_DEVICE_COMPONENT_LIST", "a00002.html#a4ad641f2d1eadf61f07cebf0ca48bef8", null ],
@@ -78,6 +80,8 @@ var a00002 =
     [ "TY_FEATURE_TYPE_LIST", "a00002.html#a27c0449fc79a0bfdb825e5a79f4ce026", null ],
     [ "TY_FLOAT_RANGE", "a00002.html#a3054a3247feca70b998c309a245b824c", null ],
     [ "TY_FRAME_DATA", "a00002.html#aa3d98f66160331074e466acf1e413393", null ],
+    [ "TY_FW_ERRORCODE", "a00002.html#a20e85a355cd77a966ebe36f93b6cfb4b", null ],
+    [ "TY_FW_ERRORCODE_LIST", "a00002.html#a99c7c7f9b64cd691c546b55259c2945d", null ],
     [ "TY_GYRO_BIAS", "a00002.html#a3937b5ba6c9882583b9ad4cd70035aaf", null ],
     [ "TY_GYRO_MISALIGNMENT", "a00002.html#a8dabd76fd05abcd5a44fe0b1c57b46ee", null ],
     [ "TY_GYRO_SCALE", "a00002.html#af0cbb22b02976007c21384cb0a6f774e", null ],
@@ -116,6 +120,11 @@ var a00002 =
     [ "TY_ACCESS_MODE_LIST", "a00002.html#a242245e454161b88d913186d239d00f5", [
       [ "TY_ACCESS_READABLE", "a00002.html#a242245e454161b88d913186d239d00f5a4d11520bbfd4da68c671350fb5357307", null ],
       [ "TY_ACCESS_WRITABLE", "a00002.html#a242245e454161b88d913186d239d00f5a3c19c73ae83abcf0368e688f1d6b8ca1", null ]
+    ] ],
+    [ "TY_DEPTH_QUALITY_LIST", "a00002.html#a67d954146c18f16f2ffd5b1b464b68c8", [
+      [ "TY_DEPTH_QUALITY_BASIC", "a00002.html#a67d954146c18f16f2ffd5b1b464b68c8a66bce01fb5ca0cf20cbe7cb6128c3887", null ],
+      [ "TY_DEPTH_QUALITY_MEDIUM", "a00002.html#a67d954146c18f16f2ffd5b1b464b68c8aa6cc778ef7cf53e098cb87d663b570bd", null ],
+      [ "TY_DEPTH_QUALITY_HIGH", "a00002.html#a67d954146c18f16f2ffd5b1b464b68c8ad9f44106fe2721bc01fe2cb66841a337", null ]
     ] ],
     [ "TY_DEVICE_COMPONENT_LIST", "a00002.html#a6e3668325ff8193e2690514a0a6fde57", [
       [ "TY_COMPONENT_DEVICE", "a00002.html#a6e3668325ff8193e2690514a0a6fde57a7a865a0e1aab16531fe98c95e7ee15d5", null ],
@@ -176,6 +185,8 @@ var a00002 =
       [ "TY_INT_CAPTURE_TIME_US", "a00002.html#ad106ea6dcff8f708ca26b57c430f9124a4b0d37a5d86dbceb5dafc969f34c5e75", null ],
       [ "TY_ENUM_TIME_SYNC_TYPE", "a00002.html#ad106ea6dcff8f708ca26b57c430f9124a875b4071e18cd7d24a7787948d3d2a9c", null ],
       [ "TY_BOOL_TIME_SYNC_READY", "a00002.html#ad106ea6dcff8f708ca26b57c430f9124ae6aaffcd1b0533cbb68b86571fe3492a", null ],
+      [ "TY_BOOL_FLASHLIGHT", "a00002.html#ad106ea6dcff8f708ca26b57c430f9124a9b44f5577cdc860e3d509330b191c87c", null ],
+      [ "TY_INT_FLASHLIGHT_INTENSITY", "a00002.html#ad106ea6dcff8f708ca26b57c430f9124ad7200bf30902f5899817a1fa05891975", null ],
       [ "TY_BOOL_AUTO_EXPOSURE", "a00002.html#ad106ea6dcff8f708ca26b57c430f9124a7111399fbe52bfec363fbcc3a84165db", null ],
       [ "TY_INT_EXPOSURE_TIME", "a00002.html#ad106ea6dcff8f708ca26b57c430f9124a800000a3782afc0c64a37494bd95968a", null ],
       [ "TY_BOOL_AUTO_GAIN", "a00002.html#ad106ea6dcff8f708ca26b57c430f9124a2dddfa2f8000896f88ff2835675f9a6d", null ],
@@ -199,7 +210,8 @@ var a00002 =
       [ "TY_STRUCT_IMU_GYRO_MISALIGNMENT", "a00002.html#ad106ea6dcff8f708ca26b57c430f9124aad34f1411250194e8b26720dff097bcc", null ],
       [ "TY_STRUCT_IMU_GYRO_SCALE", "a00002.html#ad106ea6dcff8f708ca26b57c430f9124af45bde4f39fea3d09c66ab4992b32a2b", null ],
       [ "TY_STRUCT_IMU_CAM_TO_IMU", "a00002.html#ad106ea6dcff8f708ca26b57c430f9124ae33e38bebeafd77380de3847e3b920d3", null ],
-      [ "TY_ENUM_IMU_FPS", "a00002.html#ad106ea6dcff8f708ca26b57c430f9124afd5cfe7fc79587f99dd05f8121132f15", null ]
+      [ "TY_ENUM_IMU_FPS", "a00002.html#ad106ea6dcff8f708ca26b57c430f9124afd5cfe7fc79587f99dd05f8121132f15", null ],
+      [ "TY_ENUM_DEPTH_QUALITY", "a00002.html#ad106ea6dcff8f708ca26b57c430f9124a8ad70c3fe5e66af2d82ca3ccc1c9dda1", null ]
     ] ],
     [ "TY_FEATURE_TYPE_LIST", "a00002.html#ad591dbda141094edd9f63154eaf9ebee", [
       [ "TY_FEATURE_INT", "a00002.html#ad591dbda141094edd9f63154eaf9ebeea35d94e44f38ea0c3e6060ed7c6ba569f", null ],
@@ -209,6 +221,21 @@ var a00002 =
       [ "TY_FEATURE_STRING", "a00002.html#ad591dbda141094edd9f63154eaf9ebeeadfc1f8d9c7694f901c4b2bc90388fb5e", null ],
       [ "TY_FEATURE_BYTEARRAY", "a00002.html#ad591dbda141094edd9f63154eaf9ebeea30fbfff45765d07d2130b199a5afa2fe", null ],
       [ "TY_FEATURE_STRUCT", "a00002.html#ad591dbda141094edd9f63154eaf9ebeea3639ab569f0bb42ec4c976f58340e187", null ]
+    ] ],
+    [ "TY_FW_ERRORCODE_LIST", "a00002.html#a5f9091709cb9aabf975178c83321309f", [
+      [ "TY_FW_ERRORCODE_CAM0_NOT_DETECTED", "a00002.html#a5f9091709cb9aabf975178c83321309fa459677f10721e77b0615681d6618d0b7", null ],
+      [ "TY_FW_ERRORCODE_CAM1_NOT_DETECTED", "a00002.html#a5f9091709cb9aabf975178c83321309facda0552f56675af617acda0f9110bd3a", null ],
+      [ "TY_FW_ERRORCODE_CAM2_NOT_DETECTED", "a00002.html#a5f9091709cb9aabf975178c83321309fa9200a1dade841eb3f78018840b2ee462", null ],
+      [ "TY_FW_ERRORCODE_POE_NOT_INIT", "a00002.html#a5f9091709cb9aabf975178c83321309faab2a460324da039461acb0cdb92a5aa2", null ],
+      [ "TY_FW_ERRORCODE_RECMAP_NOT_CORRECT", "a00002.html#a5f9091709cb9aabf975178c83321309fa803d0dd1d5bec4b4dbb25eb2ea3ed619", null ],
+      [ "TY_FW_ERRORCODE_LOOKUPTABLE_NOT_CORRECT", "a00002.html#a5f9091709cb9aabf975178c83321309fa534ce5e90bcbef33aa24ce595d946b3f", null ],
+      [ "TY_FW_ERRORCODE_CONFIG_NOT_FOUND", "a00002.html#a5f9091709cb9aabf975178c83321309fa94709f9079e6f9b454cf18c2d92b4ea5", null ],
+      [ "TY_FW_ERRORCODE_CONFIG_NOT_CORRECT", "a00002.html#a5f9091709cb9aabf975178c83321309fa4eabdc82a120ff8da4781952a86e3308", null ],
+      [ "TY_FW_ERRORCODE_XML_NOT_FOUND", "a00002.html#a5f9091709cb9aabf975178c83321309fa2c58a1b40c5d07a12e6806ecca77acd2", null ],
+      [ "TY_FW_ERRORCODE_XML_NOT_CORRECT", "a00002.html#a5f9091709cb9aabf975178c83321309fa487f0a6364b58b20e7c55491618830eb", null ],
+      [ "TY_FW_ERRORCODE_XML_OVERRIDE_FAILED", "a00002.html#a5f9091709cb9aabf975178c83321309fa7baf2e6e139d5069d4c973a2e6a2c17f", null ],
+      [ "TY_FW_ERRORCODE_CAM_INIT_FAILED", "a00002.html#a5f9091709cb9aabf975178c83321309fa3f124d8441f9e602c47b23d32c4f79f6", null ],
+      [ "TY_FW_ERRORCODE_LASER_INIT_FAILED", "a00002.html#a5f9091709cb9aabf975178c83321309fa324f704204b769923ad06f302b6efb46", null ]
     ] ],
     [ "TY_IMAGE_MODE_LIST", "a00002.html#aec99fa7be38751f1b7d34fd8115ceefe", [
       [ "TY_DECLARE_IMAGE_MODE1", "a00002.html#aec99fa7be38751f1b7d34fd8115ceefeaf168b0e8e0e841a14b5e12c23d8f167d", null ],
@@ -251,6 +278,7 @@ var a00002 =
       [ "TY_PIXEL_FORMAT_MJPG", "a00002.html#a3dd8e54985f49764a853f34728cd220faefd976bc9fcf8ae1fb7dac3a7888f4fc", null ]
     ] ],
     [ "TY_RESOLUTION_MODE_LIST", "a00002.html#a672706b9f41df147ac9709343ba1287b", [
+      [ "TY_RESOLUTION_MODE_160x100", "a00002.html#a672706b9f41df147ac9709343ba1287ba3e7a0f0284a8392ab4a489bc25cd5f20", null ],
       [ "TY_RESOLUTION_MODE_160x120", "a00002.html#a672706b9f41df147ac9709343ba1287bacad8f46b1c53e26cef2207eb710061f0", null ],
       [ "TY_RESOLUTION_MODE_240x320", "a00002.html#a672706b9f41df147ac9709343ba1287ba1ed0a30a23d610db854635e0a394503f", null ],
       [ "TY_RESOLUTION_MODE_320x180", "a00002.html#a672706b9f41df147ac9709343ba1287ba0aaab2cb64f34e76b5adaed3f2bc640c", null ],
@@ -292,7 +320,12 @@ var a00002 =
       [ "TY_STATUS_READONLY_FEATURE", "a00002.html#a09671bb43e14fcbe9052793dcb80aa51a2b549d543e443e0f65c64b9a328484a9", null ],
       [ "TY_STATUS_INVALID_DESCRIPTOR", "a00002.html#a09671bb43e14fcbe9052793dcb80aa51a3e8226bd465318c50e1bf080f068c459", null ],
       [ "TY_STATUS_INVALID_INTERFACE", "a00002.html#a09671bb43e14fcbe9052793dcb80aa51ad49d69727704c1fd671d27ae5cf254fd", null ],
-      [ "TY_STATUS_FIRMWARE_ERROR", "a00002.html#a09671bb43e14fcbe9052793dcb80aa51a899c47062ea0bba8b97f8cb00433244b", null ]
+      [ "TY_STATUS_FIRMWARE_ERROR", "a00002.html#a09671bb43e14fcbe9052793dcb80aa51a899c47062ea0bba8b97f8cb00433244b", null ],
+      [ "TY_STATUS_DEV_EPERM", "a00002.html#a09671bb43e14fcbe9052793dcb80aa51ac455dddd7e672d0ebfcd1453521b2bcf", null ],
+      [ "TY_STATUS_DEV_EIO", "a00002.html#a09671bb43e14fcbe9052793dcb80aa51a24d7b8da0133bd9c3592a29d6f792736", null ],
+      [ "TY_STATUS_DEV_ENOMEM", "a00002.html#a09671bb43e14fcbe9052793dcb80aa51adc05fa6e2013f1b919a1d83404ef9287", null ],
+      [ "TY_STATUS_DEV_EBUSY", "a00002.html#a09671bb43e14fcbe9052793dcb80aa51a2fadf605c820e5fddbf13969cd85cdef", null ],
+      [ "TY_STATUS_DEV_EINVAL", "a00002.html#a09671bb43e14fcbe9052793dcb80aa51a7e92333096fb9159690397694b46cc62", null ]
     ] ],
     [ "TY_STREAM_ASYNC_MODE_LIST", "a00002.html#ab31f4b37998ea99deb46bc4d1c0e0824", [
       [ "TY_STREAM_ASYNC_OFF", "a00002.html#ab31f4b37998ea99deb46bc4d1c0e0824a52ad8e968922f9862cf6886839d31921", null ],
@@ -327,7 +360,7 @@ var a00002 =
     ] ],
     [ "_TYInitLib", "a00002.html#acfe1b35c050a5b6b7bb386551ca583f2", null ],
     [ "TYClearBufferQueue", "a00002.html#afdb631d69e76108c05e5c9f1fa8106db", null ],
-    [ "TYCloseDevice", "a00002.html#a37bccc635cd45bfb0b44cbcd51b42340", null ],
+    [ "TYCloseDevice", "a00002.html#a125832cd6e338d0dae4df893585a05e8", null ],
     [ "TYCloseInterface", "a00002.html#a2e9e8f6e173e9cc24a54dd2dc6fbab39", null ],
     [ "TYDeinitLib", "a00002.html#a4de30a0e4a07e002f13854edd66b4642", null ],
     [ "TYDisableComponents", "a00002.html#afbcde9218e3e214a5f4522db557873cd", null ],
@@ -363,7 +396,7 @@ var a00002 =
     [ "TYHasFeature", "a00002.html#af790321f7af197bc663f8fe31d6daa01", null ],
     [ "TYHasInterface", "a00002.html#acc672c510bfe8ee995d4a386e205d6ce", null ],
     [ "TYLibVersion", "a00002.html#a1d72fa96dd837ad7eadf7a6edf180a0d", null ],
-    [ "TYOpenDevice", "a00002.html#a3fba0e34fcaa4b377d31be6588d28b0a", null ],
+    [ "TYOpenDevice", "a00002.html#ae057915c41b6298b967e171a64b7fd45", null ],
     [ "TYOpenDeviceWithIP", "a00002.html#a4fa6f168a472898ebd51f4fa473f961e", null ],
     [ "TYOpenInterface", "a00002.html#aa75aa3d7f11922855c0f5cd39eb529e9", null ],
     [ "TYRegisterEventCallback", "a00002.html#a1a413221c79c9516ea90d7252b671076", null ],
@@ -378,6 +411,7 @@ var a00002 =
     [ "TYSetStruct", "a00002.html#a747d65de6aff4ee2269682d04d5dc4ee", null ],
     [ "TYStartCapture", "a00002.html#a9a8e80c5f905beb65d3c7b078873940d", null ],
     [ "TYStopCapture", "a00002.html#a630a7219db11be5d4538cbf2123a09b7", null ],
+    [ "TYUpdateAllDeviceList", "a00002.html#acfaad15aba07fc0ef07d0dcf4793cc8d", null ],
     [ "TYUpdateDeviceList", "a00002.html#a996ccbe7eaac0f3d34d17c059d8f3c43", null ],
     [ "TYUpdateInterfaceList", "a00002.html#ac7cdcda8e25fe3e03833542f58bc5a51", null ]
 ];

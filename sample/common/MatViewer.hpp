@@ -76,14 +76,27 @@ public:
     OpencvViewer(const std::string& win)
         : _win(win)
       {
+        _has_win = 0;
         //cv::namedWindow(_win);
         //cv::setMouseCallback(_win, _onMouseCallback, this);
       }
-    ~OpencvViewer() {cv::destroyWindow(_win);};
+    ~OpencvViewer()
+      {
+        if (_has_win)
+          {
+            //cv::setMouseCallback(_win, NULL, NULL);
+            cv::destroyWindow(_win);
+          }
+      }
 
     const std::string& name() const {return _win;}
 
-    virtual void show(const cv::Mat& img) {_orgImg = img.clone(); showImage();}
+    virtual void show(const cv::Mat& img)
+      {
+        _has_win = 1;
+        _orgImg = img.clone();
+        showImage();
+      }
     virtual void onMouseCallback(cv::Mat& /*img*/, int /*event*/, const cv::Point /*pnt*/
                     , bool& repaint) {repaint = false;}
 
@@ -98,6 +111,7 @@ private:
 
     cv::Mat _orgImg;
     cv::Mat _showImg;
+    int _has_win;
     std::string _win;
     std::map<int, GraphicItem*> _items;
 };

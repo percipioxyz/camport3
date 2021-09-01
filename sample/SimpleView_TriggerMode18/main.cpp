@@ -144,7 +144,7 @@ int main(int argc, char* argv[])
         if (err == TY_STATUS_OK) {
             LOGD("=== Get frame %d", ++index);
             for (int32_t i=0; i<frame.validCount; i++) {
-                LOGD("    iamge [%d] width %4d  height %4d (Laser_val %d)", i,
+                LOGD("    image [%d] width %4d  height %4d (Laser_val %d)", i,
                     frame.image[i].width, frame.image[i].height, frame.image[i].reserved[0]); // laser_val: frame.image[i].reserved[0]
             }
 
@@ -176,9 +176,12 @@ int main(int argc, char* argv[])
             LOGD("=== Re-enqueue buffer(%p, %d)"
                 , frame.userBuffer, frame.bufferSize);
             ASSERT_OK(TYEnqueueBuffer(hDevice, frame.userBuffer, frame.bufferSize));
+            cnt++;
+        } else {
+            LOGD("FetchFrame err %d %s, Exit!", err, TYErrorString(err));
+            exit_main = true;
         }
 
-        cnt++;
         if (cnt == duty + 1) {
             LOGD("=== Send Trigger Command");
             TYSendSoftTrigger(hDevice);

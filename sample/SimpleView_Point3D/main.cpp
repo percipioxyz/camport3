@@ -5,7 +5,6 @@
 #include "../common/cloud_viewer/cloud_viewer.hpp"
 #include "TYImageProc.h"
 
-
 struct CallbackData {
     int             index;
     TY_DEV_HANDLE   hDevice;
@@ -20,6 +19,8 @@ struct CallbackData {
 
 CallbackData cb_data;
 TY_ISP_HANDLE isp_handle = NULL;
+
+cv::Mat tofundis_mapx, tofundis_mapy;
 
 //////////////////////////////////////////////////
 
@@ -71,12 +72,20 @@ static void handleFrame(TY_FRAME_DATA* frame, void* userdata) {
     if(!depth.empty()){
         std::vector<TY_VECT_3F> p3d;
         p3d.resize(depth.size().area());
+        
+        bool isTof = false;
+        ASSERT_OK(TYHasFeature(pData->hDevice, TY_COMPONENT_DEVICE, TY_ENUM_DEPTH_QUALITY, &isTof));
+        if (isTof)
+        {
+            cv::remap(depth, depth, tofundis_mapx, tofundis_mapy, 0);
+        }
+
         ASSERT_OK(TYMapDepthImageToPoint3d(&pData->depth_calib, depth.cols, depth.rows
             , (uint16_t*)depth.data, &p3d[0]));
         uint8_t *color_data = NULL;
         cv::Mat color_data_mat;
         if (!color.empty()){
-            bool hasColorCalib;
+            bool hasColorCalib = false;
             ASSERT_OK(TYHasFeature(pData->hDevice, TY_COMPONENT_RGB_CAM, TY_STRUCT_CAM_CALIB_DATA, &hasColorCalib));
             if (hasColorCalib)
             {
@@ -96,7 +105,6 @@ static void handleFrame(TY_FRAME_DATA* frame, void* userdata) {
             p3d[idx].z = -p3d[idx].z;
         }
         GLPointCloudViewer::Update(p3d.size(), &p3d[0], color_data);
-
     }
 }
 
@@ -200,7 +208,7 @@ int main(int argc, char* argv[])
         LOGD("=== Has internal RGB camera, try to open it");
         ASSERT_OK(TYEnableComponents(hDevice, TY_COMPONENT_RGB_CAM));
 
-        bool hasColorCalib;
+        bool hasColorCalib = false;
         ASSERT_OK(TYHasFeature(hDevice, TY_COMPONENT_RGB_CAM, TY_STRUCT_CAM_CALIB_DATA, &hasColorCalib));
         if (hasColorCalib)
         {
@@ -234,11 +242,21 @@ int main(int argc, char* argv[])
     LOGD("=== Read depth intrinsic");
     ASSERT_OK( TYGetStruct(hDevice, TY_COMPONENT_DEPTH_CAM, TY_STRUCT_CAM_CALIB_DATA
         , &cb_data.depth_calib, sizeof(cb_data.depth_calib)));
+    
+    bool isTof = false;
+    ASSERT_OK(TYHasFeature(hDevice, TY_COMPONENT_DEVICE, TY_ENUM_DEPTH_QUALITY, &isTof));
+    if (isTof)
+    {
+        //if tof get undistortion map
+        cv::Mat depthintrinsic = cv::Mat(3, 3, CV_32F, cb_data.depth_calib.intrinsic.data);
+        cv::Mat depthindistortion = cv::Mat(12, 1, CV_32F, cb_data.depth_calib.distortion.data);
+        cv::initUndistortRectifyMap(depthintrinsic, depthindistortion, cv::Mat(), depthintrinsic, cv::Size(cb_data.depth_calib.intrinsicWidth/2, cb_data.depth_calib.intrinsicHeight/2), CV_32FC1, tofundis_mapx, tofundis_mapy);
+    }
 
     LOGD("=== Register event callback");
     ASSERT_OK(TYRegisterEventCallback(hDevice, eventCallback, NULL));
 
-    bool hasTrigger;
+    bool hasTrigger = false;
     ASSERT_OK(TYHasFeature(hDevice, TY_COMPONENT_DEVICE, TY_STRUCT_TRIGGER_PARAM, &hasTrigger));
     if (hasTrigger) {
         LOGD("=== Disable trigger mode");

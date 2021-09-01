@@ -27,9 +27,8 @@ static inline int parseFrame(const TY_FRAME_DATA& frame, cv::Mat* pDepth
         // get left ir image
         if (pLeftIR && frame.image[i].componentID == TY_COMPONENT_IR_CAM_LEFT){
             if (frame.image[i].pixelFormat == TY_PIXEL_FORMAT_MONO16){
-                cv::Mat ir(frame.image[i].height, frame.image[i].width
-                            , CV_16U, frame.image[i].buffer);
-                cv::cvtColor(ir, *pLeftIR, cv::COLOR_BayerBG2GRAY);
+                *pLeftIR = cv::Mat(frame.image[i].height, frame.image[i].width
+                                   , CV_16U, frame.image[i].buffer).clone();
             } else {
                 *pLeftIR = cv::Mat(frame.image[i].height, frame.image[i].width
                                    , CV_8U, frame.image[i].buffer).clone();

@@ -139,7 +139,7 @@
 
 #define TY_LIB_VERSION_MAJOR       3
 #define TY_LIB_VERSION_MINOR       5 
-#define TY_LIB_VERSION_PATCH       11
+#define TY_LIB_VERSION_PATCH       15
 
 
 //------------------------------------------------------------------------------
@@ -171,8 +171,34 @@ typedef enum TY_STATUS_LIST
     TY_STATUS_INVALID_DESCRIPTOR= -1022,
     TY_STATUS_INVALID_INTERFACE = -1023,
     TY_STATUS_FIRMWARE_ERROR    = -1024,
+
+    /* ret_code from remote device */
+    TY_STATUS_DEV_EPERM         = -1,
+    TY_STATUS_DEV_EIO           = -5,
+    TY_STATUS_DEV_ENOMEM        = -12,
+    TY_STATUS_DEV_EBUSY         = -16,
+    TY_STATUS_DEV_EINVAL        = -22,
+    /* endof ret_code from remote device */
 }TY_STATUS_LIST;
 typedef int32_t TY_STATUS;
+
+typedef enum TY_FW_ERRORCODE_LIST
+{
+    TY_FW_ERRORCODE_CAM0_NOT_DETECTED       = 0x00000001,
+    TY_FW_ERRORCODE_CAM1_NOT_DETECTED       = 0x00000002,
+    TY_FW_ERRORCODE_CAM2_NOT_DETECTED       = 0x00000004,
+    TY_FW_ERRORCODE_POE_NOT_INIT            = 0x00000008,
+    TY_FW_ERRORCODE_RECMAP_NOT_CORRECT      = 0x00000010,
+    TY_FW_ERRORCODE_LOOKUPTABLE_NOT_CORRECT = 0x00000020,
+    TY_FW_ERRORCODE_CONFIG_NOT_FOUND        = 0x00010000,
+    TY_FW_ERRORCODE_CONFIG_NOT_CORRECT      = 0x00020000,
+    TY_FW_ERRORCODE_XML_NOT_FOUND           = 0x00040000,
+    TY_FW_ERRORCODE_XML_NOT_CORRECT         = 0x00080000,
+    TY_FW_ERRORCODE_XML_OVERRIDE_FAILED     = 0x00100000,
+    TY_FW_ERRORCODE_CAM_INIT_FAILED         = 0x00200000,
+    TY_FW_ERRORCODE_LASER_INIT_FAILED       = 0x00400000,
+}TY_FW_ERRORCODE_LIST;
+typedef int32_t TY_FW_ERRORCODE;
 
 typedef enum TY_EVENT_LIST
 {
@@ -274,6 +300,8 @@ typedef enum TY_FEATURE_ID_LIST
     TY_INT_CAPTURE_TIME_US          = 0x0210 | TY_FEATURE_INT,  ///< capture time in multi-ir 
     TY_ENUM_TIME_SYNC_TYPE          = 0x0211 | TY_FEATURE_ENUM, ///< see TY_TIME_SYNC_TYPE
     TY_BOOL_TIME_SYNC_READY         = 0x0212 | TY_FEATURE_BOOL,
+    TY_BOOL_FLASHLIGHT              = 0x0213 | TY_FEATURE_BOOL,
+    TY_INT_FLASHLIGHT_INTENSITY     = 0x0214 | TY_FEATURE_INT,
 
     TY_BOOL_AUTO_EXPOSURE           = 0x0300 | TY_FEATURE_BOOL, ///< Auto exposure switch
     TY_INT_EXPOSURE_TIME            = 0x0301 | TY_FEATURE_INT,  ///< Exposure time in percentage
@@ -304,8 +332,18 @@ typedef enum TY_FEATURE_ID_LIST
     TY_STRUCT_IMU_GYRO_SCALE        = 0x0606 | TY_FEATURE_STRUCT, ///< IMU gyro scale matrix, see TY_GYRO_SCALE
     TY_STRUCT_IMU_CAM_TO_IMU        = 0x0607 | TY_FEATURE_STRUCT, ///< IMU camera to imu matrix, see TY_CAMERA_TO_IMU
     TY_ENUM_IMU_FPS                 = 0x0608 | TY_FEATURE_ENUM, ///< IMU fps, see TY_IMU_FPS_LIST
+
+    TY_ENUM_DEPTH_QUALITY           = 0x0900 | TY_FEATURE_ENUM,  ///< the quality of generated depth, see TY_DEPTH_QUALITY
 }TY_FEATURE_ID_LIST;
 typedef int32_t TY_FEATURE_ID;///< feature unique id @see TY_FEATURE_ID_LIST
+
+typedef enum TY_DEPTH_QUALITY_LIST
+{
+    TY_DEPTH_QUALITY_BASIC   = 1,
+    TY_DEPTH_QUALITY_MEDIUM  = 2,
+    TY_DEPTH_QUALITY_HIGH    = 4,
+}TY_DEPTH_QUALITY_LIST;
+typedef int32_t TY_DEPTH_QUALITY;
 
 ///set external trigger signal edge
 typedef enum TY_TRIGGER_POL_LIST
@@ -376,6 +414,7 @@ typedef int32_t TY_PIXEL_FORMAT;
 ///predefined resolution list
 typedef enum TY_RESOLUTION_MODE_LIST
 {
+    TY_RESOLUTION_MODE_160x100      = (160<<12)+100,    ///< 0x000a0078 
     TY_RESOLUTION_MODE_160x120      = (160<<12)+120,    ///< 0x000a0078 
     TY_RESOLUTION_MODE_240x320      = (240<<12)+320,    ///< 0x000f0140 
     TY_RESOLUTION_MODE_320x180      = (320<<12)+180,    ///< 0x001400b4
@@ -398,6 +437,7 @@ typedef int32_t TY_RESOLUTION_MODE;
 #define TY_DECLARE_IMAGE_MODE0(pix, res) \
             TY_IMAGE_MODE_##pix##_##res = TY_PIXEL_FORMAT_##pix | TY_RESOLUTION_MODE_##res
 #define TY_DECLARE_IMAGE_MODE1(pix) \
+            TY_DECLARE_IMAGE_MODE0(pix, 160x100), \
             TY_DECLARE_IMAGE_MODE0(pix, 160x120), \
             TY_DECLARE_IMAGE_MODE0(pix, 320x180), \
             TY_DECLARE_IMAGE_MODE0(pix, 320x200), \
@@ -973,6 +1013,11 @@ TY_CAPI TYCloseInterface          (TY_INTERFACE_HANDLE ifaceHandle);
 /// @retval TY_STATUS_INVALID_INTERFACE Invalid interface handle.
 TY_CAPI TYUpdateDeviceList        (TY_INTERFACE_HANDLE ifaceHandle);
 
+/// @brief Update current connected devices.
+/// @retval TY_STATUS_OK                Succeed.
+/// @retval TY_STATUS_NOT_INITED        TYInitLib not called.
+TY_CAPI TYUpdateAllDeviceList();
+
 /// @brief Get number of current connected devices.
 /// @param  [in]  ifaceHandle   Interface handle.
 /// @param  [out] deviceNumber  Number of connected devices.
@@ -1006,7 +1051,8 @@ TY_CAPI TYHasDevice               (TY_INTERFACE_HANDLE ifaceHandle, const char* 
 /// @brief Open device by device ID.
 /// @param  [in]  ifaceHandle   Interface handle.
 /// @param  [in]  deviceID      Device ID string, can be get from TY_DEVICE_BASE_INFO.
-/// @param  [out] deviceHandle  Handle of opened device.
+/// @param  [out] deviceHandle  Handle of opened device. Valid only if TY_STATUS_OK or TY_FW_ERRORCODE returned.
+/// @param  [out] outFwErrorcode  Firmware errorcode. Valid only if TY_FW_ERRORCODE returned.
 /// @retval TY_STATUS_OK        Succeed.
 /// @retval TY_STATUS_NOT_INITED        TYInitLib not called.
 /// @retval TY_STATUS_INVALID_INTERFACE Invalid interface handle.
@@ -1014,7 +1060,7 @@ TY_CAPI TYHasDevice               (TY_INTERFACE_HANDLE ifaceHandle, const char* 
 /// @retval TY_STATUS_INVALID_PARAMETER Device not found.
 /// @retval TY_STATUS_BUSY              Device has been opened.
 /// @retval TY_STATUS_DEVICE_ERROR      Open device failed.
-TY_CAPI TYOpenDevice              (TY_INTERFACE_HANDLE ifaceHandle, const char* deviceID, TY_DEV_HANDLE* outDeviceHandle);
+TY_CAPI TYOpenDevice              (TY_INTERFACE_HANDLE ifaceHandle, const char* deviceID, TY_DEV_HANDLE* outDeviceHandle, TY_FW_ERRORCODE* outFwErrorcode=NULL);
 
 /// @brief Open device by device IP, useful when a device is not listed.
 /// @param  [in]  ifaceHandle   Interface handle.
@@ -1058,7 +1104,7 @@ TY_CAPI TYForceDeviceIP           (TY_INTERFACE_HANDLE ifaceHandle, const char* 
 /// @retval TY_STATUS_OK        Succeed.
 /// @retval TY_STATUS_INVALID_HANDLE    Invalid device handle.
 /// @retval TY_STATUS_IDLE              Device has been closed.
-TY_CAPI TYCloseDevice             (TY_DEV_HANDLE hDevice);
+TY_CAPI TYCloseDevice             (TY_DEV_HANDLE hDevice, bool reboot=false);
 
 
 /// @brief Get base info of the open device.
@@ -1537,11 +1583,11 @@ TY_CAPI             TYUpdateDeviceList        (TY_INTERFACE_HANDLE ifaceHandle);
 TY_CAPI             TYGetDeviceNumber         (TY_INTERFACE_HANDLE ifaceHandle, uint32_t* deviceNumber);
 TY_CAPI             TYGetDeviceList           (TY_INTERFACE_HANDLE ifaceHandle, TY_DEVICE_BASE_INFO* deviceInfos, uint32_t bufferCount, uint32_t* filledDeviceCount);
 TY_CAPI             TYHasDevice               (TY_INTERFACE_HANDLE ifaceHandle, const char* deviceID, bool* value);
-TY_CAPI             TYOpenDevice              (TY_INTERFACE_HANDLE ifaceHandle, const char* deviceID, TY_DEV_HANDLE* outDeviceHandle);
+TY_CAPI             TYOpenDevice              (TY_INTERFACE_HANDLE ifaceHandle, const char* deviceID, TY_DEV_HANDLE* outDeviceHandle, TY_FW_ERRORCODE* outFwErrorcode);
 TY_CAPI             TYOpenDeviceWithIP        (TY_INTERFACE_HANDLE ifaceHandle, const char* IP, TY_DEV_HANDLE* deviceHandle);
 TY_CAPI             TYGetDeviceInterface      (TY_DEV_HANDLE hDevice, TY_INTERFACE_HANDLE* pIface);
 TY_CAPI             TYForceDeviceIP           (TY_INTERFACE_HANDLE ifaceHandle, const char* MAC, const char* newIP, const char* newNetMask, const char* newGateway);
-TY_CAPI             TYCloseDevice             (TY_DEV_HANDLE hDevice);
+TY_CAPI             TYCloseDevice             (TY_DEV_HANDLE hDevice, bool reboot);
 
 TY_CAPI             TYGetDeviceInfo           (TY_DEV_HANDLE hDevice, TY_DEVICE_BASE_INFO* info);
 TY_CAPI             TYGetComponentIDs         (TY_DEV_HANDLE hDevice, int32_t* componentIDs);

@@ -172,6 +172,9 @@ int main(int argc, char* argv[])
             LOGD("=== Re-enqueue buffer(%p, %d)"
                 , frame.userBuffer, frame.bufferSize);
             ASSERT_OK( TYEnqueueBuffer(hDevice, frame.userBuffer, frame.bufferSize) );
+        } else {
+            LOGD("FetchFrame err %d %s, Exit!", err, TYErrorString(err));
+            exit_main = true;
         }
     }
 

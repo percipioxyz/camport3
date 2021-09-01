@@ -203,9 +203,11 @@ int main(int argc, char* argv[])
             LOGD("=== Re-enqueue buffer(%p, %d)"
                 , frame.userBuffer, frame.bufferSize);
             ASSERT_OK(TYEnqueueBuffer(hDevice, frame.userBuffer, frame.bufferSize));
+            cnt++;
+        } else {
+            LOGD("=== TIMEOUT DROP FRAME!!!!!");
         }
 
-        cnt++;
         if (cnt == period_timer.trigger_count) {
             LOGD("=== Set trigger timer period");
             period_timer.start_time_us = (getSystemTime() + 3000) * 1000;

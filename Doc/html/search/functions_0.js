@@ -1,7 +1,7 @@
 var searchData=
 [
   ['tyclearbufferqueue',['TYClearBufferQueue',['../a00002.html#afdb631d69e76108c05e5c9f1fa8106db',1,'TYApi.h']]],
-  ['tyclosedevice',['TYCloseDevice',['../a00002.html#a37bccc635cd45bfb0b44cbcd51b42340',1,'TYApi.h']]],
+  ['tyclosedevice',['TYCloseDevice',['../a00002.html#a125832cd6e338d0dae4df893585a05e8',1,'TYApi.h']]],
   ['tycloseinterface',['TYCloseInterface',['../a00002.html#a2e9e8f6e173e9cc24a54dd2dc6fbab39',1,'TYApi.h']]],
   ['tydeinitlib',['TYDeinitLib',['../a00002.html#a4de30a0e4a07e002f13854edd66b4642',1,'TYApi.h']]],
   ['tydepthenhencefilter',['TYDepthEnhenceFilter',['../a00008.html#af8bb2a45b6fd8b542d250e2cd04e6d53',1,'TYImageProc.h']]],
@@ -47,7 +47,7 @@ var searchData=
   ['tymappoint3dtodepth',['TYMapPoint3dToDepth',['../a00005.html#a32faf6be5df30fc39e58f135e0fe41a0',1,'TYCoordinateMapper.h']]],
   ['tymappoint3dtodepthimage',['TYMapPoint3dToDepthImage',['../a00005.html#aa8a7439648a50e28e3c83d5db528c5f6',1,'TYCoordinateMapper.h']]],
   ['tymappoint3dtopoint3d',['TYMapPoint3dToPoint3d',['../a00005.html#a975218e39246e3aefaa357f69f2fba72',1,'TYCoordinateMapper.h']]],
-  ['tyopendevice',['TYOpenDevice',['../a00002.html#a3fba0e34fcaa4b377d31be6588d28b0a',1,'TYApi.h']]],
+  ['tyopendevice',['TYOpenDevice',['../a00002.html#ae057915c41b6298b967e171a64b7fd45',1,'TYApi.h']]],
   ['tyopendevicewithip',['TYOpenDeviceWithIP',['../a00002.html#a4fa6f168a472898ebd51f4fa473f961e',1,'TYApi.h']]],
   ['tyopeninterface',['TYOpenInterface',['../a00002.html#aa75aa3d7f11922855c0f5cd39eb529e9',1,'TYApi.h']]],
   ['tyregistereventcallback',['TYRegisterEventCallback',['../a00002.html#a1a413221c79c9516ea90d7252b671076',1,'TYApi.h']]],
@@ -63,6 +63,7 @@ var searchData=
   ['tystartcapture',['TYStartCapture',['../a00002.html#a9a8e80c5f905beb65d3c7b078873940d',1,'TYApi.h']]],
   ['tystopcapture',['TYStopCapture',['../a00002.html#a630a7219db11be5d4538cbf2123a09b7',1,'TYApi.h']]],
   ['tyundistortimage',['TYUndistortImage',['../a00008.html#a1b464bbb119959e19acce5e0e96160f9',1,'TYImageProc.h']]],
+  ['tyupdatealldevicelist',['TYUpdateAllDeviceList',['../a00002.html#acfaad15aba07fc0ef07d0dcf4793cc8d',1,'TYApi.h']]],
   ['tyupdatedevicelist',['TYUpdateDeviceList',['../a00002.html#a996ccbe7eaac0f3d34d17c059d8f3c43',1,'TYApi.h']]],
   ['tyupdateinterfacelist',['TYUpdateInterfaceList',['../a00002.html#ac7cdcda8e25fe3e03833542f58bc5a51',1,'TYApi.h']]]
 ];

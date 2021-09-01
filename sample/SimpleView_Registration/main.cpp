@@ -17,7 +17,7 @@ struct CallbackData {
   TY_CAMERA_CALIB_INFO color_calib;
 };
 
-
+cv::Mat tofundis_mapx, tofundis_mapy;
 static void doRegister(const TY_CAMERA_CALIB_INFO& depth_calib
                       , const TY_CAMERA_CALIB_INFO& color_calib
                       , const cv::Mat& depth
@@ -91,6 +91,12 @@ void handleFrame(TY_FRAME_DATA* frame, void* userdata)
   cv::Mat depth, color;
   parseFrame(*frame, &depth, 0, 0, &color, pData->IspHandle);
   if (!depth.empty()) {
+    bool isTof = false;
+    ASSERT_OK(TYHasFeature(pData->hDevice, TY_COMPONENT_DEVICE, TY_ENUM_DEPTH_QUALITY, &isTof));
+    if (isTof)
+    {
+       cv::remap(depth, depth, tofundis_mapx, tofundis_mapy, 0);
+    }
     pData->depthViewer->show(depth);
   }
   if (!color.empty()) {
@@ -242,7 +248,15 @@ int main(int argc, char* argv[])
     LOGD("=== Read color calib info");
     ASSERT_OK( TYGetStruct(hDevice, TY_COMPONENT_RGB_CAM, TY_STRUCT_CAM_CALIB_DATA
           , &cb_data.color_calib, sizeof(cb_data.color_calib)) );
-
+    bool isTof = false;
+    ASSERT_OK(TYHasFeature(hDevice, TY_COMPONENT_DEVICE, TY_ENUM_DEPTH_QUALITY, &isTof));
+    if (isTof)
+    {
+        //if tof get undistortion map
+        cv::Mat depthintrinsic = cv::Mat(3, 3, CV_32F, cb_data.depth_calib.intrinsic.data);
+        cv::Mat depthindistortion = cv::Mat(12, 1, CV_32F, cb_data.depth_calib.distortion.data);
+        cv::initUndistortRectifyMap(depthintrinsic, depthindistortion, cv::Mat(), depthintrinsic, cv::Size(cb_data.depth_calib.intrinsicWidth/2, cb_data.depth_calib.intrinsicHeight/2), CV_32FC1, tofundis_mapx, tofundis_mapy);
+    }
     LOGD("=== Start capture");
     ASSERT_OK( TYStartCapture(hDevice) );
 

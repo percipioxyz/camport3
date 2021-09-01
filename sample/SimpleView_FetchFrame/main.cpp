@@ -180,7 +180,7 @@ int main(int argc, char* argv[])
         }
     }
     ASSERT_OK( TYStopCapture(hDevice) );
-    ASSERT_OK( TYCloseDevice(hDevice) );
+    ASSERT_OK( TYCloseDevice(hDevice));
     ASSERT_OK( TYCloseInterface(hIface) );
     ASSERT_OK(TYISPRelease(&hColorIspHandle));
     ASSERT_OK( TYDeinitLib() );
