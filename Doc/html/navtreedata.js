@@ -24,7 +24,6 @@ for the JavaScript code in this file
 var NAVTREE =
 [
   [ "TYCamport3", "index.html", [
-    [ "compare to V2:", "index.html#Changes", null ],
     [ "Note", "index.html#Note", null ],
     [ "Classes", "annotated.html", [
       [ "Class List", "annotated.html", "annotated_dup" ],
@@ -50,8 +49,8 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "a00002.html",
-"a00002.html#ad106ea6dcff8f708ca26b57c430f9124",
-"a00057.html#a0ea98c81d6a414f88c72d5a1d16885b9"
+"a00002.html#acd070907938a304f240c32dc5a9c393f",
+"a00045.html#ab5c8db4d147f994d6ae1f8ce5f18f64d"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

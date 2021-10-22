@@ -1,12 +1,6 @@
 var a00101 =
 [
-    [ "acc_x", "a00101.html#a3c824136ab280902a33cb54662a945d2", null ],
-    [ "acc_y", "a00101.html#a340b36c5afced446d418c6be499b2a32", null ],
-    [ "acc_z", "a00101.html#a95499999722a20b1bb370099e932eded", null ],
-    [ "gyro_x", "a00101.html#a88138794516e73364197d1937d9cc644", null ],
-    [ "gyro_y", "a00101.html#a33113d7e8364a8c97ec83e40b17dce6a", null ],
-    [ "gyro_z", "a00101.html#ad328c14fd1b02cdf06097a18b5c94523", null ],
-    [ "reserved", "a00101.html#aa835e231575eb5a07f8be12de6f1d72e", null ],
-    [ "temperature", "a00101.html#ade308c4ba37af3a11ff92c4f5ae2be59", null ],
-    [ "timestamp", "a00101.html#a33ba3f9e3c826744623d71f413f49ce8", null ]
+    [ "offset_us_count", "a00101.html#a20bda76d8a601257d8078cf7cbecc39d", null ],
+    [ "offset_us_list", "a00101.html#a5881edd7fe30d4d3eb8dc140c81fecaa", null ],
+    [ "start_time_us", "a00101.html#a9e32e3296bc30b87f279a794d9cbe6d7", null ]
 ];

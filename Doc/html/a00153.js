@@ -1,5 +1,8 @@
 var a00153 =
 [
-    [ "max_speckle_diff", "a00153.html#afdd5935e2dcb0b359500c84c75c613c4", null ],
-    [ "max_speckle_size", "a00153.html#a101f480aa882c40a5e0ed4dc069d3655", null ]
+    [ "bufferSize", "a00153.html#ac8ca7f4c699ee7fa6a3ee8ed65e5236a", null ],
+    [ "image", "a00153.html#adaef6497e00abdb25f67c241acc789a0", null ],
+    [ "reserved", "a00153.html#a69f7bd4ad45a0700f4e53159230e0cc9", null ],
+    [ "userBuffer", "a00153.html#a91bf938ad9164a5f56a5798f5081295f", null ],
+    [ "validCount", "a00153.html#a8e3a508ddd5eec680fc5c114dd297fe3", null ]
 ];

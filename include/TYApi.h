@@ -6,32 +6,8 @@
  */
 
 /**@mainpage 
-*  @section Changes compare to V2:
-*  1. New Interface Layer
-*       Add this layer to specify local network interface to open network camera,
-*       solving the problem that someone wants to connect to a network camera with
-*       ethernet rather than WIFI. Users have to call interface APIs before openning
-*       devices.
-*  2. New Image Processing Library
-*       The new library which has header file TYImageProc.h collects all image
-*       processing functions we provided.
-*  3. New Coordinate Mapper
-*       New TYCoordinateMapper.h handles various convertions, including
-*       depth <-> point3D, point3D <-> point3D.
-*  4. Components:
-*       Removed Point3D component(TY_COMPONENT_POINT3D). Point3D is a virtual component
-*       in V2, and the points are calculated from depth image. We put the calculation
-*       outside tycam library to increase flexibility.
-*  5. Features:
-*       Removed   TY_BOOL_TRIGGER_MODE        , covered by TY_STRUCT_TRIGGER_PARAM
-*       Added     TY_STRUCT_CAM_CALIB_DATA    , for easy use in image processing library
-*                 TY_INT_IMAGE_MODE           , covered by new added TY_ENUM_IMAGE_MODE
-*       Modified  TY_ENUM_IMAGE_MODE          , means resolution mode in V2, combind
-*                                               resolution and pixel format in V3
-*       Added some network camera's feature, such as TY_INT_PERSISTENT_IP,
-*       TY_INT_PERSISTENT_SUBMASK, TY_INT_PACKET_DELAY, etc.
 * 
-* Copyright(C)2016-2019 Percipio All Rights Reserved
+* Copyright(C)2016-2021 Percipio All Rights Reserved
 *
 *
 *
@@ -139,7 +115,7 @@
 
 #define TY_LIB_VERSION_MAJOR       3
 #define TY_LIB_VERSION_MINOR       5 
-#define TY_LIB_VERSION_PATCH       15
+#define TY_LIB_VERSION_PATCH       18
 
 
 //------------------------------------------------------------------------------
@@ -322,6 +298,8 @@ typedef enum TY_FEATURE_ID_LIST
     TY_INT_B_GAIN                   = 0x0522 | TY_FEATURE_INT,  ///< Gain of B channel
 
     TY_INT_ANALOG_GAIN              = 0x0524 | TY_FEATURE_INT,  ///< Analog gain
+    TY_BOOL_HDR                     = 0x0525 | TY_FEATURE_BOOL,
+    TY_BYTEARRAY_HDR_PARAMETER      = 0x0526 | TY_FEATURE_BYTEARRAY,
 
     TY_BOOL_IMU_DATA_ONOFF          = 0x0600 | TY_FEATURE_BOOL, ///< IMU Data Onoff
     TY_STRUCT_IMU_ACC_BIAS          = 0x0601 | TY_FEATURE_STRUCT, ///< IMU acc bias matrix, see TY_ACC_BIAS
@@ -399,6 +377,9 @@ typedef enum TY_PIXEL_FORMAT_LIST{
     TY_PIXEL_FORMAT_UNDEFINED   = 0,
     TY_PIXEL_FORMAT_MONO        = (TY_PIXEL_8BIT  | (0x0 << 24)), ///< 0x10000000
     TY_PIXEL_FORMAT_BAYER8GB    = (TY_PIXEL_8BIT  | (0x1 << 24)), ///< 0x11000000
+    TY_PIXEL_FORMAT_BAYER8BG    = (TY_PIXEL_8BIT  | (0x2 << 24)), ///< 0x12000000
+    TY_PIXEL_FORMAT_BAYER8GR    = (TY_PIXEL_8BIT  | (0x3 << 24)), ///< 0x13000000
+    TY_PIXEL_FORMAT_BAYER8RG    = (TY_PIXEL_8BIT  | (0x4 << 24)), ///< 0x14000000
     TY_PIXEL_FORMAT_DEPTH16     = (TY_PIXEL_16BIT | (0x0 << 24)), ///< 0x20000000
     TY_PIXEL_FORMAT_YVYU        = (TY_PIXEL_16BIT | (0x1 << 24)), ///< 0x21000000, yvyu422
     TY_PIXEL_FORMAT_YUYV        = (TY_PIXEL_16BIT | (0x2 << 24)), ///< 0x22000000, yuyv422
@@ -465,7 +446,10 @@ typedef enum TY_IMAGE_MODE_LIST
     TY_DECLARE_IMAGE_MODE1(YUYV),
     TY_DECLARE_IMAGE_MODE1(RGB),
     TY_DECLARE_IMAGE_MODE1(JPEG),
-    TY_DECLARE_IMAGE_MODE1(BAYER8GB)
+    TY_DECLARE_IMAGE_MODE1(BAYER8GB),
+    TY_DECLARE_IMAGE_MODE1(BAYER8BG),
+    TY_DECLARE_IMAGE_MODE1(BAYER8GR),
+    TY_DECLARE_IMAGE_MODE1(BAYER8RG)
 }TY_IMAGE_MODE_LIST;
 typedef int32_t TY_IMAGE_MODE;
 #undef TY_DECLARE_IMAGE_MODE0
@@ -483,6 +467,7 @@ typedef enum TY_TRIGGER_MODE_LIST
     TY_TRIGGER_MODE_TIMER_LIST  = 20,
     TY_TRIGGER_MODE_TIMER_PERIOD= 21,
     TY_TRIGGER_MODE_PER_PASS2   = 30,///<trigger mode 30,Alternate output depth image/ir image
+    TY_TRIGGER_WORK_MODE31      = 31,
     TY_TRIGGER_MODE_SIG_LASER   = 34,
 }TY_TRIGGER_MODE_LIST;
 typedef int16_t TY_TRIGGER_MODE;
@@ -586,6 +571,15 @@ typedef struct TY_FLOAT_RANGE
     float   reserved[1];
 }TY_FLOAT_RANGE;
 
+typedef struct TY_BYTEARRAY_ATTR
+{
+    int32_t size; ///Bytes array size in bytes
+    int32_t unit_size; ///unit size in bytes for special parse
+    ///valid size in bytes in case has reserved member,
+    ///Must be multiple of unit_size, mem_length = valid_size/unit_size
+    int32_t valid_size;
+}TY_BYTEARRAY_ATTR;
+
 ///enum feature entry information
 ///@see TYGetEnumEntryInfo
 typedef struct TY_ENUM_ENTRY
@@ -656,13 +650,23 @@ typedef struct TY_TRIGGER_PARAM
 typedef struct TY_TRIGGER_PARAM_EX
 {
     TY_TRIGGER_MODE   mode;
-    int8_t    fps;
-    int8_t    duty;
-    int32_t   laser_stream;
-    int32_t   led_stream;
-    int32_t   led_expo;
-    int32_t   led_gain;
-    int32_t   rsvd[20];
+    union
+    {
+        struct
+        {
+            int8_t    fps;
+            int8_t    duty;
+            int32_t   laser_stream;
+            int32_t   led_stream;
+            int32_t   led_expo;
+            int32_t   led_gain;
+        };
+        struct
+        {
+            int32_t   ir_gain[2];
+        };
+        int32_t   rsvd[32];
+    };
 }TY_TRIGGER_PARAM_EX;
 
 //@see sample SimpleView_TriggerMode, only for TY_TRIGGER_MODE_TIMER_LIST
@@ -1549,6 +1553,20 @@ TY_CAPI TYGetByteArray            (TY_DEV_HANDLE hDevice, TY_COMPONENT_ID compon
 /// @retval TY_STATUS_BUSY              Device is capturing, the feature is locked.
 TY_CAPI TYSetByteArray            (TY_DEV_HANDLE hDevice, TY_COMPONENT_ID componentID, TY_FEATURE_ID featureID, const uint8_t* pBuffer, uint32_t bufferSize);
 
+/// @brief Write byte array to device.
+/// @param  [in]  hDevice       Device handle.
+/// @param  [in]  componentID   Component ID.
+/// @param  [in]  featureID     Feature ID.
+/// @param  [out] pAttr         byte array attribute to be filled.
+/// @retval TY_STATUS_OK        Succeed.
+/// @retval TY_STATUS_INVALID_HANDLE    Invalid device handle.
+/// @retval TY_STATUS_INVALID_COMPONENT Invalid component ID.
+/// @retval TY_STATUS_INVALID_FEATURE   Invalid feature ID.
+/// @retval TY_STATUS_NOT_PERMITTED     The feature is not writable.
+/// @retval TY_STATUS_WRONG_TYPE        The feature's type is not TY_FEATURE_BYTEARRAY.
+/// @retval TY_STATUS_NULL_POINTER      pbuffer is NULL.
+
+TY_CAPI             TYGetByteArrayAttr        (TY_DEV_HANDLE hDevice, TY_COMPONENT_ID componentID, TY_FEATURE_ID featureID, TY_BYTEARRAY_ATTR* pAttr);
 //------------------------------------------------------------------------------
 //  Version check
 //------------------------------------------------------------------------------
@@ -1628,6 +1646,7 @@ TY_CAPI             TYSetStruct               (TY_DEV_HANDLE hDevice, TY_COMPONE
 TY_CAPI             TYGetByteArraySize        (TY_DEV_HANDLE hDevice, TY_COMPONENT_ID componentID, TY_FEATURE_ID featureID, uint32_t* pSize);
 TY_CAPI             TYGetByteArray            (TY_DEV_HANDLE hDevice, TY_COMPONENT_ID componentID, TY_FEATURE_ID featureID, uint8_t* pBuffer, uint32_t bufferSize);
 TY_CAPI             TYSetByteArray            (TY_DEV_HANDLE hDevice, TY_COMPONENT_ID componentID, TY_FEATURE_ID featureID, const uint8_t* pBuffer, uint32_t bufferSize);
+TY_CAPI             TYGetByteArrayAttr        (TY_DEV_HANDLE hDevice, TY_COMPONENT_ID componentID, TY_FEATURE_ID featureID, TY_BYTEARRAY_ATTR* pAttr);
 
 
 #endif // TY_API_H_

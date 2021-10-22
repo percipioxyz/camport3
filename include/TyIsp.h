@@ -36,7 +36,7 @@ typedef enum{
     TY_ISP_FEATURE_BRIGHT                           = 0x000D00,
     TY_ISP_FEATURE_CONTRAST                         = 0x000E00,
     TY_ISP_FEATURE_AUTOBRIGHT                       = 0x000F00,
-    TY_ISP_FEATURE_INPUT_RESAMPLE_SCALE             = 0x001000, 
+    TY_ISP_FEATURE_INPUT_RESAMPLE_SCALE             = 0x001000,  //<set this if bayer image resampled before softisp process.
     TY_ISP_FEATURE_ENABLE_AUTO_EXPOSURE_GAIN        = 0x001100,
     TY_ISP_FEATURE_AUTO_EXPOSURE_RANGE              = 0x001200, ///<exposure range ,default no limit
     TY_ISP_FEATURE_AUTO_GAIN_RANGE                  = 0x001300, ///<gain range ,default no limit

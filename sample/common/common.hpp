@@ -65,11 +65,31 @@ static inline int parseFrame(const TY_FRAME_DATA& frame, cv::Mat* pDepth
                 *pColor = cv::Mat(frame.image[i].height, frame.image[i].width
                                   , CV_8UC3, frame.image[i].buffer);
             }
-            else if (frame.image[i].pixelFormat == TY_PIXEL_FORMAT_BAYER8GB){
+            else if (frame.image[i].pixelFormat == TY_PIXEL_FORMAT_BAYER8GB || 
+                     frame.image[i].pixelFormat == TY_PIXEL_FORMAT_BAYER8BG || 
+                     frame.image[i].pixelFormat == TY_PIXEL_FORMAT_BAYER8GR || 
+                     frame.image[i].pixelFormat == TY_PIXEL_FORMAT_BAYER8RG
+                    ) {
+                int code = cv::COLOR_BayerGB2BGR;
+                switch (frame.image[i].pixelFormat)
+                {
+                case TY_PIXEL_FORMAT_BAYER8GB:
+                    code = cv::COLOR_BayerGB2BGR;
+                    break;
+                case TY_PIXEL_FORMAT_BAYER8BG:
+                    code = cv::COLOR_BayerBG2BGR;
+                    break;                
+                case TY_PIXEL_FORMAT_BAYER8GR:
+                    code = cv::COLOR_BayerGR2BGR;
+                    break;                
+                case TY_PIXEL_FORMAT_BAYER8RG:
+                    code = cv::COLOR_BayerRG2BGR;
+                    break;
+                }
                 if (!color_isp_handle){
                     cv::Mat raw(frame.image[i].height, frame.image[i].width
                                 , CV_8U, frame.image[i].buffer);
-                    cv::cvtColor(raw, *pColor, cv::COLOR_BayerGB2BGR);
+                    cv::cvtColor(raw, *pColor, code);
                 }
                 else{
                     cv::Mat raw(frame.image[i].height, frame.image[i].width
@@ -77,6 +97,7 @@ static inline int parseFrame(const TY_FRAME_DATA& frame, cv::Mat* pDepth
                     TY_IMAGE_DATA _img = frame.image[i];
                     pColor->create(_img.height, _img.width, CV_8UC3);
                     int sz = _img.height* _img.width * 3;
+                    _img.pixelFormat = frame.image[i].pixelFormat;
                     TY_IMAGE_DATA out_buff = TYInitImageData(sz, pColor->data, _img.width, _img.height);
                     out_buff.pixelFormat = TY_PIXEL_FORMAT_BGR;
                     int res = TYISPProcessImage(color_isp_handle, &_img, &out_buff);
@@ -84,7 +105,7 @@ static inline int parseFrame(const TY_FRAME_DATA& frame, cv::Mat* pDepth
                         //fall back to  using opencv api
                         cv::Mat raw(frame.image[i].height, frame.image[i].width
                                     , CV_8U, frame.image[i].buffer);
-                        cv::cvtColor(raw, *pColor, cv::COLOR_BayerGB2BGR);
+                        cv::cvtColor(raw, *pColor, code);
                     }
                 }
             }
