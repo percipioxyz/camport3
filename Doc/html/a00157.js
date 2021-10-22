@@ -1,5 +1,7 @@
 var a00157 =
 [
-    [ "eventId", "a00157.html#a4857ee27ef6d52060541c23396323d98", null ],
-    [ "message", "a00157.html#a7170ca44cbd013232bb4230d9e396488", null ]
+    [ "outlier_rate", "a00157.html#ac9d2fb2f66185d5e4e362fd68c688c1b", null ],
+    [ "outlier_win_sz", "a00157.html#ae710febd7b70a95c1ec51e8721cb4d6e", null ],
+    [ "sigma_r", "a00157.html#a307c0f2750006519986ede18f461a33f", null ],
+    [ "sigma_s", "a00157.html#a005d6e28cca77a5964b0c588ee3839e9", null ]
 ];

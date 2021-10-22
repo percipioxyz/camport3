@@ -47,15 +47,6 @@ static TY_STATUS __TYDetectOldVer21ColorCam(TY_DEV_HANDLE dev_handle,bool *is_v2
     return TY_STATUS_OK;
 }
 
-static void __TYParseSizeFromImageMode(TY_IMAGE_MODE mode , int *image_size) {
-    const int mask = ((0x01 << 12) - 1);
-    int height = mode & mask;
-    int width = (mode >> 12) & mask;
-    image_size[0] = width;
-    image_size[1] = height;
-
-}
-
 ///init color isp setting
 ///for bayer raw image process
 static TY_STATUS ColorIspInitSetting(TY_ISP_HANDLE isp_handle, TY_DEV_HANDLE dev_handle){
@@ -77,7 +68,6 @@ static TY_STATUS ColorIspInitSetting(TY_ISP_HANDLE isp_handle, TY_DEV_HANDLE dev
             TYSetInt(dev_handle, TY_COMPONENT_RGB_CAM, TY_INT_ANALOG_GAIN, 1);
         }
     }
-    TYISPSetFeature(isp_handle, TY_ISP_FEATURE_BAYER_PATTERN, TY_ISP_BAYER_AUTO);
     float shading[9] = { 0.30890417098999026, 10.63355541229248, -6.433426856994629,
                          0.24413758516311646, 11.739893913269043, -8.148622512817383,
                          0.1255662441253662, 11.88359546661377, -7.865192413330078 };
@@ -90,28 +80,11 @@ static TY_STATUS ColorIspInitSetting(TY_ISP_HANDLE isp_handle, TY_DEV_HANDLE dev
     ASSERT_OK(TYISPSetFeature(isp_handle, TY_ISP_FEATURE_GAMMA, 1.f));
     ASSERT_OK(TYISPSetFeature(isp_handle, TY_ISP_FEATURE_AUTOBRIGHT, 1));//enable auto bright control
     ASSERT_OK(TYISPSetFeature(isp_handle, TY_ISP_FEATURE_ENABLE_AUTO_EXPOSURE_GAIN, 0));//disable ae by default
-    int default_image_size[2] = { 1280, 960 };// image size 
-    int current_image_size[2] = { 1280, 960 };// image size for current parameters
-    TY_IMAGE_MODE img_mode;
-#if 1
-    res = TYGetEnum(dev_handle, TY_COMPONENT_RGB_CAM, TY_ENUM_IMAGE_MODE, &img_mode);
-    if (res == TY_STATUS_OK) {
-        __TYParseSizeFromImageMode(img_mode, current_image_size);
-    }
-    TY_ENUM_ENTRY mode_entry[10];
-    uint32_t num;
-    res = TYGetEnumEntryInfo(dev_handle, TY_COMPONENT_RGB_CAM, TY_ENUM_IMAGE_MODE, mode_entry, 10, &num);
-    if (res == TY_STATUS_OK) {
-        __TYParseSizeFromImageMode(mode_entry[0].value, default_image_size);
-    }
-
-#else
-    //some device may not support WIDTH & HEIGHT feature. image mode is recommended
-    TYGetInt(dev_handle, TY_COMPONENT_RGB_CAM, TY_INT_WIDTH, &image_size[0]);
-    TYGetInt(dev_handle, TY_COMPONENT_RGB_CAM, TY_INT_HEIGHT, &image_size[1]);
-#endif
-    ASSERT_OK(TYISPSetFeature(isp_handle, TY_ISP_FEATURE_IMAGE_SIZE, (uint8_t*)&default_image_size, sizeof(default_image_size)));//the orignal raw image size
-    ASSERT_OK(TYISPSetFeature(isp_handle, TY_ISP_FEATURE_INPUT_RESAMPLE_SCALE, default_image_size[0] / current_image_size[0]));//resampled input 
+    int image_size[2] = { 1280, 960 };// image size for current parameters
+    int current_image_width = 1280;
+    TYGetInt(dev_handle, TY_COMPONENT_RGB_CAM, TY_INT_WIDTH, &current_image_width);
+    ASSERT_OK(TYISPSetFeature(isp_handle, TY_ISP_FEATURE_IMAGE_SIZE, (uint8_t*)&image_size, sizeof(image_size)));//input raw image size
+    ASSERT_OK(TYISPSetFeature(isp_handle, TY_ISP_FEATURE_INPUT_RESAMPLE_SCALE, image_size[0] / current_image_width));
 #if 1
     ASSERT_OK(TYISPSetFeature(isp_handle, TY_ISP_FEATURE_ENABLE_AUTO_WHITEBALANCE, 1)); //eanble auto white balance
 #else
@@ -158,26 +131,14 @@ static TY_STATUS ColorIspInitAutoExposure(TY_ISP_HANDLE isp_handle, TY_DEV_HANDL
         ASSERT_OK(TYISPSetFeature(isp_handle, TY_ISP_FEATURE_AUTO_GAIN_RANGE, (uint8_t*)&old_auto_gain_range, sizeof(old_auto_gain_range)));
     }
     else{
-#define CHECK_GO_FAILED(a)  {if((a)!=TY_STATUS_OK) break;} 
-        do{
-            TY_FEATURE_ID_LIST feature_id = TY_INT_GAIN;
-            bool val;
-            CHECK_GO_FAILED(TYHasFeature(dev_handle, TY_COMPONENT_RGB_CAM, TY_INT_GAIN, &val));
-            if (val) {
-                feature_id = TY_INT_GAIN;
-            }
-            CHECK_GO_FAILED(TYHasFeature(dev_handle, TY_COMPONENT_RGB_CAM, TY_INT_R_GAIN, &val));
-            if (val) {
-                feature_id = TY_INT_R_GAIN;
-            }
-            int auto_gain_range[2] = { 15, 255 };
-            TY_INT_RANGE range;
-            CHECK_GO_FAILED(TYGetIntRange(dev_handle, TY_COMPONENT_RGB_CAM, feature_id, &range));
+        int auto_gain_range[2] = { 15, 255 };
+        TY_INT_RANGE range;
+        res = TYGetIntRange(dev_handle, TY_COMPONENT_RGB_CAM, TY_INT_EXPOSURE_TIME, &range);
+        if (res == TY_STATUS_OK) {
             auto_gain_range[0] = std::min(range.min + 1, range.max);
             auto_gain_range[1] = std::max(range.max - 1, range.min);
-            ASSERT_OK(TYISPSetFeature(isp_handle, TY_ISP_FEATURE_AUTO_GAIN_RANGE, (uint8_t*)&auto_gain_range, sizeof(auto_gain_range)));
-        } while(0);
-#undef CHECK_GO_FAILED
+        }
+        ASSERT_OK(TYISPSetFeature(isp_handle, TY_ISP_FEATURE_AUTO_GAIN_RANGE, (uint8_t*)&auto_gain_range, sizeof(auto_gain_range)));
     }
 #if 1
     //constraint exposure time 

@@ -1,7 +1,8 @@
 var a00161 =
 [
-    [ "depth", "a00161.html#a5c2c74e1aa19e036ec78459623f3d1aa", null ],
-    [ "rsvd", "a00161.html#a34a4bba880ce9c62e6f8fd05c077060e", null ],
-    [ "x", "a00161.html#a86e54f296eb1afe8964402379feb3961", null ],
-    [ "y", "a00161.html#aff6686623101300f50db5106c28bc4f0", null ]
+    [ "id", "a00161.html#a8f7eb41b65e744e3c938509f38c79116", null ],
+    [ "mode", "a00161.html#ae4681d208e43c70c2320b9f2333e4db8", null ],
+    [ "name", "a00161.html#a7be49a34394abee7d93c555c42ce4de9", null ],
+    [ "size", "a00161.html#a1df1baa91b37221ea7f8ef5baf5962ba", null ],
+    [ "value_type", "a00161.html#a76a438eeadaa1701b87e250c5c6cb412", null ]
 ];

@@ -20,7 +20,6 @@ set(ALL_SAMPLES
     SimpleView_TriggerMode20
     SimpleView_TriggerMode21
     SimpleView_TriggerMode30
-    SimpleView_TriggerMode31
     SimpleView_TriggerMode_M2S1
     SimpleView_TriggerMode_M3S1
     SimpleView_KeepAlive
