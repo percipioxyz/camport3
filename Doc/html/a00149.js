@@ -1,9 +1,8 @@
 var a00149 =
 [
-    [ "bgr_ch1", "a00149.html#a1958f3e9f185595d2712412c43d98787", null ],
-    [ "bgr_ch2", "a00149.html#a1c760789bf57a89367c5d0f3f8530bee", null ],
-    [ "bgr_ch3", "a00149.html#abf7f8b13910c186c2297eb661ebe4cc5", null ],
-    [ "rsvd", "a00149.html#ac64aa57fff7e5f989cb375bb3343cc08", null ],
-    [ "x", "a00149.html#a1574b985e6b0003a0eace03240c4c960", null ],
-    [ "y", "a00149.html#a0df252d001a22521e5bc0d4c7980b12b", null ]
+    [ "bufferSize", "a00149.html#ac8ca7f4c699ee7fa6a3ee8ed65e5236a", null ],
+    [ "image", "a00149.html#adaef6497e00abdb25f67c241acc789a0", null ],
+    [ "reserved", "a00149.html#a69f7bd4ad45a0700f4e53159230e0cc9", null ],
+    [ "userBuffer", "a00149.html#a91bf938ad9164a5f56a5798f5081295f", null ],
+    [ "validCount", "a00149.html#a8e3a508ddd5eec680fc5c114dd297fe3", null ]
 ];

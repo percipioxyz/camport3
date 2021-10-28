@@ -99,31 +99,46 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:a8a286d971ad69f4a1eb0a80a127154d4"><td class="memItemLeft" align="right" valign="top"><a id="a8a286d971ad69f4a1eb0a80a127154d4"></a>
 TY_TRIGGER_MODE&#160;</td><td class="memItemRight" valign="bottom"><b>mode</b></td></tr>
 <tr class="separator:a8a286d971ad69f4a1eb0a80a127154d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a175cb8d38c9b868b43632ac13cb19774"><td class="memItemLeft" align="right" valign="top"><a id="a175cb8d38c9b868b43632ac13cb19774"></a>
-int8_t&#160;</td><td class="memItemRight" valign="bottom"><b>fps</b></td></tr>
-<tr class="separator:a175cb8d38c9b868b43632ac13cb19774"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a15f2b36f7eb7e94d212b6c55a75f6bb0"><td class="memItemLeft" align="right" valign="top"><a id="a15f2b36f7eb7e94d212b6c55a75f6bb0"></a>
-int8_t&#160;</td><td class="memItemRight" valign="bottom"><b>duty</b></td></tr>
-<tr class="separator:a15f2b36f7eb7e94d212b6c55a75f6bb0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a450f47a1ef1b8dce13f1bdc784f92d2b"><td class="memItemLeft" align="right" valign="top"><a id="a450f47a1ef1b8dce13f1bdc784f92d2b"></a>
-int32_t&#160;</td><td class="memItemRight" valign="bottom"><b>laser_stream</b></td></tr>
-<tr class="separator:a450f47a1ef1b8dce13f1bdc784f92d2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac1315b6f64d77bae7fd46a8930bf4f2e"><td class="memItemLeft" align="right" valign="top"><a id="ac1315b6f64d77bae7fd46a8930bf4f2e"></a>
-int32_t&#160;</td><td class="memItemRight" valign="bottom"><b>led_stream</b></td></tr>
-<tr class="separator:ac1315b6f64d77bae7fd46a8930bf4f2e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af19a39767be20a76b6023df8885f0561"><td class="memItemLeft" align="right" valign="top"><a id="af19a39767be20a76b6023df8885f0561"></a>
-int32_t&#160;</td><td class="memItemRight" valign="bottom"><b>led_expo</b></td></tr>
-<tr class="separator:af19a39767be20a76b6023df8885f0561"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7a8ef908f971169db36c0c5584964389"><td class="memItemLeft" align="right" valign="top"><a id="a7a8ef908f971169db36c0c5584964389"></a>
-int32_t&#160;</td><td class="memItemRight" valign="bottom"><b>led_gain</b></td></tr>
-<tr class="separator:a7a8ef908f971169db36c0c5584964389"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acb737247780cf996a9f9c54190e3f98e"><td class="memItemLeft" align="right" valign="top"><a id="acb737247780cf996a9f9c54190e3f98e"></a>
-int32_t&#160;</td><td class="memItemRight" valign="bottom"><b>rsvd</b> [20]</td></tr>
-<tr class="separator:acb737247780cf996a9f9c54190e3f98e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5994eb8ef2f1a6a9b88fb2662341cdcc"><td class="memItemLeft" ><a id="a5994eb8ef2f1a6a9b88fb2662341cdcc"></a>
+union {</td></tr>
+<tr class="memitem:abec83cda8a03b570e3b7c8728654786a"><td class="memItemLeft" ><a id="abec83cda8a03b570e3b7c8728654786a"></a>
+&#160;&#160;&#160;struct {</td></tr>
+<tr class="memitem:a5c6b56de3681f93c97a72d7041c9b019"><td class="memItemLeft" >
+&#160;&#160;&#160;&#160;&#160;&#160;int8_t&#160;&#160;&#160;<b>fps</b></td></tr>
+<tr class="separator:a5c6b56de3681f93c97a72d7041c9b019"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:add732ee433a5b27b62d9478f28c3ac57"><td class="memItemLeft" >
+&#160;&#160;&#160;&#160;&#160;&#160;int8_t&#160;&#160;&#160;<b>duty</b></td></tr>
+<tr class="separator:add732ee433a5b27b62d9478f28c3ac57"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7efccbb95ecbd0ad3beeba2ce6c320a5"><td class="memItemLeft" >
+&#160;&#160;&#160;&#160;&#160;&#160;int32_t&#160;&#160;&#160;<b>laser_stream</b></td></tr>
+<tr class="separator:a7efccbb95ecbd0ad3beeba2ce6c320a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6c32db0c36f692dd57882e25915a9f7b"><td class="memItemLeft" >
+&#160;&#160;&#160;&#160;&#160;&#160;int32_t&#160;&#160;&#160;<b>led_stream</b></td></tr>
+<tr class="separator:a6c32db0c36f692dd57882e25915a9f7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aacfcca0ac770a1417dba317ee5ddef08"><td class="memItemLeft" >
+&#160;&#160;&#160;&#160;&#160;&#160;int32_t&#160;&#160;&#160;<b>led_expo</b></td></tr>
+<tr class="separator:aacfcca0ac770a1417dba317ee5ddef08"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5b951a2a73260e4dbe808ad519fae811"><td class="memItemLeft" >
+&#160;&#160;&#160;&#160;&#160;&#160;int32_t&#160;&#160;&#160;<b>led_gain</b></td></tr>
+<tr class="separator:a5b951a2a73260e4dbe808ad519fae811"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abec83cda8a03b570e3b7c8728654786a"><td class="memItemLeft" valign="top">&#160;&#160;&#160;}&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="separator:abec83cda8a03b570e3b7c8728654786a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a853ba88898df96526c4172431142d5d6"><td class="memItemLeft" ><a id="a853ba88898df96526c4172431142d5d6"></a>
+&#160;&#160;&#160;struct {</td></tr>
+<tr class="memitem:ac3eaa87aaf0d244d025bcc52fc3565d1"><td class="memItemLeft" >
+&#160;&#160;&#160;&#160;&#160;&#160;int32_t&#160;&#160;&#160;<b>ir_gain</b> [2]</td></tr>
+<tr class="separator:ac3eaa87aaf0d244d025bcc52fc3565d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a853ba88898df96526c4172431142d5d6"><td class="memItemLeft" valign="top">&#160;&#160;&#160;}&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="separator:a853ba88898df96526c4172431142d5d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac8488fe95dd2233863d8569cef41d68b"><td class="memItemLeft" >
+&#160;&#160;&#160;int32_t&#160;&#160;&#160;<b>rsvd</b> [32]</td></tr>
+<tr class="separator:ac8488fe95dd2233863d8569cef41d68b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5994eb8ef2f1a6a9b88fb2662341cdcc"><td class="memItemLeft" valign="top">};&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="separator:a5994eb8ef2f1a6a9b88fb2662341cdcc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="a00002_source.html#l00656">656</a> of file <a class="el" href="a00002_source.html">TYApi.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00002_source.html#l00666">666</a> of file <a class="el" href="a00002_source.html">TYApi.h</a>.</p>
 </div><hr/>The documentation for this struct was generated from the following file:<ul>
 <li><a class="el" href="a00002_source.html">TYApi.h</a></li>
 </ul>

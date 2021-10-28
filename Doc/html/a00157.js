@@ -1,7 +1,7 @@
 var a00157 =
 [
-    [ "outlier_rate", "a00157.html#ac9d2fb2f66185d5e4e362fd68c688c1b", null ],
-    [ "outlier_win_sz", "a00157.html#ae710febd7b70a95c1ec51e8721cb4d6e", null ],
-    [ "sigma_r", "a00157.html#a307c0f2750006519986ede18f461a33f", null ],
-    [ "sigma_s", "a00157.html#a005d6e28cca77a5964b0c588ee3839e9", null ]
+    [ "depth", "a00157.html#a5c2c74e1aa19e036ec78459623f3d1aa", null ],
+    [ "rsvd", "a00157.html#a34a4bba880ce9c62e6f8fd05c077060e", null ],
+    [ "x", "a00157.html#a86e54f296eb1afe8964402379feb3961", null ],
+    [ "y", "a00157.html#aff6686623101300f50db5106c28bc4f0", null ]
 ];

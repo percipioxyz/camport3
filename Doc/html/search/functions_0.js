@@ -14,6 +14,7 @@ var searchData=
   ['tyforcedeviceip',['TYForceDeviceIP',['../a00002.html#ac5f5c8618b92b883a83a44fd8be7f7db',1,'TYApi.h']]],
   ['tygetbool',['TYGetBool',['../a00002.html#a5e735473417bd5771b3e6f0445661c53',1,'TYApi.h']]],
   ['tygetbytearray',['TYGetByteArray',['../a00002.html#a9cfe5842a0e8418783d9deff98b2cf90',1,'TYApi.h']]],
+  ['tygetbytearrayattr',['TYGetByteArrayAttr',['../a00002.html#a305e99a577dfc89b7260fbb733ca0a93',1,'TYApi.h']]],
   ['tygetbytearraysize',['TYGetByteArraySize',['../a00002.html#ae4b787c2b243c4020614b828a95ee277',1,'TYApi.h']]],
   ['tygetcomponentids',['TYGetComponentIDs',['../a00002.html#a5eeec980e1d7b51c41a8856a1abf28e5',1,'TYApi.h']]],
   ['tygetdeviceinfo',['TYGetDeviceInfo',['../a00002.html#ade9775ca18449a26818034787f72d4e9',1,'TYApi.h']]],

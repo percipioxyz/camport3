@@ -1,6 +1,6 @@
 var a00011 =
 [
-    [ "TY_ISP_FEATURE_INFO", "a00161.html", "a00161" ],
+    [ "TY_ISP_FEATURE_INFO", "a00173.html", "a00173" ],
     [ "TYISP_CAPI", "a00011.html#a2a2a99d142b9cd8aaa53ea73a1a2b1c3", null ],
     [ "TY_ISP_HANDLE", "a00011.html#afc7c121fcf98a2c8979d2216c5463251", null ],
     [ "TY_DEMOSAIC_METHOD", "a00011.html#ad5aa0c7fb4aca569a5985c7cd1c1c633", [

@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.14"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>TYCamport3: TY_DEVICE_USB_INFO Struct Reference</title>
+<title>TYCamport3: TY_INTERFACE_INFO Struct Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -90,25 +90,42 @@ $(document).ready(function(){initNavTree('a00025.html','');});
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="a00022.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">TY_DEVICE_USB_INFO Struct Reference</div>  </div>
+<div class="title">TY_INTERFACE_INFO Struct Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p><code>#include &lt;<a class="el" href="a00002_source.html">TYApi.h</a>&gt;</code></p>
+<div class="dynheader">
+Collaboration diagram for TY_INTERFACE_INFO:</div>
+<div class="dyncontent">
+<div class="center"><img src="a00023.png" border="0" usemap="#_t_y___i_n_t_e_r_f_a_c_e___i_n_f_o_coll__map" alt="Collaboration graph"/></div>
+<map name="_t_y___i_n_t_e_r_f_a_c_e___i_n_f_o_coll__map" id="_t_y___i_n_t_e_r_f_a_c_e___i_n_f_o_coll__map">
+<area shape="rect" id="node2" href="a00017.html" title="TY_DEVICE_NET_INFO" alt="" coords="5,5,168,32"/>
+</map>
+<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a9f20755deff9158fc10e7f8d24e8db1f"><td class="memItemLeft" align="right" valign="top"><a id="a9f20755deff9158fc10e7f8d24e8db1f"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>bus</b></td></tr>
-<tr class="separator:a9f20755deff9158fc10e7f8d24e8db1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a24e094e5662fecf24b90aa9e73d65c46"><td class="memItemLeft" align="right" valign="top"><a id="a24e094e5662fecf24b90aa9e73d65c46"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>addr</b></td></tr>
-<tr class="separator:a24e094e5662fecf24b90aa9e73d65c46"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a24392df7c2ed7c80161df488c9943b8e"><td class="memItemLeft" align="right" valign="top"><a id="a24392df7c2ed7c80161df488c9943b8e"></a>
-char&#160;</td><td class="memItemRight" valign="bottom"><b>reserved</b> [248]</td></tr>
-<tr class="separator:a24392df7c2ed7c80161df488c9943b8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab4417fe83294f826e0a3b7fef902553a"><td class="memItemLeft" align="right" valign="top"><a id="ab4417fe83294f826e0a3b7fef902553a"></a>
+char&#160;</td><td class="memItemRight" valign="bottom"><b>name</b> [32]</td></tr>
+<tr class="separator:ab4417fe83294f826e0a3b7fef902553a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae84371dc17b5949e79f0226d6fb64053"><td class="memItemLeft" align="right" valign="top"><a id="ae84371dc17b5949e79f0226d6fb64053"></a>
+char&#160;</td><td class="memItemRight" valign="bottom"><b>id</b> [32]</td></tr>
+<tr class="separator:ae84371dc17b5949e79f0226d6fb64053"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8973f7b4623cdb3ac1e3194d48730522"><td class="memItemLeft" align="right" valign="top"><a id="a8973f7b4623cdb3ac1e3194d48730522"></a>
+TY_INTERFACE_TYPE&#160;</td><td class="memItemRight" valign="bottom"><b>type</b></td></tr>
+<tr class="separator:a8973f7b4623cdb3ac1e3194d48730522"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a679a5e02776cbf179be726708224f21f"><td class="memItemLeft" align="right" valign="top"><a id="a679a5e02776cbf179be726708224f21f"></a>
+char&#160;</td><td class="memItemRight" valign="bottom"><b>reserved</b> [4]</td></tr>
+<tr class="separator:a679a5e02776cbf179be726708224f21f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afc221c1c18ec0d731f7db8a8750f7573"><td class="memItemLeft" align="right" valign="top"><a id="afc221c1c18ec0d731f7db8a8750f7573"></a>
+<a class="el" href="a00017.html">TY_DEVICE_NET_INFO</a>&#160;</td><td class="memItemRight" valign="bottom"><b>netInfo</b></td></tr>
+<tr class="separator:afc221c1c18ec0d731f7db8a8750f7573"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock">
-<p class="definition">Definition at line <a class="el" href="a00002_source.html#l00523">523</a> of file <a class="el" href="a00002_source.html">TYApi.h</a>.</p>
+<div class="textblock"><dl class="section see"><dt>See also</dt><dd><a class="el" href="a00002.html#ac8015a333965f280d5ae4d26e7a15ddb" title="Get interface info list. ">TYGetInterfaceList</a> </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="a00002_source.html#l00532">532</a> of file <a class="el" href="a00002_source.html">TYApi.h</a>.</p>
 </div><hr/>The documentation for this struct was generated from the following file:<ul>
 <li><a class="el" href="a00002_source.html">TYApi.h</a></li>
 </ul>
@@ -117,7 +134,7 @@ char&#160;</td><td class="memItemRight" valign="bottom"><b>reserved</b> [248]</t
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="a00025.html">TY_DEVICE_USB_INFO</a></li>
+    <li class="navelem"><a class="el" href="a00025.html">TY_INTERFACE_INFO</a></li>
     <li class="footer">Generated by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.14 </li>

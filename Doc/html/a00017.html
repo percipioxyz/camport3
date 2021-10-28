@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.14"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>TYCamport3: TY_VERSION_INFO Struct Reference</title>
+<title>TYCamport3: TY_DEVICE_NET_INFO Struct Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -90,28 +90,34 @@ $(document).ready(function(){initNavTree('a00017.html','');});
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="a00014.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">TY_VERSION_INFO Struct Reference</div>  </div>
+<div class="title">TY_DEVICE_NET_INFO Struct Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a95147ff001af1998d50cc00e584fa16d"><td class="memItemLeft" align="right" valign="top"><a id="a95147ff001af1998d50cc00e584fa16d"></a>
-int32_t&#160;</td><td class="memItemRight" valign="bottom"><b>major</b></td></tr>
-<tr class="separator:a95147ff001af1998d50cc00e584fa16d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1b7a2221bf6a2054d389d766c8926371"><td class="memItemLeft" align="right" valign="top"><a id="a1b7a2221bf6a2054d389d766c8926371"></a>
-int32_t&#160;</td><td class="memItemRight" valign="bottom"><b>minor</b></td></tr>
-<tr class="separator:a1b7a2221bf6a2054d389d766c8926371"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad1cf7144e91ae64b4e984dd83571a862"><td class="memItemLeft" align="right" valign="top"><a id="ad1cf7144e91ae64b4e984dd83571a862"></a>
-int32_t&#160;</td><td class="memItemRight" valign="bottom"><b>patch</b></td></tr>
-<tr class="separator:ad1cf7144e91ae64b4e984dd83571a862"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab53072b461dab3cbe2f0c17ec14d1024"><td class="memItemLeft" align="right" valign="top"><a id="ab53072b461dab3cbe2f0c17ec14d1024"></a>
-int32_t&#160;</td><td class="memItemRight" valign="bottom"><b>reserved</b></td></tr>
-<tr class="separator:ab53072b461dab3cbe2f0c17ec14d1024"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af242263ed8ecd410db958594f8919b39"><td class="memItemLeft" align="right" valign="top"><a id="af242263ed8ecd410db958594f8919b39"></a>
+char&#160;</td><td class="memItemRight" valign="bottom"><b>mac</b> [32]</td></tr>
+<tr class="separator:af242263ed8ecd410db958594f8919b39"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7170ceba47c417184317661d4728ae40"><td class="memItemLeft" align="right" valign="top"><a id="a7170ceba47c417184317661d4728ae40"></a>
+char&#160;</td><td class="memItemRight" valign="bottom"><b>ip</b> [32]</td></tr>
+<tr class="separator:a7170ceba47c417184317661d4728ae40"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8a2bac5ca514b1360a1ba547026ad957"><td class="memItemLeft" align="right" valign="top"><a id="a8a2bac5ca514b1360a1ba547026ad957"></a>
+char&#160;</td><td class="memItemRight" valign="bottom"><b>netmask</b> [32]</td></tr>
+<tr class="separator:a8a2bac5ca514b1360a1ba547026ad957"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5d42445d9d9c9ec989e0e75d292e2867"><td class="memItemLeft" align="right" valign="top"><a id="a5d42445d9d9c9ec989e0e75d292e2867"></a>
+char&#160;</td><td class="memItemRight" valign="bottom"><b>gateway</b> [32]</td></tr>
+<tr class="separator:a5d42445d9d9c9ec989e0e75d292e2867"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af06cd59af8293ee83dd8f89d46f0984b"><td class="memItemLeft" align="right" valign="top"><a id="af06cd59af8293ee83dd8f89d46f0984b"></a>
+char&#160;</td><td class="memItemRight" valign="bottom"><b>broadcast</b> [32]</td></tr>
+<tr class="separator:af06cd59af8293ee83dd8f89d46f0984b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6ecd24ac6651bdf23fc8b5222b2d48b5"><td class="memItemLeft" align="right" valign="top"><a id="a6ecd24ac6651bdf23fc8b5222b2d48b5"></a>
+char&#160;</td><td class="memItemRight" valign="bottom"><b>reserved</b> [96]</td></tr>
+<tr class="separator:a6ecd24ac6651bdf23fc8b5222b2d48b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="a00002_source.html#l00505">505</a> of file <a class="el" href="a00002_source.html">TYApi.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00002_source.html#l00514">514</a> of file <a class="el" href="a00002_source.html">TYApi.h</a>.</p>
 </div><hr/>The documentation for this struct was generated from the following file:<ul>
 <li><a class="el" href="a00002_source.html">TYApi.h</a></li>
 </ul>
@@ -120,7 +126,7 @@ int32_t&#160;</td><td class="memItemRight" valign="bottom"><b>reserved</b></td><
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="a00017.html">TY_VERSION_INFO</a></li>
+    <li class="navelem"><a class="el" href="a00017.html">TY_DEVICE_NET_INFO</a></li>
     <li class="footer">Generated by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.14 </li>

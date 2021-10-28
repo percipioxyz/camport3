@@ -1,4 +1,4 @@
-# Percipio Camport Camera Kit
+# Percipio Camera Software Development Kit
 
 This software development kit provides C/C++ API and sample applications to control and capture images from Percipio camera.
 The samples demonstrate how to get depth image, 3D point cloud , color and ir image from the depth camera.

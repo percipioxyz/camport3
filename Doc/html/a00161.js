@@ -1,8 +1,9 @@
 var a00161 =
 [
-    [ "id", "a00161.html#a8f7eb41b65e744e3c938509f38c79116", null ],
-    [ "mode", "a00161.html#ae4681d208e43c70c2320b9f2333e4db8", null ],
-    [ "name", "a00161.html#a7be49a34394abee7d93c555c42ce4de9", null ],
-    [ "size", "a00161.html#a1df1baa91b37221ea7f8ef5baf5962ba", null ],
-    [ "value_type", "a00161.html#a76a438eeadaa1701b87e250c5c6cb412", null ]
+    [ "bgr_ch1", "a00161.html#a1958f3e9f185595d2712412c43d98787", null ],
+    [ "bgr_ch2", "a00161.html#a1c760789bf57a89367c5d0f3f8530bee", null ],
+    [ "bgr_ch3", "a00161.html#abf7f8b13910c186c2297eb661ebe4cc5", null ],
+    [ "rsvd", "a00161.html#ac64aa57fff7e5f989cb375bb3343cc08", null ],
+    [ "x", "a00161.html#a1574b985e6b0003a0eace03240c4c960", null ],
+    [ "y", "a00161.html#a0df252d001a22521e5bc0d4c7980b12b", null ]
 ];

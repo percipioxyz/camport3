@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.14"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>TYCamport3: TY_FLOAT_RANGE Struct Reference</title>
+<title>TYCamport3: TY_BYTEARRAY_ATTR Struct Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -90,30 +90,44 @@ $(document).ready(function(){initNavTree('a00049.html','');});
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="a00046.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">TY_FLOAT_RANGE Struct Reference</div>  </div>
+<div class="title">TY_BYTEARRAY_ATTR Struct Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:ac33f9d82448c101cb871021e2ee4b735"><td class="memItemLeft" align="right" valign="top"><a id="ac33f9d82448c101cb871021e2ee4b735"></a>
-float&#160;</td><td class="memItemRight" valign="bottom"><b>min</b></td></tr>
-<tr class="separator:ac33f9d82448c101cb871021e2ee4b735"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2e7f4608646b7d6221f025b52fe06c98"><td class="memItemLeft" align="right" valign="top"><a id="a2e7f4608646b7d6221f025b52fe06c98"></a>
-float&#160;</td><td class="memItemRight" valign="bottom"><b>max</b></td></tr>
-<tr class="separator:a2e7f4608646b7d6221f025b52fe06c98"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2918cd8b8f1c033897d885be93b75f8e"><td class="memItemLeft" align="right" valign="top"><a id="a2918cd8b8f1c033897d885be93b75f8e"></a>
-float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00049.html#a2918cd8b8f1c033897d885be93b75f8e">inc</a></td></tr>
-<tr class="memdesc:a2918cd8b8f1c033897d885be93b75f8e"><td class="mdescLeft">&#160;</td><td class="mdescRight">increaing step <br /></td></tr>
-<tr class="separator:a2918cd8b8f1c033897d885be93b75f8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5d0cc184d80be47b9396b859485757bb"><td class="memItemLeft" align="right" valign="top"><a id="a5d0cc184d80be47b9396b859485757bb"></a>
-float&#160;</td><td class="memItemRight" valign="bottom"><b>reserved</b> [1]</td></tr>
-<tr class="separator:a5d0cc184d80be47b9396b859485757bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acdf25a8f44c2b532a6f25b5447fec42e"><td class="memItemLeft" align="right" valign="top"><a id="acdf25a8f44c2b532a6f25b5447fec42e"></a>
+int32_t&#160;</td><td class="memItemRight" valign="bottom"><b>size</b></td></tr>
+<tr class="separator:acdf25a8f44c2b532a6f25b5447fec42e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a98580d3f59f14a099c69d793fe1ee523"><td class="memItemLeft" align="right" valign="top"><a id="a98580d3f59f14a099c69d793fe1ee523"></a>
+int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00049.html#a98580d3f59f14a099c69d793fe1ee523">unit_size</a></td></tr>
+<tr class="memdesc:a98580d3f59f14a099c69d793fe1ee523"><td class="mdescLeft">&#160;</td><td class="mdescRight">Bytes array size in bytes. <br /></td></tr>
+<tr class="separator:a98580d3f59f14a099c69d793fe1ee523"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a07ba18afdbaf51bfa57407eee61e25e8"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00049.html#a07ba18afdbaf51bfa57407eee61e25e8">valid_size</a></td></tr>
+<tr class="separator:a07ba18afdbaf51bfa57407eee61e25e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="a00002_source.html#l00581">581</a> of file <a class="el" href="a00002_source.html">TYApi.h</a>.</p>
-</div><hr/>The documentation for this struct was generated from the following file:<ul>
+<p class="definition">Definition at line <a class="el" href="a00002_source.html#l00590">590</a> of file <a class="el" href="a00002_source.html">TYApi.h</a>.</p>
+</div><h2 class="groupheader">Member Data Documentation</h2>
+<a id="a07ba18afdbaf51bfa57407eee61e25e8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a07ba18afdbaf51bfa57407eee61e25e8">&#9670;&nbsp;</a></span>valid_size</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int32_t TY_BYTEARRAY_ATTR::valid_size</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>unit size in bytes for special parse valid size in bytes in case has reserved member, Must be multiple of unit_size, mem_length = valid_size/unit_size </p>
+
+<p class="definition">Definition at line <a class="el" href="a00002_source.html#l00596">596</a> of file <a class="el" href="a00002_source.html">TYApi.h</a>.</p>
+
+</div>
+</div>
+<hr/>The documentation for this struct was generated from the following file:<ul>
 <li><a class="el" href="a00002_source.html">TYApi.h</a></li>
 </ul>
 </div><!-- contents -->
@@ -121,7 +135,7 @@ float&#160;</td><td class="memItemRight" valign="bottom"><b>reserved</b> [1]</td
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="a00049.html">TY_FLOAT_RANGE</a></li>
+    <li class="navelem"><a class="el" href="a00049.html">TY_BYTEARRAY_ATTR</a></li>
     <li class="footer">Generated by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.14 </li>
