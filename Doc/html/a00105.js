@@ -1,7 +1,6 @@
 var a00105 =
 [
-    [ "h", "a00105.html#a936708e6ffb152628d8269cb8ef17862", null ],
-    [ "w", "a00105.html#a28ff34b7b4ac617379f614bd12040be5", null ],
-    [ "x", "a00105.html#ab458b9efaff3f1ee28728ee4845a518f", null ],
-    [ "y", "a00105.html#a06ab60ccb6a66df98bd3012907dfe192", null ]
+    [ "period_us", "a00105.html#a4f27e7f14fcdd220c1e0f6c00809c2b2", null ],
+    [ "start_time_us", "a00105.html#a2ed27b7603c8040f2dd1f4df341c3d1f", null ],
+    [ "trigger_count", "a00105.html#a4025d2625b859be61306e703eb72fce4", null ]
 ];

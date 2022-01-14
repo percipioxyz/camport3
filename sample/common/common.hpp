@@ -9,6 +9,7 @@
 #include "DepthRender.hpp"
 #include "MatViewer.hpp"
 #include "TYThread.hpp"
+#include "DepthInpainter.hpp"
 #include "TyIsp.h"
 #include "BayerISP.hpp"
 

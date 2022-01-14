@@ -1,0 +1,5 @@
+<map id="TY_CAMERA_CALIB_INFO" name="TY_CAMERA_CALIB_INFO">
+<area shape="rect" id="node2" href="$a00065.html" title="TY_CAMERA_INTRINSIC" alt="" coords="5,5,177,32"/>
+<area shape="rect" id="node3" href="$a00069.html" title="TY_CAMERA_EXTRINSIC" alt="" coords="201,5,376,32"/>
+<area shape="rect" id="node4" href="$a00073.html" title="camera distortion parameters " alt="" coords="401,5,587,32"/>
+</map>

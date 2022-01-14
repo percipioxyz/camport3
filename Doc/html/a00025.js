@@ -1,8 +1,6 @@
 var a00025 =
 [
-    [ "id", "a00025.html#ae84371dc17b5949e79f0226d6fb64053", null ],
-    [ "name", "a00025.html#ab4417fe83294f826e0a3b7fef902553a", null ],
-    [ "netInfo", "a00025.html#afc221c1c18ec0d731f7db8a8750f7573", null ],
-    [ "reserved", "a00025.html#a679a5e02776cbf179be726708224f21f", null ],
-    [ "type", "a00025.html#a8973f7b4623cdb3ac1e3194d48730522", null ]
+    [ "addr", "a00025.html#a24e094e5662fecf24b90aa9e73d65c46", null ],
+    [ "bus", "a00025.html#a9f20755deff9158fc10e7f8d24e8db1f", null ],
+    [ "reserved", "a00025.html#a24392df7c2ed7c80161df488c9943b8e", null ]
 ];

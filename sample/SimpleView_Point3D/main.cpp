@@ -11,6 +11,8 @@ struct CallbackData {
     TY_ISP_HANDLE   isp_handle;
     TY_CAMERA_CALIB_INFO depth_calib; 
     TY_CAMERA_CALIB_INFO color_calib;
+    
+    float f_depth_scale;
 
     bool saveOneFramePoint3d;
     bool exit_main;
@@ -31,6 +33,7 @@ static void doRgbRegister(const TY_CAMERA_CALIB_INFO& depth_calib
                        , const cv::Mat& depth
                        , const cv::Mat& color
                        , cv::Mat& out
+                       , float f_scale = 1.0f
                        )
 {
     // do rgb undistortion
@@ -58,7 +61,7 @@ static void doRgbRegister(const TY_CAMERA_CALIB_INFO& depth_calib
         depth.cols, depth.rows, depth.ptr<uint16_t>(),
         &color_calib,
         undistort_color.cols, undistort_color.rows, undistort_color.ptr<uint8_t>(),
-        out.ptr<uint8_t>()));
+        out.ptr<uint8_t>(), f_scale));
 }
 
 static void handleFrame(TY_FRAME_DATA* frame, void* userdata) {
@@ -81,7 +84,7 @@ static void handleFrame(TY_FRAME_DATA* frame, void* userdata) {
         }
 
         ASSERT_OK(TYMapDepthImageToPoint3d(&pData->depth_calib, depth.cols, depth.rows
-            , (uint16_t*)depth.data, &p3d[0]));
+            , (uint16_t*)depth.data, &p3d[0], pData->f_depth_scale));
         uint8_t *color_data = NULL;
         cv::Mat color_data_mat;
         if (!color.empty()){
@@ -89,7 +92,7 @@ static void handleFrame(TY_FRAME_DATA* frame, void* userdata) {
             ASSERT_OK(TYHasFeature(pData->hDevice, TY_COMPONENT_RGB_CAM, TY_STRUCT_CAM_CALIB_DATA, &hasColorCalib));
             if (hasColorCalib)
             {
-                doRgbRegister(pData->depth_calib, pData->color_calib, depth, color, color_data_mat);
+                doRgbRegister(pData->depth_calib, pData->color_calib, depth, color, color_data_mat, pData->f_depth_scale);
                 cv::cvtColor(color_data_mat, color_data_mat, cv::COLOR_BGR2RGB);
                 color_data = color_data_mat.ptr<uint8_t>();
             }
@@ -200,6 +203,10 @@ int main(int argc, char* argv[])
         LOGD("Select Depth Image Mode: %dx%d", TYImageWidth(image_mode), TYImageHeight(image_mode));
         ASSERT_OK(TYSetEnum(hDevice, TY_COMPONENT_DEPTH_CAM, TY_ENUM_IMAGE_MODE, image_mode));
         ASSERT_OK(TYEnableComponents(hDevice, TY_COMPONENT_DEPTH_CAM));
+        
+        float scale_unit = 1.;
+        TYGetFloat(hDevice, TY_COMPONENT_DEPTH_CAM, TY_FLOAT_SCALE_UNIT, &scale_unit);
+        cb_data.f_depth_scale = scale_unit;        
     }
 
     int32_t allComps;

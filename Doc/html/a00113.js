@@ -1,12 +1,8 @@
 var a00113 =
 [
-    [ "acc_x", "a00113.html#a3c824136ab280902a33cb54662a945d2", null ],
-    [ "acc_y", "a00113.html#a340b36c5afced446d418c6be499b2a32", null ],
-    [ "acc_z", "a00113.html#a95499999722a20b1bb370099e932eded", null ],
-    [ "gyro_x", "a00113.html#a88138794516e73364197d1937d9cc644", null ],
-    [ "gyro_y", "a00113.html#a33113d7e8364a8c97ec83e40b17dce6a", null ],
-    [ "gyro_z", "a00113.html#ad328c14fd1b02cdf06097a18b5c94523", null ],
-    [ "reserved", "a00113.html#aa835e231575eb5a07f8be12de6f1d72e", null ],
-    [ "temperature", "a00113.html#ade308c4ba37af3a11ff92c4f5ae2be59", null ],
-    [ "timestamp", "a00113.html#a33ba3f9e3c826744623d71f413f49ce8", null ]
+    [ "imageDropped", "a00113.html#a9d598d1da279e2172adca52c5db566b5", null ],
+    [ "imageOutputed", "a00113.html#a7ff234622751a487a2f85cd56bc60aa3", null ],
+    [ "packetLost", "a00113.html#a902fba1b575115e64aa839108d002e8e", null ],
+    [ "packetReceived", "a00113.html#ab3099957df1c4a18082c27c558341a31", null ],
+    [ "rsvd", "a00113.html#afd3df8f7bd491b68b5d0416680a114e1", null ]
 ];

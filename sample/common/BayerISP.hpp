@@ -153,6 +153,12 @@ static TY_STATUS ColorIspInitAutoExposure(TY_ISP_HANDLE isp_handle, TY_DEV_HANDL
         return res;
     }
     ASSERT_OK(TYISPSetFeature(isp_handle, TY_ISP_FEATURE_ENABLE_AUTO_EXPOSURE_GAIN, 1));
+
+    // do not enable gain auto control by default
+# if 1
+    int auto_gain_range[2] = { -1, -1 };
+    ASSERT_OK(TYISPSetFeature(isp_handle, TY_ISP_FEATURE_AUTO_GAIN_RANGE, (uint8_t*)&auto_gain_range, sizeof(auto_gain_range)));
+#else 
     if(is_v21_color_device){
         const int old_auto_gain_range[2] = { 33, 255 };
         ASSERT_OK(TYISPSetFeature(isp_handle, TY_ISP_FEATURE_AUTO_GAIN_RANGE, (uint8_t*)&old_auto_gain_range, sizeof(old_auto_gain_range)));
@@ -179,7 +185,8 @@ static TY_STATUS ColorIspInitAutoExposure(TY_ISP_HANDLE isp_handle, TY_DEV_HANDL
         } while(0);
 #undef CHECK_GO_FAILED
     }
-#if 1
+#endif 
+
     //constraint exposure time 
     int auto_expo_range[2] = { 10, 100 };
     TY_INT_RANGE range;
@@ -189,7 +196,6 @@ static TY_STATUS ColorIspInitAutoExposure(TY_ISP_HANDLE isp_handle, TY_DEV_HANDL
         auto_expo_range[1] = std::max(range.max - 1, range.min);
     }
     ASSERT_OK(TYISPSetFeature(isp_handle, TY_ISP_FEATURE_AUTO_EXPOSURE_RANGE, (uint8_t*)&auto_expo_range, sizeof(auto_expo_range)));
-#endif
     return TY_STATUS_OK;
 }
 

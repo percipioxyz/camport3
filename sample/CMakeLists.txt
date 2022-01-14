@@ -76,7 +76,7 @@ endif()
 # ========================================
 # === common, build static lib to speed up
 # ========================================
-set(COMMON_SOURCES common/MatViewer.cpp common/TYThread.cpp)
+set(COMMON_SOURCES common/MatViewer.cpp common/TYThread.cpp common/ImageSpeckleFilter.cpp common/DepthInpainter.cpp)
 
 add_library(sample_common STATIC ${COMMON_SOURCES})
 if(UNIX)

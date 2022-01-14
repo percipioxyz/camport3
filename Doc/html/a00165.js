@@ -1,5 +1,9 @@
 var a00165 =
 [
-    [ "max_speckle_diff", "a00165.html#afdd5935e2dcb0b359500c84c75c613c4", null ],
-    [ "max_speckle_size", "a00165.html#a101f480aa882c40a5e0ed4dc069d3655", null ]
+    [ "bgr_ch1", "a00165.html#a1958f3e9f185595d2712412c43d98787", null ],
+    [ "bgr_ch2", "a00165.html#a1c760789bf57a89367c5d0f3f8530bee", null ],
+    [ "bgr_ch3", "a00165.html#abf7f8b13910c186c2297eb661ebe4cc5", null ],
+    [ "rsvd", "a00165.html#ac64aa57fff7e5f989cb375bb3343cc08", null ],
+    [ "x", "a00165.html#a1574b985e6b0003a0eace03240c4c960", null ],
+    [ "y", "a00165.html#a0df252d001a22521e5bc0d4c7980b12b", null ]
 ];

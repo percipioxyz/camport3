@@ -1,4 +1,4 @@
-var files_dup =
+var files =
 [
     [ "TYApi.h", "a00002.html", "a00002" ],
     [ "TYCoordinateMapper.h", "a00005.html", "a00005" ],

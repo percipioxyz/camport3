@@ -112,17 +112,9 @@
 #   endif
 #endif
 
-#ifdef __GNUC__
-#define STRUCT_DEF_START  __#pragma pack(1)
-#define STRUCT_DEF_END  __#pragma pack()
-#else
-#define STRUCT_DEF_START  __pragma( pack(push, 1) )
-#define STRUCT_DEF_END  __pragma( pack(pop) )
-#endif
-
 #define TY_LIB_VERSION_MAJOR       3
-#define TY_LIB_VERSION_MINOR       5 
-#define TY_LIB_VERSION_PATCH       20
+#define TY_LIB_VERSION_MINOR       6 
+#define TY_LIB_VERSION_PATCH       2
 
 
 //------------------------------------------------------------------------------
@@ -493,12 +485,7 @@ typedef enum TY_TIME_SYNC_TYPE_LIST
 }TY_TIME_SYNC_TYPE_LIST;
 typedef int32_t TY_TIME_SYNC_TYPE;
 
-#ifdef __GNUC__
 #pragma pack(1)
-#else
-__pragma( pack(push, 1) )
-#endif
-
 
 //------------------------------------------------------------------------------
 //  Struct
@@ -846,11 +833,8 @@ typedef struct TY_EVENT_INFO
     TY_EVENT        eventId;
     char            message[124];
 }TY_EVENT_INFO;
-#ifdef __GNUC__
+
 #pragma pack()
-#else
-__pragma( pack(pop) )
-#endif
 
 typedef void (*TY_EVENT_CALLBACK) (TY_EVENT_INFO*, void* userdata);
 typedef void (*TY_IMU_CALLBACK) (TY_IMU_DATA*, void* userdata);

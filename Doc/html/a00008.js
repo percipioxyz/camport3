@@ -1,7 +1,7 @@
 var a00008 =
 [
-    [ "DepthSpeckleFilterParameters", "a00165.html", "a00165" ],
-    [ "DepthEnhenceParameters", "a00169.html", "a00169" ],
+    [ "DepthSpeckleFilterParameters", "a00169.html", "a00169" ],
+    [ "DepthEnhenceParameters", "a00173.html", "a00173" ],
     [ "DepthEnhenceParameters_Initializer", "a00008.html#a76fde32b9f3093e7ba194683b7121bd6", null ],
     [ "DepthSpeckleFilterParameters_Initializer", "a00008.html#ae8c400e207ceaa196d72c4473ea83563", null ],
     [ "TYDepthEnhenceFilter", "a00008.html#af8bb2a45b6fd8b542d250e2cd04e6d53", null ],
