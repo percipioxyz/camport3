@@ -28,7 +28,6 @@ Please refer to [https://percipiodc.readthedocs.io/en/latest/](https://percipiod
 	- x64
 	- i686
 	- armv7hf
-	- armv7l\_raspberrypi\_3b
 	- aarch64
 - windows	
 	- x64

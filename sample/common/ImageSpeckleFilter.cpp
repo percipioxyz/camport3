@@ -16,7 +16,6 @@ struct Point2s {
 
 template <typename T>
 void filterSpecklesImpl(cv::Mat& img, int newVal, int maxSpeckleSize, int maxDiff, std::vector<char> &_buf) {
-  //方法是用广度搜索计算区域大小。手段类似区域填充算法。
   int width = img.cols, height = img.rows;
   int npixels = width * height;//number of pixels
   size_t bufSize = npixels * (int)(sizeof(Point2s) + sizeof(int) + sizeof(uint8_t));//all pixel buffer

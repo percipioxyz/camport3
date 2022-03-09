@@ -185,8 +185,10 @@ public:
 
     void TYUnregisterCallback()
     {
-        _exit = true;
-        _cbThread.destroy();
+        if (_exit) {
+            _exit = true;
+            _cbThread.destroy();
+        }
     }
 
 private:

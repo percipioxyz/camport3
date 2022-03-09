@@ -8,7 +8,6 @@
 #include <opencv2/imgproc/imgproc_c.h>
 #include <opencv2/photo/legacy/constants_c.h>
 #include <opencv2/imgcodecs/legacy/constants_c.h>
-#define CV_VERSION_4X
 #endif
 #endif
 
@@ -585,16 +584,21 @@ _cvInpaint( const CvArr* _input_img, const CvArr* _inpaint_mask, CvArr* _output_
     }
 }
 
+CvMat ToCvMat(const cv::Mat& m)
+{
+	CV_DbgAssert(m.dims <= 2);
+	CvMat dst = cvMat(m.rows, m.dims == 1 ? 1 : m.cols, m.type(), m.data);
+	dst.step = (int)m.step[0];
+	dst.type = (dst.type & ~cv::Mat::CONTINUOUS_FLAG) | (m.flags & cv::Mat::CONTINUOUS_FLAG);
+	return dst;
+}
+
 void _inpaint( InputArray _src, InputArray _mask, OutputArray _dst,
                   double inpaintRange, int flags )
 {
     Mat src = _src.getMat(), mask = _mask.getMat();
     _dst.create( src.size(), src.type() );
-#ifdef CV_VERSION_4X
-    CvMat c_src = cvMat(src), c_mask = cvMat(mask), c_dst = cvMat(_dst.getMat());
-#else
-   CvMat c_src = src, c_mask = mask, c_dst = _dst.getMat();
-#endif
+    CvMat c_src = ToCvMat(src), c_mask = ToCvMat(mask), c_dst = ToCvMat(_dst.getMat());
     _cvInpaint( &c_src, &c_mask, &c_dst, inpaintRange, flags );
 }
 
@@ -606,7 +610,6 @@ cv::Mat DepthInpainter::genValidMask(const cv::Mat& depth)
     // cv::Mat mask = orgMask.clone();
     cv::Mat mask = orgMask;
 
-    // 腐蚀再膨胀,消除小块及细碎边缘
     cv::Mat kernel = cv::Mat::zeros(_kernelSize, _kernelSize, CV_8U);
     cv::circle(kernel, cv::Point(kernel.cols/2, kernel.rows/2), kernel.rows/2, cv::Scalar(255), -1);
     cv::erode(orgMask, mask, kernel);

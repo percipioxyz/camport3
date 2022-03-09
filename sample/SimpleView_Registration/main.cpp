@@ -13,6 +13,7 @@ struct CallbackData {
 
   float           scale_unit;
 
+  bool            isTof;
   TY_CAMERA_CALIB_INFO depth_calib;
   TY_CAMERA_CALIB_INFO color_calib;
 };
@@ -91,11 +92,25 @@ void handleFrame(TY_FRAME_DATA* frame, void* userdata)
   cv::Mat depth, color;
   parseFrame(*frame, &depth, 0, 0, &color, pData->IspHandle);
   if (!depth.empty()) {
-    bool isTof = false;
-    ASSERT_OK(TYHasFeature(pData->hDevice, TY_COMPONENT_DEVICE, TY_ENUM_DEPTH_QUALITY, &isTof));
-    if (isTof)
+    if (pData->isTof)
     {
-       cv::remap(depth, depth, tofundis_mapx, tofundis_mapy, 0);
+        TY_IMAGE_DATA src;
+        src.width = depth.cols;
+        src.height = depth.rows;
+        src.size = depth.size().area() * 2;
+        src.pixelFormat = TY_PIXEL_FORMAT_DEPTH16;
+        src.buffer = depth.data;
+
+        cv::Mat undistort_depth = cv::Mat(depth.size(), CV_16U);
+        TY_IMAGE_DATA dst;
+        dst.width = depth.cols;
+        dst.height = depth.rows;
+        dst.size = undistort_depth.size().area() * 2;
+        dst.buffer = undistort_depth.data;
+        dst.pixelFormat = TY_PIXEL_FORMAT_DEPTH16;
+        ASSERT_OK(TYUndistortImage(&pData->depth_calib, &src, NULL, &dst));
+
+        depth = undistort_depth.clone();
     }
     pData->depthViewer->show(depth);
   }
@@ -248,15 +263,9 @@ int main(int argc, char* argv[])
     LOGD("=== Read color calib info");
     ASSERT_OK( TYGetStruct(hDevice, TY_COMPONENT_RGB_CAM, TY_STRUCT_CAM_CALIB_DATA
           , &cb_data.color_calib, sizeof(cb_data.color_calib)) );
-    bool isTof = false;
-    ASSERT_OK(TYHasFeature(hDevice, TY_COMPONENT_DEVICE, TY_ENUM_DEPTH_QUALITY, &isTof));
-    if (isTof)
-    {
-        //if tof get undistortion map
-        cv::Mat depthintrinsic = cv::Mat(3, 3, CV_32F, cb_data.depth_calib.intrinsic.data);
-        cv::Mat depthindistortion = cv::Mat(12, 1, CV_32F, cb_data.depth_calib.distortion.data);
-        cv::initUndistortRectifyMap(depthintrinsic, depthindistortion, cv::Mat(), depthintrinsic, cv::Size(cb_data.depth_calib.intrinsicWidth/2, cb_data.depth_calib.intrinsicHeight/2), CV_32FC1, tofundis_mapx, tofundis_mapy);
-    }
+
+    ASSERT_OK(TYHasFeature(hDevice, TY_COMPONENT_DEVICE, TY_ENUM_DEPTH_QUALITY, &cb_data.isTof));
+
     LOGD("=== Start capture");
     ASSERT_OK( TYStartCapture(hDevice) );
 

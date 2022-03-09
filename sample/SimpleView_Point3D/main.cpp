@@ -22,6 +22,7 @@ struct CallbackData {
 CallbackData cb_data;
 TY_ISP_HANDLE isp_handle = NULL;
 
+bool isTof = false;
 cv::Mat tofundis_mapx, tofundis_mapy;
 
 //////////////////////////////////////////////////
@@ -75,12 +76,26 @@ static void handleFrame(TY_FRAME_DATA* frame, void* userdata) {
     if(!depth.empty()){
         std::vector<TY_VECT_3F> p3d;
         p3d.resize(depth.size().area());
-        
-        bool isTof = false;
-        ASSERT_OK(TYHasFeature(pData->hDevice, TY_COMPONENT_DEVICE, TY_ENUM_DEPTH_QUALITY, &isTof));
+
         if (isTof)
         {
-            cv::remap(depth, depth, tofundis_mapx, tofundis_mapy, 0);
+            TY_IMAGE_DATA src;
+            src.width = depth.cols;
+            src.height = depth.rows;
+            src.size = depth.size().area() * 2;
+            src.pixelFormat = TY_PIXEL_FORMAT_DEPTH16;
+            src.buffer = depth.data;
+
+            cv::Mat undistort_depth = cv::Mat(depth.size(), CV_16U);
+            TY_IMAGE_DATA dst;
+            dst.width = depth.cols;
+            dst.height = depth.rows;
+            dst.size = undistort_depth.size().area() * 2;
+            dst.buffer = undistort_depth.data;
+            dst.pixelFormat = TY_PIXEL_FORMAT_DEPTH16;
+            ASSERT_OK(TYUndistortImage(&cb_data.depth_calib, &src, NULL, &dst));
+
+            depth = undistort_depth.clone();
         }
 
         ASSERT_OK(TYMapDepthImageToPoint3d(&pData->depth_calib, depth.cols, depth.rows
@@ -249,16 +264,8 @@ int main(int argc, char* argv[])
     LOGD("=== Read depth intrinsic");
     ASSERT_OK( TYGetStruct(hDevice, TY_COMPONENT_DEPTH_CAM, TY_STRUCT_CAM_CALIB_DATA
         , &cb_data.depth_calib, sizeof(cb_data.depth_calib)));
-    
-    bool isTof = false;
+
     ASSERT_OK(TYHasFeature(hDevice, TY_COMPONENT_DEVICE, TY_ENUM_DEPTH_QUALITY, &isTof));
-    if (isTof)
-    {
-        //if tof get undistortion map
-        cv::Mat depthintrinsic = cv::Mat(3, 3, CV_32F, cb_data.depth_calib.intrinsic.data);
-        cv::Mat depthindistortion = cv::Mat(12, 1, CV_32F, cb_data.depth_calib.distortion.data);
-        cv::initUndistortRectifyMap(depthintrinsic, depthindistortion, cv::Mat(), depthintrinsic, cv::Size(cb_data.depth_calib.intrinsicWidth/2, cb_data.depth_calib.intrinsicHeight/2), CV_32FC1, tofundis_mapx, tofundis_mapy);
-    }
 
     LOGD("=== Register event callback");
     ASSERT_OK(TYRegisterEventCallback(hDevice, eventCallback, NULL));
