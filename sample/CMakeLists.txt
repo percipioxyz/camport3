@@ -28,6 +28,8 @@ set(ALL_SAMPLES
     SimpleView_StreamAsync
     SimpleView_StreamAsync1
     SimpleView_ImuData
+    SimpleView_DI_DO
+    SimpleView_OpenWithIP
     )
 
 set(SAMPLES_USED_GLUT

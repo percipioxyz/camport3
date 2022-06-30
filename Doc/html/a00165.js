@@ -1,9 +1,9 @@
 var a00165 =
 [
-    [ "bgr_ch1", "a00165.html#a1958f3e9f185595d2712412c43d98787", null ],
-    [ "bgr_ch2", "a00165.html#a1c760789bf57a89367c5d0f3f8530bee", null ],
-    [ "bgr_ch3", "a00165.html#abf7f8b13910c186c2297eb661ebe4cc5", null ],
-    [ "rsvd", "a00165.html#ac64aa57fff7e5f989cb375bb3343cc08", null ],
-    [ "x", "a00165.html#a1574b985e6b0003a0eace03240c4c960", null ],
-    [ "y", "a00165.html#a0df252d001a22521e5bc0d4c7980b12b", null ]
+    [ "int_act", "a00165.html#abeb65c313f7c5d036fb3e1c9f2addfa8", null ],
+    [ "int_act_supported", "a00165.html#a7c4981af1329ad5b73d73a14b1a2cf39", null ],
+    [ "mode", "a00165.html#a86fbb321c3fdda32d23fe1bd322f4dda", null ],
+    [ "mode_supported", "a00165.html#a23f0977f1f22957f0f5920cf4d37f825", null ],
+    [ "reserved", "a00165.html#aa83b0f830f73b9cc4527926d6e4a8568", null ],
+    [ "status", "a00165.html#a4ba77cdac921a3eed5586338ad436ca9", null ]
 ];

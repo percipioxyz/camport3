@@ -12,6 +12,7 @@
 #include <vector>
 #include <inttypes.h>
 #include "TYApi.h"
+#include "TYThread.hpp"
 
 #ifndef ASSERT
 #define ASSERT(x)   do{ \
@@ -165,7 +166,29 @@ static inline const TY_IMAGE_DATA* TYImageInFrame(const TY_FRAME_DATA& frame
     }
     return NULL;
 }
+static void *updateThreadFunc(void *userdata)
+{
+    TY_INTERFACE_HANDLE iface = (TY_INTERFACE_HANDLE)userdata;
+    TYUpdateDeviceList(iface);
+    return NULL;
+}
 
+static TY_STATUS updateDevicesParallel(std::vector<TY_INTERFACE_HANDLE> &ifaces,
+    uint64_t timeout=2000)
+{
+    if(ifaces.size() != 0) {
+        TYThread *updateThreads = new TYThread[ifaces.size()];
+        for(int i = 0; i < ifaces.size(); i++) {
+            updateThreads[i].create(updateThreadFunc, ifaces[i]);
+        }
+        for(int i = 0; i < ifaces.size(); i++) {
+           updateThreads[i].destroy();
+        }
+        delete [] updateThreads;
+        updateThreads = NULL;
+    }
+    return TY_STATUS_OK;
+}
 
 static inline TY_STATUS selectDevice(TY_INTERFACE_TYPE iface
     , const std::string& ID, const std::string& IP
@@ -201,6 +224,7 @@ static inline TY_STATUS selectDevice(TY_INTERFACE_TYPE iface
 
     out.clear();
     std::vector<TY_INTERFACE_TYPE> ifaceTypeList;
+    std::vector<TY_INTERFACE_HANDLE> hIfaces;
     ifaceTypeList.push_back(TY_INTERFACE_USB);
     ifaceTypeList.push_back(TY_INTERFACE_ETHERNET);
     ifaceTypeList.push_back(TY_INTERFACE_IEEE80211);
@@ -209,29 +233,33 @@ static inline TY_STATUS selectDevice(TY_INTERFACE_TYPE iface
         if(ifaces[i].type == ifaceTypeList[t] && (ifaces[i].type & iface) && deviceNum > out.size()){
           TY_INTERFACE_HANDLE hIface;
           ASSERT_OK( TYOpenInterface(ifaces[i].id, &hIface) );
-          ASSERT_OK( TYUpdateDeviceList(hIface) );
-          uint32_t n = 0;
-          TYGetDeviceNumber(hIface, &n);
-          if(n > 0){
-            std::vector<TY_DEVICE_BASE_INFO> devs(n);
-            TYGetDeviceList(hIface, &devs[0], n, &n);
-            for(uint32_t j = 0; j < n; j++){
-              if(deviceNum > out.size() && ((ID.empty() && IP.empty())
-                  || (!ID.empty() && devs[j].id == ID)
-                  || (!IP.empty() && IP == devs[j].netInfo.ip)))
-              {
-                if (devs[j].iface.type == TY_INTERFACE_ETHERNET || devs[j].iface.type == TY_INTERFACE_IEEE80211) {
-                  LOGI("*** Select %s on %s, ip %s", devs[j].id, ifaces[i].id, devs[j].netInfo.ip);
-                } else {
-                  LOGI("*** Select %s on %s", devs[j].id, ifaces[i].id);
-                }
-                out.push_back(devs[j]);
-              }
-            }
-          }
-          TYCloseInterface(hIface);
+          hIfaces.push_back(hIface);
         }
       }
+    }
+    updateDevicesParallel(hIfaces);
+    for (uint32_t i = 0; i < hIfaces.size(); i++) {
+        TY_INTERFACE_HANDLE hIface = hIfaces[i];
+        uint32_t n = 0;
+        TYGetDeviceNumber(hIface, &n);
+        if(n > 0){
+          std::vector<TY_DEVICE_BASE_INFO> devs(n);
+          TYGetDeviceList(hIface, &devs[0], n, &n);
+          for(uint32_t j = 0; j < n; j++){
+            if(deviceNum > out.size() && ((ID.empty() && IP.empty())
+                || (!ID.empty() && devs[j].id == ID)
+                || (!IP.empty() && IP == devs[j].netInfo.ip)))
+            {
+              if (devs[j].iface.type == TY_INTERFACE_ETHERNET || devs[j].iface.type == TY_INTERFACE_IEEE80211) {
+                LOGI("*** Select %s on %s, ip %s", devs[j].id, devs[j].iface.id, devs[j].netInfo.ip);
+              } else {
+                LOGI("*** Select %s on %s", devs[j].id, devs[j].iface.id);
+              }
+              out.push_back(devs[j]);
+            }
+          }
+        }
+        TYCloseInterface(hIface);
     }
 
     if(out.size() == 0){

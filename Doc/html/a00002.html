@@ -183,6 +183,10 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00157.html">TY_EVENT_INFO</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00161.html">TY_DO_WORKMODE</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00165.html">TY_DI_WORKMODE</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
@@ -226,7 +230,7 @@ Macros</h2></td></tr>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>TY_LIB_VERSION_MINOR</b>&#160;&#160;&#160;6</td></tr>
 <tr class="separator:ab7b51d30017169eef553363a27bafa4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a93ec4ddd20d2a3ac85e1d95cc519fe7b"><td class="memItemLeft" align="right" valign="top"><a id="a93ec4ddd20d2a3ac85e1d95cc519fe7b"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>TY_LIB_VERSION_PATCH</b>&#160;&#160;&#160;4</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>TY_LIB_VERSION_PATCH</b>&#160;&#160;&#160;9</td></tr>
 <tr class="separator:a93ec4ddd20d2a3ac85e1d95cc519fe7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a014cecdf6710372ed9331436259eb528"><td class="memItemLeft" align="right" valign="top"><a id="a014cecdf6710372ed9331436259eb528"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>TY_DECLARE_IMAGE_MODE0</b>(pix,  res)&#160;&#160;&#160;TY_IMAGE_MODE_##pix##_##res = TY_PIXEL_FORMAT_##pix | TY_RESOLUTION_MODE_##res</td></tr>
@@ -356,6 +360,18 @@ typedef enum <a class="el" href="a00002.html#a27dd5ea77ad2a53d5aea35eddd2f6007">
 <tr class="memitem:a059814dfc0f7f976558892f3e3dd0362"><td class="memItemLeft" align="right" valign="top"><a id="a059814dfc0f7f976558892f3e3dd0362"></a>
 typedef int32_t&#160;</td><td class="memItemRight" valign="bottom"><b>TY_TIME_SYNC_TYPE</b></td></tr>
 <tr class="separator:a059814dfc0f7f976558892f3e3dd0362"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab3991a028d6ae7824e3907bb3b1f7d7e"><td class="memItemLeft" align="right" valign="top"><a id="ab3991a028d6ae7824e3907bb3b1f7d7e"></a>
+typedef uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>TY_E_VOLT_T</b></td></tr>
+<tr class="separator:ab3991a028d6ae7824e3907bb3b1f7d7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5d2dffda8253cab6d30c22ccdbee6dcb"><td class="memItemLeft" align="right" valign="top"><a id="a5d2dffda8253cab6d30c22ccdbee6dcb"></a>
+typedef uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>TY_E_DO_MODE</b></td></tr>
+<tr class="separator:a5d2dffda8253cab6d30c22ccdbee6dcb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4c8efa5b6f8d7b0399b98bbd7688efc1"><td class="memItemLeft" align="right" valign="top"><a id="a4c8efa5b6f8d7b0399b98bbd7688efc1"></a>
+typedef uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>TY_E_DI_MODE</b></td></tr>
+<tr class="separator:a4c8efa5b6f8d7b0399b98bbd7688efc1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a10df9730f9f1e0dcaeda57e30b50ab07"><td class="memItemLeft" align="right" valign="top"><a id="a10df9730f9f1e0dcaeda57e30b50ab07"></a>
+typedef uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>TY_E_DI_INT_ACTION</b></td></tr>
+<tr class="separator:a10df9730f9f1e0dcaeda57e30b50ab07"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3261a1daca90e826049f7c735a4cdf6c"><td class="memItemLeft" align="right" valign="top"><a id="a3261a1daca90e826049f7c735a4cdf6c"></a>
 typedef struct <a class="el" href="a00017.html">TY_VERSION_INFO</a>&#160;</td><td class="memItemRight" valign="bottom"><b>TY_VERSION_INFO</b></td></tr>
 <tr class="separator:a3261a1daca90e826049f7c735a4cdf6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -443,6 +459,12 @@ typedef struct <a class="el" href="a00153.html">TY_FRAME_DATA</a>&#160;</td><td 
 <tr class="memitem:a33d17909e8958c64e51f1c483f49ffce"><td class="memItemLeft" align="right" valign="top"><a id="a33d17909e8958c64e51f1c483f49ffce"></a>
 typedef struct <a class="el" href="a00157.html">TY_EVENT_INFO</a>&#160;</td><td class="memItemRight" valign="bottom"><b>TY_EVENT_INFO</b></td></tr>
 <tr class="separator:a33d17909e8958c64e51f1c483f49ffce"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6961936334e1d0f0aea08e216fa572a7"><td class="memItemLeft" align="right" valign="top"><a id="a6961936334e1d0f0aea08e216fa572a7"></a>
+typedef struct <a class="el" href="a00161.html">TY_DO_WORKMODE</a>&#160;</td><td class="memItemRight" valign="bottom"><b>TY_DO_WORKMODE</b></td></tr>
+<tr class="separator:a6961936334e1d0f0aea08e216fa572a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6b6abc4ccd16ba0492edc4774d1d9781"><td class="memItemLeft" align="right" valign="top"><a id="a6b6abc4ccd16ba0492edc4774d1d9781"></a>
+typedef struct <a class="el" href="a00165.html">TY_DI_WORKMODE</a>&#160;</td><td class="memItemRight" valign="bottom"><b>TY_DI_WORKMODE</b></td></tr>
+<tr class="separator:a6b6abc4ccd16ba0492edc4774d1d9781"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad37cdba8da0708602c4880c8519f4390"><td class="memItemLeft" align="right" valign="top"><a id="ad37cdba8da0708602c4880c8519f4390"></a>
 typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><b>TY_EVENT_CALLBACK</b>) (<a class="el" href="a00157.html">TY_EVENT_INFO</a> *, void *userdata)</td></tr>
 <tr class="separator:ad37cdba8da0708602c4880c8519f4390"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -598,46 +620,54 @@ Enumerations</h2></td></tr>
 &#160;&#160;<a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124a1c5eb0221113b2c7608dad10b37bc1d6">TY_ENUM_STREAM_ASYNC</a> = 0x0209 | TY_FEATURE_ENUM, 
 <a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124a4b0d37a5d86dbceb5dafc969f34c5e75">TY_INT_CAPTURE_TIME_US</a> = 0x0210 | TY_FEATURE_INT, 
 <a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124a875b4071e18cd7d24a7787948d3d2a9c">TY_ENUM_TIME_SYNC_TYPE</a> = 0x0211 | TY_FEATURE_ENUM, 
-<b>TY_BOOL_TIME_SYNC_READY</b> = 0x0212 | TY_FEATURE_BOOL, 
+<a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124ae6aaffcd1b0533cbb68b86571fe3492a">TY_BOOL_TIME_SYNC_READY</a> = 0x0212 | TY_FEATURE_BOOL, 
 <br />
-&#160;&#160;<b>TY_BOOL_FLASHLIGHT</b> = 0x0213 | TY_FEATURE_BOOL, 
-<b>TY_INT_FLASHLIGHT_INTENSITY</b> = 0x0214 | TY_FEATURE_INT, 
-<a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124a7111399fbe52bfec363fbcc3a84165db">TY_BOOL_AUTO_EXPOSURE</a> = 0x0300 | TY_FEATURE_BOOL, 
+&#160;&#160;<a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124a9b44f5577cdc860e3d509330b191c87c">TY_BOOL_FLASHLIGHT</a> = 0x0213 | TY_FEATURE_BOOL, 
+<a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124ad7200bf30902f5899817a1fa05891975">TY_INT_FLASHLIGHT_INTENSITY</a> = 0x0214 | TY_FEATURE_INT, 
+<a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124af25c894042dd1583b5ec16cf99f1eb12">TY_STRUCT_DO0_WORKMODE</a> = 0x0215 | TY_FEATURE_STRUCT, 
+<a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124ae4623b126cdb378020ae7b911d391941">TY_STRUCT_DI0_WORKMODE</a> = 0x0216 | TY_FEATURE_STRUCT, 
+<br />
+&#160;&#160;<a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124ad20c34d9e6ddc8d2fa1612e9e3edf295">TY_STRUCT_DO1_WORKMODE</a> = 0x0217 | TY_FEATURE_STRUCT, 
+<a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124ac7a96d5eb7dcffc81b68e87690c469ad">TY_STRUCT_DI1_WORKMODE</a> = 0x0218 | TY_FEATURE_STRUCT, 
+<a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124ae8233f9dfd48c8c358097c14f59f6f3c">TY_STRUCT_DO2_WORKMODE</a> = 0x0219 | TY_FEATURE_STRUCT, 
+<a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124aba6c782effd3a974a104ade473923d95">TY_STRUCT_DI2_WORKMODE</a> = 0x0220 | TY_FEATURE_STRUCT, 
+<br />
+&#160;&#160;<a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124a7111399fbe52bfec363fbcc3a84165db">TY_BOOL_AUTO_EXPOSURE</a> = 0x0300 | TY_FEATURE_BOOL, 
 <a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124a800000a3782afc0c64a37494bd95968a">TY_INT_EXPOSURE_TIME</a> = 0x0301 | TY_FEATURE_INT, 
-<br />
-&#160;&#160;<a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124a2dddfa2f8000896f88ff2835675f9a6d">TY_BOOL_AUTO_GAIN</a> = 0x0302 | TY_FEATURE_BOOL, 
+<a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124a2dddfa2f8000896f88ff2835675f9a6d">TY_BOOL_AUTO_GAIN</a> = 0x0302 | TY_FEATURE_BOOL, 
 <a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124af5848aa7ee4ab4356fa00ac3b73800d6">TY_INT_GAIN</a> = 0x0303 | TY_FEATURE_INT, 
-<a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124ad49dbc7de890a43620c6848d241b0720">TY_BOOL_AUTO_AWB</a> = 0x0304 | TY_FEATURE_BOOL, 
+<br />
+&#160;&#160;<a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124ad49dbc7de890a43620c6848d241b0720">TY_BOOL_AUTO_AWB</a> = 0x0304 | TY_FEATURE_BOOL, 
 <a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124aa93143eafabddc82a4285efc0ec564ba">TY_STRUCT_AEC_ROI</a> = 0x0305 | TY_FEATURE_STRUCT, 
-<br />
-&#160;&#160;<a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124a39f1bae0a509f8b917f3d2e46ac66446">TY_INT_LASER_POWER</a> = 0x0500 | TY_FEATURE_INT, 
+<a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124a39f1bae0a509f8b917f3d2e46ac66446">TY_INT_LASER_POWER</a> = 0x0500 | TY_FEATURE_INT, 
 <a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124a9e728970d3b6c1ba088891834f2d733e">TY_BOOL_LASER_AUTO_CTRL</a> = 0x0501 | TY_FEATURE_BOOL, 
-<a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124ad8ba7a8ff19ca5e5e16baecfd7f90d7c">TY_BOOL_UNDISTORTION</a> = 0x0510 | TY_FEATURE_BOOL, 
+<br />
+&#160;&#160;<a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124ad8ba7a8ff19ca5e5e16baecfd7f90d7c">TY_BOOL_UNDISTORTION</a> = 0x0510 | TY_FEATURE_BOOL, 
 <a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124a96c9a2085babbc7c27efa45a019b9bcd">TY_BOOL_BRIGHTNESS_HISTOGRAM</a> = 0x0511 | TY_FEATURE_BOOL, 
-<br />
-&#160;&#160;<a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124aa33c31670b3fedc298f957654b9a8825">TY_BOOL_DEPTH_POSTPROC</a> = 0x0512 | TY_FEATURE_BOOL, 
+<a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124aa33c31670b3fedc298f957654b9a8825">TY_BOOL_DEPTH_POSTPROC</a> = 0x0512 | TY_FEATURE_BOOL, 
 <a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124af959400781d55f751ad6d9b433713b45">TY_INT_R_GAIN</a> = 0x0520 | TY_FEATURE_INT, 
-<a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124ad62bbcbda253a1dab4fdf7b694039839">TY_INT_G_GAIN</a> = 0x0521 | TY_FEATURE_INT, 
+<br />
+&#160;&#160;<a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124ad62bbcbda253a1dab4fdf7b694039839">TY_INT_G_GAIN</a> = 0x0521 | TY_FEATURE_INT, 
 <a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124aebd176e36456383af154c2bf12c94683">TY_INT_B_GAIN</a> = 0x0522 | TY_FEATURE_INT, 
+<a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124accb42916dcece10e84d7b701d2b852f0">TY_INT_ANALOG_GAIN</a> = 0x0524 | TY_FEATURE_INT, 
+<a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124a893e47e74f056b2fd1df01e31cc3385c">TY_BOOL_HDR</a> = 0x0525 | TY_FEATURE_BOOL, 
 <br />
-&#160;&#160;<a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124accb42916dcece10e84d7b701d2b852f0">TY_INT_ANALOG_GAIN</a> = 0x0524 | TY_FEATURE_INT, 
-<b>TY_BOOL_HDR</b> = 0x0525 | TY_FEATURE_BOOL, 
-<b>TY_BYTEARRAY_HDR_PARAMETER</b> = 0x0526 | TY_FEATURE_BYTEARRAY, 
+&#160;&#160;<a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124a3bcb7ab3cd2b38502e51aec190877eff">TY_BYTEARRAY_HDR_PARAMETER</a> = 0x0526 | TY_FEATURE_BYTEARRAY, 
 <a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124a1a00d0a48d1d0fabd6b1cab88c8644d6">TY_BOOL_IMU_DATA_ONOFF</a> = 0x0600 | TY_FEATURE_BOOL, 
-<br />
-&#160;&#160;<a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124a5fd4b63f15738888f3bea3c05c57c86a">TY_STRUCT_IMU_ACC_BIAS</a> = 0x0601 | TY_FEATURE_STRUCT, 
+<a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124a5fd4b63f15738888f3bea3c05c57c86a">TY_STRUCT_IMU_ACC_BIAS</a> = 0x0601 | TY_FEATURE_STRUCT, 
 <a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124ad9dd45a95abc65d29f6891da82c78b19">TY_STRUCT_IMU_ACC_MISALIGNMENT</a> = 0x0602 | TY_FEATURE_STRUCT, 
-<a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124a709515a4703e046df427a134b4150739">TY_STRUCT_IMU_ACC_SCALE</a> = 0x0603 | TY_FEATURE_STRUCT, 
+<br />
+&#160;&#160;<a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124a709515a4703e046df427a134b4150739">TY_STRUCT_IMU_ACC_SCALE</a> = 0x0603 | TY_FEATURE_STRUCT, 
 <a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124aa54e2b1fe67c7f62526c46c56085e861">TY_STRUCT_IMU_GYRO_BIAS</a> = 0x0604 | TY_FEATURE_STRUCT, 
-<br />
-&#160;&#160;<a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124aad34f1411250194e8b26720dff097bcc">TY_STRUCT_IMU_GYRO_MISALIGNMENT</a> = 0x0605 | TY_FEATURE_STRUCT, 
+<a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124aad34f1411250194e8b26720dff097bcc">TY_STRUCT_IMU_GYRO_MISALIGNMENT</a> = 0x0605 | TY_FEATURE_STRUCT, 
 <a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124af45bde4f39fea3d09c66ab4992b32a2b">TY_STRUCT_IMU_GYRO_SCALE</a> = 0x0606 | TY_FEATURE_STRUCT, 
-<a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124ae33e38bebeafd77380de3847e3b920d3">TY_STRUCT_IMU_CAM_TO_IMU</a> = 0x0607 | TY_FEATURE_STRUCT, 
-<a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124afd5cfe7fc79587f99dd05f8121132f15">TY_ENUM_IMU_FPS</a> = 0x0608 | TY_FEATURE_ENUM, 
 <br />
-&#160;&#160;<a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124a8ad70c3fe5e66af2d82ca3ccc1c9dda1">TY_ENUM_DEPTH_QUALITY</a> = 0x0900 | TY_FEATURE_ENUM, 
+&#160;&#160;<a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124ae33e38bebeafd77380de3847e3b920d3">TY_STRUCT_IMU_CAM_TO_IMU</a> = 0x0607 | TY_FEATURE_STRUCT, 
+<a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124afd5cfe7fc79587f99dd05f8121132f15">TY_ENUM_IMU_FPS</a> = 0x0608 | TY_FEATURE_ENUM, 
+<a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124a8ad70c3fe5e66af2d82ca3ccc1c9dda1">TY_ENUM_DEPTH_QUALITY</a> = 0x0900 | TY_FEATURE_ENUM, 
 <a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124a3b5eba50d43b4f0112b475df4056ce30">TY_INT_FILTER_THRESHOLD</a> = 0x0901 | TY_FEATURE_INT, 
-<a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124a7249b83e4cbe52e1f18e75453c2f1e7a">TY_INT_TOF_CHANNEL</a> = 0x0902 | TY_FEATURE_INT
+<br />
+&#160;&#160;<a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124a7249b83e4cbe52e1f18e75453c2f1e7a">TY_INT_TOF_CHANNEL</a> = 0x0902 | TY_FEATURE_INT
 <br />
  }<tr class="memdesc:ad106ea6dcff8f708ca26b57c430f9124"><td class="mdescLeft">&#160;</td><td class="mdescRight">feature for component definitions  <a href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124">More...</a><br /></td></tr>
 </td></tr>
@@ -728,7 +758,9 @@ Enumerations</h2></td></tr>
 &#160;&#160;<a class="el" href="a00002.html#a672706b9f41df147ac9709343ba1287ba739b9db81ee8823b90d19e948025142f">TY_RESOLUTION_MODE_1280x800</a> = (1280&lt;&lt;12)+800, 
 <a class="el" href="a00002.html#a672706b9f41df147ac9709343ba1287bafd2e5516aa45209b4ab6d005aa4968d2">TY_RESOLUTION_MODE_1280x960</a> = (1280&lt;&lt;12)+960, 
 <a class="el" href="a00002.html#a672706b9f41df147ac9709343ba1287baa6d3bf0789195a8fa6ccef0a225151db">TY_RESOLUTION_MODE_1920x1080</a> = (1920&lt;&lt;12)+1080, 
-<a class="el" href="a00002.html#a672706b9f41df147ac9709343ba1287ba65724dba0eb33fa7f494f5105dccd3c7">TY_RESOLUTION_MODE_2592x1944</a> = (2592&lt;&lt;12)+1944
+<a class="el" href="a00002.html#a672706b9f41df147ac9709343ba1287ba5e52c93414842c0de45fd7a176349247">TY_RESOLUTION_MODE_2560x1920</a> = (2560&lt;&lt;12)+1920, 
+<br />
+&#160;&#160;<a class="el" href="a00002.html#a672706b9f41df147ac9709343ba1287ba65724dba0eb33fa7f494f5105dccd3c7">TY_RESOLUTION_MODE_2592x1944</a> = (2592&lt;&lt;12)+1944
 <br />
  }<tr class="memdesc:a672706b9f41df147ac9709343ba1287b"><td class="mdescLeft">&#160;</td><td class="mdescRight">predefined resolution list  <a href="a00002.html#a672706b9f41df147ac9709343ba1287b">More...</a><br /></td></tr>
 </td></tr>
@@ -778,6 +810,27 @@ Enumerations</h2></td></tr>
  }<tr class="memdesc:a27dd5ea77ad2a53d5aea35eddd2f6007"><td class="mdescLeft">&#160;</td><td class="mdescRight">type of time sync <br /></td></tr>
 </td></tr>
 <tr class="separator:a27dd5ea77ad2a53d5aea35eddd2f6007"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad7966592ec21e7dc90480b7b44ddc983"><td class="memItemLeft" align="right" valign="top"><a id="ad7966592ec21e7dc90480b7b44ddc983"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>TY_E_VOLT_T_LIST</b> { <b>TY_EXT_SUP</b> = 0, 
+<b>TY_DO_5V</b> = 1, 
+<b>TY_DO_12V</b> = 2
+ }</td></tr>
+<tr class="separator:ad7966592ec21e7dc90480b7b44ddc983"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac0edb1638879d421b6eab527612b88e0"><td class="memItemLeft" align="right" valign="top"><a id="ac0edb1638879d421b6eab527612b88e0"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>TY_E_DO_MODE_LIST</b> { <b>TY_DO_LOW</b> = 0, 
+<b>TY_DO_HIGH</b> = 1, 
+<b>TY_DO_PWM</b> = 2, 
+<b>TY_DO_CAM_TRIG</b> = 3
+ }</td></tr>
+<tr class="separator:ac0edb1638879d421b6eab527612b88e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2ff52c0deb566a7ac477fae5f4b151c1"><td class="memItemLeft" align="right" valign="top"><a id="a2ff52c0deb566a7ac477fae5f4b151c1"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>TY_E_DI_MODE_LIST</b> { <b>TY_DI_POLL</b> = 0, 
+<b>TY_DI_NE_INT</b> = 1, 
+<b>TY_DI_PE_INT</b> = 2
+ }</td></tr>
+<tr class="separator:a2ff52c0deb566a7ac477fae5f4b151c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8780ab113a691d2106a128e666bdce97"><td class="memItemLeft" align="right" valign="top"><a id="a8780ab113a691d2106a128e666bdce97"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>TY_E_DI_INT_ACTION_LIST</b> { <b>TY_DI_INT_NO_OP</b> = 0, 
+<b>TY_DI_INT_TRIG_CAP</b> = 1, 
+<b>TY_DI_INT_EVENT</b> = 2
+ }</td></tr>
+<tr class="separator:a8780ab113a691d2106a128e666bdce97"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1b1190caa6c59377cf3c2636f8674b4b"><td class="memItemLeft" align="right" valign="top"><a id="a1b1190caa6c59377cf3c2636f8674b4b"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>TY_IMU_FPS_LIST</b> { <b>TY_IMU_FPS_100HZ</b> = 0, 
 <b>TY_IMU_FPS_200HZ</b>, 
 <b>TY_IMU_FPS_400HZ</b>
@@ -978,8 +1031,8 @@ TY_CAPI&#160;</td><td class="memItemRight" valign="bottom"><b>_TYInitLib</b> (vo
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line">TY_DECLARE_IMAGE_MODE0(pix, 160x100), \</div><div class="line">            TY_DECLARE_IMAGE_MODE0(pix, 160x120), \</div><div class="line">            TY_DECLARE_IMAGE_MODE0(pix, 320x180), \</div><div class="line">            TY_DECLARE_IMAGE_MODE0(pix, 320x200), \</div><div class="line">            TY_DECLARE_IMAGE_MODE0(pix, 320x240), \</div><div class="line">            TY_DECLARE_IMAGE_MODE0(pix, 480x640), \</div><div class="line">            TY_DECLARE_IMAGE_MODE0(pix, 640x360), \</div><div class="line">            TY_DECLARE_IMAGE_MODE0(pix, 640x400), \</div><div class="line">            TY_DECLARE_IMAGE_MODE0(pix, 640x480), \</div><div class="line">            TY_DECLARE_IMAGE_MODE0(pix, 960x1280), \</div><div class="line">            TY_DECLARE_IMAGE_MODE0(pix, 1280x720), \</div><div class="line">            TY_DECLARE_IMAGE_MODE0(pix, 1280x960), \</div><div class="line">            TY_DECLARE_IMAGE_MODE0(pix, 1280x800), \</div><div class="line">            TY_DECLARE_IMAGE_MODE0(pix, 1920x1080), \</div><div class="line">            TY_DECLARE_IMAGE_MODE0(pix, 2592x1944)</div></div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="a00002_source.html#l00421">421</a> of file <a class="el" href="a00002_source.html">TYApi.h</a>.</p>
+<b>Value:</b><div class="fragment"><div class="line">TY_DECLARE_IMAGE_MODE0(pix, 160x100), \</div><div class="line">            TY_DECLARE_IMAGE_MODE0(pix, 160x120), \</div><div class="line">            TY_DECLARE_IMAGE_MODE0(pix, 320x180), \</div><div class="line">            TY_DECLARE_IMAGE_MODE0(pix, 320x200), \</div><div class="line">            TY_DECLARE_IMAGE_MODE0(pix, 320x240), \</div><div class="line">            TY_DECLARE_IMAGE_MODE0(pix, 480x640), \</div><div class="line">            TY_DECLARE_IMAGE_MODE0(pix, 640x360), \</div><div class="line">            TY_DECLARE_IMAGE_MODE0(pix, 640x400), \</div><div class="line">            TY_DECLARE_IMAGE_MODE0(pix, 640x480), \</div><div class="line">            TY_DECLARE_IMAGE_MODE0(pix, 960x1280), \</div><div class="line">            TY_DECLARE_IMAGE_MODE0(pix, 1280x720), \</div><div class="line">            TY_DECLARE_IMAGE_MODE0(pix, 1280x960), \</div><div class="line">            TY_DECLARE_IMAGE_MODE0(pix, 1280x800), \</div><div class="line">            TY_DECLARE_IMAGE_MODE0(pix, 1920x1080), \</div><div class="line">            TY_DECLARE_IMAGE_MODE0(pix, 2560x1920), \</div><div class="line">            TY_DECLARE_IMAGE_MODE0(pix, 2592x1944)</div></div><!-- fragment -->
+<p class="definition">Definition at line <a class="el" href="a00002_source.html#l00429">429</a> of file <a class="el" href="a00002_source.html">TYApi.h</a>.</p>
 
 </div>
 </div>
@@ -1222,7 +1275,7 @@ TY_CAPI&#160;</td><td class="memItemRight" valign="bottom"><b>_TYInitLib</b> (vo
 <p>feature unique id </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124" title="feature for component definitions ">TY_FEATURE_ID_LIST</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="a00002_source.html#l00317">317</a> of file <a class="el" href="a00002_source.html">TYApi.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00002_source.html#l00324">324</a> of file <a class="el" href="a00002_source.html">TYApi.h</a>.</p>
 
 </div>
 </div>
@@ -1436,6 +1489,24 @@ TY_CAPI&#160;</td><td class="memItemRight" valign="bottom"><b>_TYInitLib</b> (vo
 </td></tr>
 <tr><td class="fieldname"><a id="ad106ea6dcff8f708ca26b57c430f9124a875b4071e18cd7d24a7787948d3d2a9c"></a>TY_ENUM_TIME_SYNC_TYPE&#160;</td><td class="fielddoc"><p>see TY_TIME_SYNC_TYPE </p>
 </td></tr>
+<tr><td class="fieldname"><a id="ad106ea6dcff8f708ca26b57c430f9124ae6aaffcd1b0533cbb68b86571fe3492a"></a>TY_BOOL_TIME_SYNC_READY&#160;</td><td class="fielddoc"><p>time sync done status </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ad106ea6dcff8f708ca26b57c430f9124a9b44f5577cdc860e3d509330b191c87c"></a>TY_BOOL_FLASHLIGHT&#160;</td><td class="fielddoc"><p>flashlight on/off control </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ad106ea6dcff8f708ca26b57c430f9124ad7200bf30902f5899817a1fa05891975"></a>TY_INT_FLASHLIGHT_INTENSITY&#160;</td><td class="fielddoc"><p>flashlight intensity level [0, 63] </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ad106ea6dcff8f708ca26b57c430f9124af25c894042dd1583b5ec16cf99f1eb12"></a>TY_STRUCT_DO0_WORKMODE&#160;</td><td class="fielddoc"><p>DO_0 workmode, see <a class="el" href="a00161.html">TY_DO_WORKMODE</a>. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ad106ea6dcff8f708ca26b57c430f9124ae4623b126cdb378020ae7b911d391941"></a>TY_STRUCT_DI0_WORKMODE&#160;</td><td class="fielddoc"><p>DI_0 workmode, see <a class="el" href="a00165.html">TY_DI_WORKMODE</a>. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ad106ea6dcff8f708ca26b57c430f9124ad20c34d9e6ddc8d2fa1612e9e3edf295"></a>TY_STRUCT_DO1_WORKMODE&#160;</td><td class="fielddoc"><p>DO_1 workmode, see <a class="el" href="a00161.html">TY_DO_WORKMODE</a>. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ad106ea6dcff8f708ca26b57c430f9124ac7a96d5eb7dcffc81b68e87690c469ad"></a>TY_STRUCT_DI1_WORKMODE&#160;</td><td class="fielddoc"><p>DI_1 workmode, see <a class="el" href="a00165.html">TY_DI_WORKMODE</a>. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ad106ea6dcff8f708ca26b57c430f9124ae8233f9dfd48c8c358097c14f59f6f3c"></a>TY_STRUCT_DO2_WORKMODE&#160;</td><td class="fielddoc"><p>DO_2 workmode, see <a class="el" href="a00161.html">TY_DO_WORKMODE</a>. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ad106ea6dcff8f708ca26b57c430f9124aba6c782effd3a974a104ade473923d95"></a>TY_STRUCT_DI2_WORKMODE&#160;</td><td class="fielddoc"><p>DI_2 workmode, see <a class="el" href="a00165.html">TY_DI_WORKMODE</a>. </p>
+</td></tr>
 <tr><td class="fieldname"><a id="ad106ea6dcff8f708ca26b57c430f9124a7111399fbe52bfec363fbcc3a84165db"></a>TY_BOOL_AUTO_EXPOSURE&#160;</td><td class="fielddoc"><p>Auto exposure switch. </p>
 </td></tr>
 <tr><td class="fieldname"><a id="ad106ea6dcff8f708ca26b57c430f9124a800000a3782afc0c64a37494bd95968a"></a>TY_INT_EXPOSURE_TIME&#160;</td><td class="fielddoc"><p>Exposure time in percentage. </p>
@@ -1465,6 +1536,10 @@ TY_CAPI&#160;</td><td class="memItemRight" valign="bottom"><b>_TYInitLib</b> (vo
 <tr><td class="fieldname"><a id="ad106ea6dcff8f708ca26b57c430f9124aebd176e36456383af154c2bf12c94683"></a>TY_INT_B_GAIN&#160;</td><td class="fielddoc"><p>Gain of B channel. </p>
 </td></tr>
 <tr><td class="fieldname"><a id="ad106ea6dcff8f708ca26b57c430f9124accb42916dcece10e84d7b701d2b852f0"></a>TY_INT_ANALOG_GAIN&#160;</td><td class="fielddoc"><p>Analog gain. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ad106ea6dcff8f708ca26b57c430f9124a893e47e74f056b2fd1df01e31cc3385c"></a>TY_BOOL_HDR&#160;</td><td class="fielddoc"><p>HDR func enable/disable. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ad106ea6dcff8f708ca26b57c430f9124a3bcb7ab3cd2b38502e51aec190877eff"></a>TY_BYTEARRAY_HDR_PARAMETER&#160;</td><td class="fielddoc"><p>HDR parameters. </p>
 </td></tr>
 <tr><td class="fieldname"><a id="ad106ea6dcff8f708ca26b57c430f9124a1a00d0a48d1d0fabd6b1cab88c8644d6"></a>TY_BOOL_IMU_DATA_ONOFF&#160;</td><td class="fielddoc"><p>IMU Data Onoff. </p>
 </td></tr>
@@ -1538,7 +1613,7 @@ TY_CAPI&#160;</td><td class="memItemRight" valign="bottom"><b>_TYInitLib</b> (vo
 </td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="a00002_source.html#l00377">377</a> of file <a class="el" href="a00002_source.html">TYApi.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00002_source.html#l00384">384</a> of file <a class="el" href="a00002_source.html">TYApi.h</a>.</p>
 
 </div>
 </div>
@@ -1586,11 +1661,13 @@ TY_CAPI&#160;</td><td class="memItemRight" valign="bottom"><b>_TYInitLib</b> (vo
 </td></tr>
 <tr><td class="fieldname"><a id="a672706b9f41df147ac9709343ba1287baa6d3bf0789195a8fa6ccef0a225151db"></a>TY_RESOLUTION_MODE_1920x1080&#160;</td><td class="fielddoc"><p>0x00780438 </p>
 </td></tr>
+<tr><td class="fieldname"><a id="a672706b9f41df147ac9709343ba1287ba5e52c93414842c0de45fd7a176349247"></a>TY_RESOLUTION_MODE_2560x1920&#160;</td><td class="fielddoc"><p>0x00a00780 </p>
+</td></tr>
 <tr><td class="fieldname"><a id="a672706b9f41df147ac9709343ba1287ba65724dba0eb33fa7f494f5105dccd3c7"></a>TY_RESOLUTION_MODE_2592x1944&#160;</td><td class="fielddoc"><p>0x00a20798 </p>
 </td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="a00002_source.html#l00397">397</a> of file <a class="el" href="a00002_source.html">TYApi.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00002_source.html#l00404">404</a> of file <a class="el" href="a00002_source.html">TYApi.h</a>.</p>
 
 </div>
 </div>
@@ -1619,7 +1696,7 @@ TY_CAPI&#160;</td><td class="memItemRight" valign="bottom"><b>_TYInitLib</b> (vo
 </td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="a00002_source.html#l00460">460</a> of file <a class="el" href="a00002_source.html">TYApi.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00002_source.html#l00469">469</a> of file <a class="el" href="a00002_source.html">TYApi.h</a>.</p>
 
 </div>
 </div>

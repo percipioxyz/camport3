@@ -36,6 +36,13 @@ int main(int argc, char* argv[])
     std::vector<TY_INTERFACE_INFO> ifaces(n);
     ASSERT_OK(TYGetInterfaceList(&ifaces[0], n, &n));
     ASSERT(n == ifaces.size());
+    std::vector<TY_INTERFACE_HANDLE> hIfaces;
+    for (uint32_t i = 0; i < n; i++) {
+        TY_INTERFACE_HANDLE hIface;
+        ASSERT_OK(TYOpenInterface(ifaces[i].id, &hIface));
+        hIfaces.push_back(hIface);
+    }
+    updateDevicesParallel(hIfaces);
     for (uint32_t i = 0; i < n; i++) {
         if (save) {
             *output << "Interface: " << i <<std::endl;
@@ -52,10 +59,8 @@ int main(int argc, char* argv[])
             LOGI("    gateway: %s", ifaces[i].netInfo.gateway);
             LOGI("    broadcast: %s", ifaces[i].netInfo.broadcast);
         }
+        TY_INTERFACE_HANDLE hIface = hIfaces[i];
 
-        TY_INTERFACE_HANDLE hIface;
-        ASSERT_OK(TYOpenInterface(ifaces[i].id, &hIface));
-        ASSERT_OK(TYUpdateDeviceList(hIface));
         uint32_t n = 0;
         TYGetDeviceNumber(hIface, &n);
         if (n == 0) continue;

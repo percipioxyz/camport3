@@ -5,6 +5,8 @@
 #include "../common/cloud_viewer/cloud_viewer.hpp"
 #include "TYImageProc.h"
 
+#define MAP_DEPTH_TO_COLOR      1
+
 struct CallbackData {
     int             index;
     TY_DEV_HANDLE   hDevice;
@@ -17,6 +19,7 @@ struct CallbackData {
     bool saveOneFramePoint3d;
     bool exit_main;
     int  fileIndex;
+    bool map_depth_to_color;
 };
 
 CallbackData cb_data;
@@ -27,17 +30,17 @@ cv::Mat tofundis_mapx, tofundis_mapy;
 
 //////////////////////////////////////////////////
 
-
-///Align rgb to depth image
-static void doRgbRegister(const TY_CAMERA_CALIB_INFO& depth_calib
-                       , const TY_CAMERA_CALIB_INFO& color_calib
-                       , const cv::Mat& depth
-                       , const cv::Mat& color
-                       , cv::Mat& out
-                       , float f_scale = 1.0f
-                       )
+static void doRegister(const TY_CAMERA_CALIB_INFO& depth_calib
+    , const TY_CAMERA_CALIB_INFO& color_calib
+    , const cv::Mat& depth
+    , const float f_scale_unit
+    , const cv::Mat& color
+    , cv::Mat& undistort_color
+    , cv::Mat& out
+    , bool map_depth_to_color
+)
 {
-    // do rgb undistortion
+    // do undistortion
     TY_IMAGE_DATA src;
     src.width = color.cols;
     src.height = color.rows;
@@ -45,7 +48,7 @@ static void doRgbRegister(const TY_CAMERA_CALIB_INFO& depth_calib
     src.pixelFormat = TY_PIXEL_FORMAT_RGB;
     src.buffer = color.data;
 
-    cv::Mat  undistort_color = cv::Mat(color.size(), CV_8UC3);
+    undistort_color = cv::Mat(color.size(), CV_8UC3);
     TY_IMAGE_DATA dst;
     dst.width = color.cols;
     dst.height = color.rows;
@@ -55,15 +58,37 @@ static void doRgbRegister(const TY_CAMERA_CALIB_INFO& depth_calib
     ASSERT_OK(TYUndistortImage(&color_calib, &src, NULL, &dst));
 
     // do register
-    out.create(depth.size(), CV_8UC3);
-    ASSERT_OK(
-        TYMapRGBImageToDepthCoordinate(
-        &depth_calib,
-        depth.cols, depth.rows, depth.ptr<uint16_t>(),
-        &color_calib,
-        undistort_color.cols, undistort_color.rows, undistort_color.ptr<uint8_t>(),
-        out.ptr<uint8_t>(), f_scale));
+    if (map_depth_to_color) {
+        out = cv::Mat::zeros(undistort_color.size(), CV_16U);
+        ASSERT_OK(
+            TYMapDepthImageToColorCoordinate(
+                &depth_calib,
+                depth.cols, depth.rows, depth.ptr<uint16_t>(),
+                &color_calib,
+                out.cols, out.rows, out.ptr<uint16_t>(), f_scale_unit
+            )
+        );
+        cv::Mat temp;
+        //you may want to use median filter to fill holes in projected depth image
+        //or do something else here
+        cv::medianBlur(out, temp, 5);
+        out = temp;
+    }
+    else {
+        out = cv::Mat::zeros(depth.size(), CV_8UC3);
+        ASSERT_OK(
+            TYMapRGBImageToDepthCoordinate(
+                &depth_calib,
+                depth.cols, depth.rows, depth.ptr<uint16_t>(),
+                &color_calib,
+                undistort_color.cols, undistort_color.rows, undistort_color.ptr<uint8_t>(),
+                out.ptr<uint8_t>(), f_scale_unit
+            )
+        );
+        undistort_color = out.clone();
+    }
 }
+
 
 static void handleFrame(TY_FRAME_DATA* frame, void* userdata) {
     //we only using Opencv Mat as data container.
@@ -74,9 +99,6 @@ static void handleFrame(TY_FRAME_DATA* frame, void* userdata) {
     cv::Mat depth, color;
     parseFrame(*frame, &depth, NULL, NULL, &color, isp_handle);
     if(!depth.empty()){
-        std::vector<TY_VECT_3F> p3d;
-        p3d.resize(depth.size().area());
-
         if (isTof)
         {
             TY_IMAGE_DATA src;
@@ -98,19 +120,32 @@ static void handleFrame(TY_FRAME_DATA* frame, void* userdata) {
             depth = undistort_depth.clone();
         }
 
-        ASSERT_OK(TYMapDepthImageToPoint3d(&pData->depth_calib, depth.cols, depth.rows
-            , (uint16_t*)depth.data, &p3d[0], pData->f_depth_scale));
+        std::vector<TY_VECT_3F> p3d;
+        
         uint8_t *color_data = NULL;
-        cv::Mat color_data_mat;
+        cv::Mat color_data_mat, out;
         if (!color.empty()){
             bool hasColorCalib = false;
             ASSERT_OK(TYHasFeature(pData->hDevice, TY_COMPONENT_RGB_CAM, TY_STRUCT_CAM_CALIB_DATA, &hasColorCalib));
             if (hasColorCalib)
             {
-                doRgbRegister(pData->depth_calib, pData->color_calib, depth, color, color_data_mat, pData->f_depth_scale);
+                doRegister(pData->depth_calib, pData->color_calib, depth, pData->f_depth_scale, color, color_data_mat, out, pData->map_depth_to_color);
                 cv::cvtColor(color_data_mat, color_data_mat, cv::COLOR_BGR2RGB);
                 color_data = color_data_mat.ptr<uint8_t>();
             }
+        }
+
+        if (pData->map_depth_to_color) {
+            depth = out.clone();
+            p3d.resize(depth.size().area());
+            ASSERT_OK(TYMapDepthImageToPoint3d(&pData->color_calib, depth.cols, depth.rows
+                , (uint16_t*)depth.data, &p3d[0]));
+        }
+        else
+        {
+            p3d.resize(depth.size().area());
+            ASSERT_OK(TYMapDepthImageToPoint3d(&pData->depth_calib, depth.cols, depth.rows
+                , (uint16_t*)depth.data, &p3d[0], pData->f_depth_scale));
         }
         if (pData->saveOneFramePoint3d){
             char file[32];
@@ -177,14 +212,17 @@ int main(int argc, char* argv[])
     TY_INTERFACE_HANDLE hIface = NULL;
     TY_DEV_HANDLE hDevice = NULL;
     bool with_color_cam = true;
+    bool dep2rgb = false;
 
     for(int i = 1; i < argc; i++){
         if(strcmp(argv[i], "-id") == 0){
             ID = argv[++i];
         } else if(strcmp(argv[i], "-ip") == 0) {
             IP = argv[++i];
+        } else if(strcmp(argv[i], "-dep2rgb") == 0) {
+            dep2rgb = true;
         }else if(strcmp(argv[i], "-h") == 0){
-            printf("Usage: SimpleView_Point3D [-h] [-id <ID>] [-color=off]");
+            printf("Usage: SimpleView_Point3D [-h] [-id <ID>] [-color=off] [-dep2rgb]");
             return 0;
         }
         else if (strcmp(argv[i], "-color=off") == 0){
@@ -220,8 +258,13 @@ int main(int argc, char* argv[])
         ASSERT_OK(TYEnableComponents(hDevice, TY_COMPONENT_DEPTH_CAM));
         
         float scale_unit = 1.;
-        TYGetFloat(hDevice, TY_COMPONENT_DEPTH_CAM, TY_FLOAT_SCALE_UNIT, &scale_unit);
-        cb_data.f_depth_scale = scale_unit;        
+        bool hasScaleUint = false;
+        //Incase some model Desc has No ScaleUint Now(Tof), Then Suppose it is 1.0f
+        TYHasFeature(hDevice, TY_COMPONENT_DEPTH_CAM, TY_FLOAT_SCALE_UNIT, &hasScaleUint);
+        if(hasScaleUint) {
+            TYGetFloat(hDevice, TY_COMPONENT_DEPTH_CAM, TY_FLOAT_SCALE_UNIT, &scale_unit);
+        }
+        cb_data.f_depth_scale = scale_unit;
     }
 
     int32_t allComps;
@@ -287,6 +330,7 @@ int main(int argc, char* argv[])
     cb_data.saveOneFramePoint3d = false;
     cb_data.fileIndex = 0;
     cb_data.exit_main = false;
+    cb_data.map_depth_to_color = dep2rgb;
     //start a thread to fetch image data
     TYThread fetch_thread;
     fetch_thread.create(FetchFrameThreadFunc, &cb_data);

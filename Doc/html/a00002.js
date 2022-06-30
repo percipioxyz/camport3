@@ -32,6 +32,8 @@ var a00002 =
     [ "TY_IMAGE_DATA", "a00149.html", "a00149" ],
     [ "TY_FRAME_DATA", "a00153.html", "a00153" ],
     [ "TY_EVENT_INFO", "a00157.html", "a00157" ],
+    [ "TY_DO_WORKMODE", "a00161.html", "a00161" ],
+    [ "TY_DI_WORKMODE", "a00165.html", "a00165" ],
     [ "__bool_true_false_are_defined", "a00002.html#a665b0cc9ee2ced31785321d55cde349e", null ],
     [ "_STDBOOL_H", "a00002.html#acf321a232134025756777f61825c714b", null ],
     [ "bool", "a00002.html#abb452686968e48b67397da5f97445f5b", null ],
@@ -70,6 +72,12 @@ var a00002 =
     [ "TY_DEVICE_COMPONENT_LIST", "a00002.html#a4ad641f2d1eadf61f07cebf0ca48bef8", null ],
     [ "TY_DEVICE_NET_INFO", "a00002.html#a15e39133579840d9aa2915f1acbfdd55", null ],
     [ "TY_DEVICE_USB_INFO", "a00002.html#afbb94759533c4cb4ae3f72850e746a92", null ],
+    [ "TY_DI_WORKMODE", "a00002.html#a6b6abc4ccd16ba0492edc4774d1d9781", null ],
+    [ "TY_DO_WORKMODE", "a00002.html#a6961936334e1d0f0aea08e216fa572a7", null ],
+    [ "TY_E_DI_INT_ACTION", "a00002.html#a10df9730f9f1e0dcaeda57e30b50ab07", null ],
+    [ "TY_E_DI_MODE", "a00002.html#a4c8efa5b6f8d7b0399b98bbd7688efc1", null ],
+    [ "TY_E_DO_MODE", "a00002.html#a5d2dffda8253cab6d30c22ccdbee6dcb", null ],
+    [ "TY_E_VOLT_T", "a00002.html#ab3991a028d6ae7824e3907bb3b1f7d7e", null ],
     [ "TY_ENENT_LIST", "a00002.html#a26ead5879f9813ef68d98799cc3cf610", null ],
     [ "TY_ENUM_ENTRY", "a00002.html#a9712be12c0ec730b045e7f150fa0382a", null ],
     [ "TY_EVENT", "a00002.html#adca57d7dd75ecdb36d14382966c25fa8", null ],
@@ -141,6 +149,27 @@ var a00002 =
       [ "TY_COMPONENT_STORAGE", "a00002.html#a6e3668325ff8193e2690514a0a6fde57a188f91a6717aafd55fe711b53bff7ee8", null ],
       [ "TY_COMPONENT_RGB_CAM", "a00002.html#a6e3668325ff8193e2690514a0a6fde57af91a018177a11bf3971301e35889e3b6", null ]
     ] ],
+    [ "TY_E_DI_INT_ACTION_LIST", "a00002.html#a8780ab113a691d2106a128e666bdce97", [
+      [ "TY_DI_INT_NO_OP", "a00002.html#a8780ab113a691d2106a128e666bdce97a988f10ebaf1a96b19cdfaa3fcc42b89b", null ],
+      [ "TY_DI_INT_TRIG_CAP", "a00002.html#a8780ab113a691d2106a128e666bdce97afc5465568420e13808686040baf2bc0d", null ],
+      [ "TY_DI_INT_EVENT", "a00002.html#a8780ab113a691d2106a128e666bdce97a603d701e06e917d628158995c3ce83f0", null ]
+    ] ],
+    [ "TY_E_DI_MODE_LIST", "a00002.html#a2ff52c0deb566a7ac477fae5f4b151c1", [
+      [ "TY_DI_POLL", "a00002.html#a2ff52c0deb566a7ac477fae5f4b151c1a07819a4b27032518cef1cb459e243a38", null ],
+      [ "TY_DI_NE_INT", "a00002.html#a2ff52c0deb566a7ac477fae5f4b151c1aa9540a70737a0c827e4bd3f5aa5945d9", null ],
+      [ "TY_DI_PE_INT", "a00002.html#a2ff52c0deb566a7ac477fae5f4b151c1a436c5ee989ce5caeef5ac3f57f7247bb", null ]
+    ] ],
+    [ "TY_E_DO_MODE_LIST", "a00002.html#ac0edb1638879d421b6eab527612b88e0", [
+      [ "TY_DO_LOW", "a00002.html#ac0edb1638879d421b6eab527612b88e0aae90ec13529b518f2482a782efc69904", null ],
+      [ "TY_DO_HIGH", "a00002.html#ac0edb1638879d421b6eab527612b88e0ab212f78757f8719a54d8b07232991957", null ],
+      [ "TY_DO_PWM", "a00002.html#ac0edb1638879d421b6eab527612b88e0a41194fdaadd0d927506d643a5f63bb98", null ],
+      [ "TY_DO_CAM_TRIG", "a00002.html#ac0edb1638879d421b6eab527612b88e0afc5b0065da856dda613e4ccdff3550fa", null ]
+    ] ],
+    [ "TY_E_VOLT_T_LIST", "a00002.html#ad7966592ec21e7dc90480b7b44ddc983", [
+      [ "TY_EXT_SUP", "a00002.html#ad7966592ec21e7dc90480b7b44ddc983a32ee136bbe642cd75a315facd83aa296", null ],
+      [ "TY_DO_5V", "a00002.html#ad7966592ec21e7dc90480b7b44ddc983af9a8a8a960be039c87d2686f710c6540", null ],
+      [ "TY_DO_12V", "a00002.html#ad7966592ec21e7dc90480b7b44ddc983a846c34e205de6f94ce5cb357e6df6db9", null ]
+    ] ],
     [ "TY_EVENT_LIST", "a00002.html#a1d951d2f881b002794c44f80a829a67c", [
       [ "TY_EVENT_DEVICE_OFFLINE", "a00002.html#a1d951d2f881b002794c44f80a829a67ca24e199f0f51e5776a90b34daf8968dbf", null ],
       [ "TY_EVENT_LICENSE_ERROR", "a00002.html#a1d951d2f881b002794c44f80a829a67cadfb1c8bd9890de9d9e7a84e2df99b1d3", null ],
@@ -189,6 +218,12 @@ var a00002 =
       [ "TY_BOOL_TIME_SYNC_READY", "a00002.html#ad106ea6dcff8f708ca26b57c430f9124ae6aaffcd1b0533cbb68b86571fe3492a", null ],
       [ "TY_BOOL_FLASHLIGHT", "a00002.html#ad106ea6dcff8f708ca26b57c430f9124a9b44f5577cdc860e3d509330b191c87c", null ],
       [ "TY_INT_FLASHLIGHT_INTENSITY", "a00002.html#ad106ea6dcff8f708ca26b57c430f9124ad7200bf30902f5899817a1fa05891975", null ],
+      [ "TY_STRUCT_DO0_WORKMODE", "a00002.html#ad106ea6dcff8f708ca26b57c430f9124af25c894042dd1583b5ec16cf99f1eb12", null ],
+      [ "TY_STRUCT_DI0_WORKMODE", "a00002.html#ad106ea6dcff8f708ca26b57c430f9124ae4623b126cdb378020ae7b911d391941", null ],
+      [ "TY_STRUCT_DO1_WORKMODE", "a00002.html#ad106ea6dcff8f708ca26b57c430f9124ad20c34d9e6ddc8d2fa1612e9e3edf295", null ],
+      [ "TY_STRUCT_DI1_WORKMODE", "a00002.html#ad106ea6dcff8f708ca26b57c430f9124ac7a96d5eb7dcffc81b68e87690c469ad", null ],
+      [ "TY_STRUCT_DO2_WORKMODE", "a00002.html#ad106ea6dcff8f708ca26b57c430f9124ae8233f9dfd48c8c358097c14f59f6f3c", null ],
+      [ "TY_STRUCT_DI2_WORKMODE", "a00002.html#ad106ea6dcff8f708ca26b57c430f9124aba6c782effd3a974a104ade473923d95", null ],
       [ "TY_BOOL_AUTO_EXPOSURE", "a00002.html#ad106ea6dcff8f708ca26b57c430f9124a7111399fbe52bfec363fbcc3a84165db", null ],
       [ "TY_INT_EXPOSURE_TIME", "a00002.html#ad106ea6dcff8f708ca26b57c430f9124a800000a3782afc0c64a37494bd95968a", null ],
       [ "TY_BOOL_AUTO_GAIN", "a00002.html#ad106ea6dcff8f708ca26b57c430f9124a2dddfa2f8000896f88ff2835675f9a6d", null ],
@@ -305,6 +340,7 @@ var a00002 =
       [ "TY_RESOLUTION_MODE_1280x800", "a00002.html#a672706b9f41df147ac9709343ba1287ba739b9db81ee8823b90d19e948025142f", null ],
       [ "TY_RESOLUTION_MODE_1280x960", "a00002.html#a672706b9f41df147ac9709343ba1287bafd2e5516aa45209b4ab6d005aa4968d2", null ],
       [ "TY_RESOLUTION_MODE_1920x1080", "a00002.html#a672706b9f41df147ac9709343ba1287baa6d3bf0789195a8fa6ccef0a225151db", null ],
+      [ "TY_RESOLUTION_MODE_2560x1920", "a00002.html#a672706b9f41df147ac9709343ba1287ba5e52c93414842c0de45fd7a176349247", null ],
       [ "TY_RESOLUTION_MODE_2592x1944", "a00002.html#a672706b9f41df147ac9709343ba1287ba65724dba0eb33fa7f494f5105dccd3c7", null ]
     ] ],
     [ "TY_STATUS_LIST", "a00002.html#a09671bb43e14fcbe9052793dcb80aa51", [

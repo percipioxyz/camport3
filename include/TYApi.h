@@ -35,7 +35,7 @@
 #    define _WIN32
 #  endif
 #endif
-
+ 
 #ifdef _WIN32
 # ifndef _STDINT_H
 #  if defined(_MSC_VER) && _MSC_VER < 1600
@@ -114,7 +114,7 @@
 
 #define TY_LIB_VERSION_MAJOR       3
 #define TY_LIB_VERSION_MINOR       6 
-#define TY_LIB_VERSION_PATCH       4
+#define TY_LIB_VERSION_PATCH       9
 
 
 //------------------------------------------------------------------------------
@@ -274,9 +274,16 @@ typedef enum TY_FEATURE_ID_LIST
     TY_ENUM_STREAM_ASYNC            = 0x0209 | TY_FEATURE_ENUM,  ///< stream async switch, see TY_STREAM_ASYNC_MODE
     TY_INT_CAPTURE_TIME_US          = 0x0210 | TY_FEATURE_INT,  ///< capture time in multi-ir 
     TY_ENUM_TIME_SYNC_TYPE          = 0x0211 | TY_FEATURE_ENUM, ///< see TY_TIME_SYNC_TYPE
-    TY_BOOL_TIME_SYNC_READY         = 0x0212 | TY_FEATURE_BOOL,
-    TY_BOOL_FLASHLIGHT              = 0x0213 | TY_FEATURE_BOOL,
-    TY_INT_FLASHLIGHT_INTENSITY     = 0x0214 | TY_FEATURE_INT,
+    TY_BOOL_TIME_SYNC_READY         = 0x0212 | TY_FEATURE_BOOL, ///< time sync done status
+    TY_BOOL_FLASHLIGHT              = 0x0213 | TY_FEATURE_BOOL, ///< flashlight on/off control
+    TY_INT_FLASHLIGHT_INTENSITY     = 0x0214 | TY_FEATURE_INT,  ///< flashlight intensity level [0, 63]
+    TY_STRUCT_DO0_WORKMODE          = 0x0215 | TY_FEATURE_STRUCT, ///< DO_0 workmode, see TY_DO_WORKMODE
+    TY_STRUCT_DI0_WORKMODE          = 0x0216 | TY_FEATURE_STRUCT, ///< DI_0 workmode, see TY_DI_WORKMODE
+    TY_STRUCT_DO1_WORKMODE          = 0x0217 | TY_FEATURE_STRUCT, ///< DO_1 workmode, see TY_DO_WORKMODE
+    TY_STRUCT_DI1_WORKMODE          = 0x0218 | TY_FEATURE_STRUCT, ///< DI_1 workmode, see TY_DI_WORKMODE
+    TY_STRUCT_DO2_WORKMODE          = 0x0219 | TY_FEATURE_STRUCT, ///< DO_2 workmode, see TY_DO_WORKMODE
+    TY_STRUCT_DI2_WORKMODE          = 0x0220 | TY_FEATURE_STRUCT, ///< DI_2 workmode, see TY_DI_WORKMODE
+
 
     TY_BOOL_AUTO_EXPOSURE           = 0x0300 | TY_FEATURE_BOOL, ///< Auto exposure switch
     TY_INT_EXPOSURE_TIME            = 0x0301 | TY_FEATURE_INT,  ///< Exposure time in percentage
@@ -297,8 +304,8 @@ typedef enum TY_FEATURE_ID_LIST
     TY_INT_B_GAIN                   = 0x0522 | TY_FEATURE_INT,  ///< Gain of B channel
 
     TY_INT_ANALOG_GAIN              = 0x0524 | TY_FEATURE_INT,  ///< Analog gain
-    TY_BOOL_HDR                     = 0x0525 | TY_FEATURE_BOOL,
-    TY_BYTEARRAY_HDR_PARAMETER      = 0x0526 | TY_FEATURE_BYTEARRAY,
+    TY_BOOL_HDR                     = 0x0525 | TY_FEATURE_BOOL, ///< HDR func enable/disable
+    TY_BYTEARRAY_HDR_PARAMETER      = 0x0526 | TY_FEATURE_BYTEARRAY, ///< HDR parameters
 
     TY_BOOL_IMU_DATA_ONOFF          = 0x0600 | TY_FEATURE_BOOL, ///< IMU Data Onoff
     TY_STRUCT_IMU_ACC_BIAS          = 0x0601 | TY_FEATURE_STRUCT, ///< IMU acc bias matrix, see TY_ACC_BIAS
@@ -411,6 +418,7 @@ typedef enum TY_RESOLUTION_MODE_LIST
     TY_RESOLUTION_MODE_1280x800     = (1280<<12)+800,   ///< 0x00500320
     TY_RESOLUTION_MODE_1280x960     = (1280<<12)+960,   ///< 0x005003c0
     TY_RESOLUTION_MODE_1920x1080    = (1920<<12)+1080,   ///< 0x00780438
+    TY_RESOLUTION_MODE_2560x1920    = (2560<<12)+1920,  ///< 0x00a00780
     TY_RESOLUTION_MODE_2592x1944    = (2592<<12)+1944,  ///< 0x00a20798
 }TY_RESOLUTION_MODE_LIST;
 typedef int32_t TY_RESOLUTION_MODE;
@@ -433,6 +441,7 @@ typedef int32_t TY_RESOLUTION_MODE;
             TY_DECLARE_IMAGE_MODE0(pix, 1280x960), \
             TY_DECLARE_IMAGE_MODE0(pix, 1280x800), \
             TY_DECLARE_IMAGE_MODE0(pix, 1920x1080), \
+            TY_DECLARE_IMAGE_MODE0(pix, 2560x1920), \
             TY_DECLARE_IMAGE_MODE0(pix, 2592x1944)
 
 
@@ -484,6 +493,42 @@ typedef enum TY_TIME_SYNC_TYPE_LIST
     TY_TIME_SYNC_TYPE_PTP_MASTER = 5,
 }TY_TIME_SYNC_TYPE_LIST;
 typedef int32_t TY_TIME_SYNC_TYPE;
+
+typedef enum {
+    /* depends on external power supply */
+    TY_EXT_SUP    = 0,
+    TY_DO_5V      = 1,
+    TY_DO_12V     = 2,
+} TY_E_VOLT_T_LIST;
+typedef uint32_t TY_E_VOLT_T;
+
+typedef enum {
+    TY_DO_LOW       = 0,
+    TY_DO_HIGH      = 1,
+    TY_DO_PWM       = 2,
+    TY_DO_CAM_TRIG  = 3,
+}TY_E_DO_MODE_LIST;
+typedef uint32_t TY_E_DO_MODE;
+
+typedef enum {
+    /* DI polling by user, No interrupt */
+    TY_DI_POLL   = 0,
+    /* DI negative edge interrupt mode */
+    TY_DI_NE_INT = 1,
+    /* DI positive edge inerrupt mode */
+    TY_DI_PE_INT = 2,
+}TY_E_DI_MODE_LIST;
+typedef uint32_t TY_E_DI_MODE;
+
+typedef enum {
+    /* DI interrupt No op*/
+    TY_DI_INT_NO_OP      = 0,
+    /* DI interrupt trig a capture action */
+    TY_DI_INT_TRIG_CAP   = 1,
+    /* DI interrupt report a event to SDK */
+    TY_DI_INT_EVENT      = 2,
+}TY_E_DI_INT_ACTION_LIST;
+typedef uint32_t TY_E_DI_INT_ACTION;
 
 #pragma pack(1)
 
@@ -833,6 +878,43 @@ typedef struct TY_EVENT_INFO
     TY_EVENT        eventId;
     char            message[124];
 }TY_EVENT_INFO;
+
+typedef struct TY_DO_WORKMODE {
+    /* TY_E_DO_MODE type of workmode */
+    TY_E_DO_MODE mode;
+    /* TY_E_VOLT_T type, voltage to output */
+    TY_E_VOLT_T volt;
+    /*
+     * frequency of PWM, Only valid when mode == PWM
+     * unit is Hz, Range is 1~1000
+     */
+    uint32_t freq;
+    /*
+     * duty of PWM, Only valid when mode == PWM
+     * unit is %, Range is 1~100
+     */
+    uint32_t duty;
+    /*
+     * Only valid in read op, write no effect
+     */
+    uint32_t mode_supported;
+    uint32_t volt_supported;
+    uint32_t reserved[3];
+}TY_DO_WORKMODE;
+
+typedef struct TY_DI_WORKMODE {
+    /* DI workmode in type of TY_E_DI_MODE */
+    TY_E_DI_MODE mode;
+    /* interrupt action, valid when mode in TY_DI_NE_INT TY_DI_PE_INT */
+    TY_E_DI_INT_ACTION int_act;
+    /* supported mode, Only valid when read */
+    uint32_t mode_supported;
+    /* supported action in int mode, Only valid when read */
+    uint32_t int_act_supported;
+    /* DI status, 0 low, 1 high, Only read back, can not write */
+    uint32_t status;
+    uint32_t reserved[3];
+} TY_DI_WORKMODE;
 
 #pragma pack()
 
