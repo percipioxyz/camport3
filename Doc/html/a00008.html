@@ -124,6 +124,9 @@ Macros</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:a74321e8b166042ece04746cc88ab038e"><td class="memItemLeft" align="right" valign="top">TY_CAPI&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00008.html#a74321e8b166042ece04746cc88ab038e">TYImageProcesAcceEnable</a> (bool en)</td></tr>
+<tr class="memdesc:a74321e8b166042ece04746cc88ab038e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Image processing acceleration switch.  <a href="#a74321e8b166042ece04746cc88ab038e">More...</a><br /></td></tr>
+<tr class="separator:a74321e8b166042ece04746cc88ab038e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1b464bbb119959e19acce5e0e96160f9"><td class="memItemLeft" align="right" valign="top">TY_CAPI&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00008.html#a1b464bbb119959e19acce5e0e96160f9">TYUndistortImage</a> (const <a class="el" href="a00077.html">TY_CAMERA_CALIB_INFO</a> *srcCalibInfo, const <a class="el" href="a00149.html">TY_IMAGE_DATA</a> *srcImage, const <a class="el" href="a00065.html">TY_CAMERA_INTRINSIC</a> *cameraNewIntrinsic, <a class="el" href="a00149.html">TY_IMAGE_DATA</a> *dstImage)</td></tr>
 <tr class="memdesc:a1b464bbb119959e19acce5e0e96160f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Do image undistortion, only support TY_PIXEL_FORMAT_MONO ,TY_PIXEL_FORMAT_RGB,TY_PIXEL_FORMAT_BGR.  <a href="#a1b464bbb119959e19acce5e0e96160f9">More...</a><br /></td></tr>
 <tr class="separator:a1b464bbb119959e19acce5e0e96160f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -245,6 +248,32 @@ Functions</h2></td></tr>
     <tr><td class="paramname">TY_STATUS_OK</td><td>Succeed. </td></tr>
     <tr><td class="paramname">TY_STATUS_NULL_POINTER</td><td>Any depth, param or depth-&gt;buffer is NULL. </td></tr>
     <tr><td class="paramname">TY_STATUS_INVALID_PARAMETER</td><td>param-&gt;max_speckle_size &lt;= 0 or param-&gt;max_speckle_diff &lt;= 0 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a74321e8b166042ece04746cc88ab038e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a74321e8b166042ece04746cc88ab038e">&#9670;&nbsp;</a></span>TYImageProcesAcceEnable()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">TY_CAPI TYImageProcesAcceEnable </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>en</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Image processing acceleration switch. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">en</td><td>Enable image process acceleration switch </td></tr>
   </table>
   </dd>
 </dl>

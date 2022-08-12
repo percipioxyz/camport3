@@ -50,6 +50,7 @@ var searchData=
   ['ty_5fint_5fpacket_5fdelay',['TY_INT_PACKET_DELAY',['../a00002.html#ad106ea6dcff8f708ca26b57c430f9124a42c416088b87f1f2b05253eb73ac89af',1,'TYApi.h']]],
   ['ty_5fint_5fr_5fgain',['TY_INT_R_GAIN',['../a00002.html#ad106ea6dcff8f708ca26b57c430f9124af959400781d55f751ad6d9b433713b45',1,'TYApi.h']]],
   ['ty_5fint_5ftof_5fchannel',['TY_INT_TOF_CHANNEL',['../a00002.html#ad106ea6dcff8f708ca26b57c430f9124a7249b83e4cbe52e1f18e75453c2f1e7a',1,'TYApi.h']]],
+  ['ty_5fint_5ftof_5fmodulation_5fthreshold',['TY_INT_TOF_MODULATION_THRESHOLD',['../a00002.html#ad106ea6dcff8f708ca26b57c430f9124a07c25e03e8dc286cb837fb1a8921e8b6',1,'TYApi.h']]],
   ['ty_5fint_5ftrigger_5fdelay_5fus',['TY_INT_TRIGGER_DELAY_US',['../a00002.html#ad106ea6dcff8f708ca26b57c430f9124ab9cafffcac1298fe0d3c175300f49b1e',1,'TYApi.h']]],
   ['ty_5fint_5ftrigger_5fduration_5fus',['TY_INT_TRIGGER_DURATION_US',['../a00002.html#ad106ea6dcff8f708ca26b57c430f9124aa9e38f8e3474121523cba4097a4ae271',1,'TYApi.h']]],
   ['ty_5fint_5fwidth',['TY_INT_WIDTH',['../a00002.html#ad106ea6dcff8f708ca26b57c430f9124a5e9205c48d12b22e4982a04b90f0be7c',1,'TYApi.h']]],

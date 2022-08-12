@@ -11,6 +11,10 @@
 #include "TYCoordinateMapper.h"
 #include "TyIsp.h"
 
+/// @brief Image processing acceleration switch
+/// @param  [in] en          Enable image process acceleration switch
+TY_CAPI TYImageProcesAcceEnable(bool en);
+
 /// @brief Do image undistortion, only support TY_PIXEL_FORMAT_MONO ,TY_PIXEL_FORMAT_RGB,TY_PIXEL_FORMAT_BGR.
 /// @param  [in]  srcCalibInfo          Image calibration data.
 /// @param  [in]  srcImage              Source image.

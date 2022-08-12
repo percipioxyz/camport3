@@ -255,6 +255,7 @@ int main(int argc, char* argv[])
 	float scale_unit = 1.;
 	TYGetFloat(hDevice, TY_COMPONENT_DEPTH_CAM, TY_FLOAT_SCALE_UNIT, &scale_unit);
 	cb_data.scale_unit = scale_unit;
+	depthViewer.depth_scale_unit = scale_unit;
 
     LOGD("=== Read depth calib info");
     ASSERT_OK( TYGetStruct(hDevice, TY_COMPONENT_DEPTH_CAM, TY_STRUCT_CAM_CALIB_DATA

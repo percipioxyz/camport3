@@ -39,6 +39,7 @@ var searchData=
   ['tyhasdevice',['TYHasDevice',['../a00002.html#a2e135c15a0bd4adf68127fbb0d955fa3',1,'TYApi.h']]],
   ['tyhasfeature',['TYHasFeature',['../a00002.html#af790321f7af197bc663f8fe31d6daa01',1,'TYApi.h']]],
   ['tyhasinterface',['TYHasInterface',['../a00002.html#acc672c510bfe8ee995d4a386e205d6ce',1,'TYApi.h']]],
+  ['tyimageprocesacceenable',['TYImageProcesAcceEnable',['../a00008.html#a74321e8b166042ece04746cc88ab038e',1,'TYImageProc.h']]],
   ['tyinvertextrinsic',['TYInvertExtrinsic',['../a00005.html#a466f1f9ecdb947607c5da179d1826c19',1,'TYCoordinateMapper.h']]],
   ['tyispprocessimage',['TYISPProcessImage',['../a00011.html#a45daaf3a72ecfaf89c0b392be986ca90',1,'TyIsp.h']]],
   ['tyispupdatedevice',['TYISPUpdateDevice',['../a00011.html#a8d98c4d686f95d80d8ea8697439085ed',1,'TyIsp.h']]],

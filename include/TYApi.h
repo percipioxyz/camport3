@@ -114,7 +114,7 @@
 
 #define TY_LIB_VERSION_MAJOR       3
 #define TY_LIB_VERSION_MINOR       6 
-#define TY_LIB_VERSION_PATCH       9
+#define TY_LIB_VERSION_PATCH       12
 
 
 //------------------------------------------------------------------------------
@@ -165,6 +165,7 @@ typedef enum TY_FW_ERRORCODE_LIST
     TY_FW_ERRORCODE_POE_NOT_INIT            = 0x00000008,
     TY_FW_ERRORCODE_RECMAP_NOT_CORRECT      = 0x00000010,
     TY_FW_ERRORCODE_LOOKUPTABLE_NOT_CORRECT = 0x00000020,
+    TY_FW_ERRORCODE_DRV8899_NOT_INIT        = 0x00000040,
     TY_FW_ERRORCODE_CONFIG_NOT_FOUND        = 0x00010000,
     TY_FW_ERRORCODE_CONFIG_NOT_CORRECT      = 0x00020000,
     TY_FW_ERRORCODE_XML_NOT_FOUND           = 0x00040000,
@@ -320,6 +321,7 @@ typedef enum TY_FEATURE_ID_LIST
     TY_ENUM_DEPTH_QUALITY           = 0x0900 | TY_FEATURE_ENUM,  ///< the quality of generated depth, see TY_DEPTH_QUALITY
     TY_INT_FILTER_THRESHOLD         = 0x0901 | TY_FEATURE_INT,   ///< the threshold of the noise filter, 0 for disabled
     TY_INT_TOF_CHANNEL              = 0x0902 | TY_FEATURE_INT,   ///< the frequency channel of tof
+    TY_INT_TOF_MODULATION_THRESHOLD = 0x0903 | TY_FEATURE_INT,   ///< the threshold of the tof modulation
 }TY_FEATURE_ID_LIST;
 typedef int32_t TY_FEATURE_ID;///< feature unique id @see TY_FEATURE_ID_LIST
 

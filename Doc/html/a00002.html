@@ -230,7 +230,7 @@ Macros</h2></td></tr>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>TY_LIB_VERSION_MINOR</b>&#160;&#160;&#160;6</td></tr>
 <tr class="separator:ab7b51d30017169eef553363a27bafa4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a93ec4ddd20d2a3ac85e1d95cc519fe7b"><td class="memItemLeft" align="right" valign="top"><a id="a93ec4ddd20d2a3ac85e1d95cc519fe7b"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>TY_LIB_VERSION_PATCH</b>&#160;&#160;&#160;9</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>TY_LIB_VERSION_PATCH</b>&#160;&#160;&#160;12</td></tr>
 <tr class="separator:a93ec4ddd20d2a3ac85e1d95cc519fe7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a014cecdf6710372ed9331436259eb528"><td class="memItemLeft" align="right" valign="top"><a id="a014cecdf6710372ed9331436259eb528"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>TY_DECLARE_IMAGE_MODE0</b>(pix,  res)&#160;&#160;&#160;TY_IMAGE_MODE_##pix##_##res = TY_PIXEL_FORMAT_##pix | TY_RESOLUTION_MODE_##res</td></tr>
@@ -524,15 +524,16 @@ Enumerations</h2></td></tr>
 <br />
 &#160;&#160;<b>TY_FW_ERRORCODE_RECMAP_NOT_CORRECT</b> = 0x00000010, 
 <b>TY_FW_ERRORCODE_LOOKUPTABLE_NOT_CORRECT</b> = 0x00000020, 
+<b>TY_FW_ERRORCODE_DRV8899_NOT_INIT</b> = 0x00000040, 
 <b>TY_FW_ERRORCODE_CONFIG_NOT_FOUND</b> = 0x00010000, 
-<b>TY_FW_ERRORCODE_CONFIG_NOT_CORRECT</b> = 0x00020000, 
 <br />
-&#160;&#160;<b>TY_FW_ERRORCODE_XML_NOT_FOUND</b> = 0x00040000, 
+&#160;&#160;<b>TY_FW_ERRORCODE_CONFIG_NOT_CORRECT</b> = 0x00020000, 
+<b>TY_FW_ERRORCODE_XML_NOT_FOUND</b> = 0x00040000, 
 <b>TY_FW_ERRORCODE_XML_NOT_CORRECT</b> = 0x00080000, 
 <b>TY_FW_ERRORCODE_XML_OVERRIDE_FAILED</b> = 0x00100000, 
-<b>TY_FW_ERRORCODE_CAM_INIT_FAILED</b> = 0x00200000, 
 <br />
-&#160;&#160;<b>TY_FW_ERRORCODE_LASER_INIT_FAILED</b> = 0x00400000
+&#160;&#160;<b>TY_FW_ERRORCODE_CAM_INIT_FAILED</b> = 0x00200000, 
+<b>TY_FW_ERRORCODE_LASER_INIT_FAILED</b> = 0x00400000
 <br />
  }</td></tr>
 <tr class="separator:a5f9091709cb9aabf975178c83321309f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -667,7 +668,8 @@ Enumerations</h2></td></tr>
 <a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124a8ad70c3fe5e66af2d82ca3ccc1c9dda1">TY_ENUM_DEPTH_QUALITY</a> = 0x0900 | TY_FEATURE_ENUM, 
 <a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124a3b5eba50d43b4f0112b475df4056ce30">TY_INT_FILTER_THRESHOLD</a> = 0x0901 | TY_FEATURE_INT, 
 <br />
-&#160;&#160;<a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124a7249b83e4cbe52e1f18e75453c2f1e7a">TY_INT_TOF_CHANNEL</a> = 0x0902 | TY_FEATURE_INT
+&#160;&#160;<a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124a7249b83e4cbe52e1f18e75453c2f1e7a">TY_INT_TOF_CHANNEL</a> = 0x0902 | TY_FEATURE_INT, 
+<a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124a07c25e03e8dc286cb837fb1a8921e8b6">TY_INT_TOF_MODULATION_THRESHOLD</a> = 0x0903 | TY_FEATURE_INT
 <br />
  }<tr class="memdesc:ad106ea6dcff8f708ca26b57c430f9124"><td class="mdescLeft">&#160;</td><td class="mdescRight">feature for component definitions  <a href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124">More...</a><br /></td></tr>
 </td></tr>
@@ -1032,7 +1034,7 @@ TY_CAPI&#160;</td><td class="memItemRight" valign="bottom"><b>_TYInitLib</b> (vo
       </table>
 </div><div class="memdoc">
 <b>Value:</b><div class="fragment"><div class="line">TY_DECLARE_IMAGE_MODE0(pix, 160x100), \</div><div class="line">            TY_DECLARE_IMAGE_MODE0(pix, 160x120), \</div><div class="line">            TY_DECLARE_IMAGE_MODE0(pix, 320x180), \</div><div class="line">            TY_DECLARE_IMAGE_MODE0(pix, 320x200), \</div><div class="line">            TY_DECLARE_IMAGE_MODE0(pix, 320x240), \</div><div class="line">            TY_DECLARE_IMAGE_MODE0(pix, 480x640), \</div><div class="line">            TY_DECLARE_IMAGE_MODE0(pix, 640x360), \</div><div class="line">            TY_DECLARE_IMAGE_MODE0(pix, 640x400), \</div><div class="line">            TY_DECLARE_IMAGE_MODE0(pix, 640x480), \</div><div class="line">            TY_DECLARE_IMAGE_MODE0(pix, 960x1280), \</div><div class="line">            TY_DECLARE_IMAGE_MODE0(pix, 1280x720), \</div><div class="line">            TY_DECLARE_IMAGE_MODE0(pix, 1280x960), \</div><div class="line">            TY_DECLARE_IMAGE_MODE0(pix, 1280x800), \</div><div class="line">            TY_DECLARE_IMAGE_MODE0(pix, 1920x1080), \</div><div class="line">            TY_DECLARE_IMAGE_MODE0(pix, 2560x1920), \</div><div class="line">            TY_DECLARE_IMAGE_MODE0(pix, 2592x1944)</div></div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="a00002_source.html#l00429">429</a> of file <a class="el" href="a00002_source.html">TYApi.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00002_source.html#l00431">431</a> of file <a class="el" href="a00002_source.html">TYApi.h</a>.</p>
 
 </div>
 </div>
@@ -1211,7 +1213,7 @@ TY_CAPI&#160;</td><td class="memItemRight" valign="bottom"><b>_TYInitLib</b> (vo
 <p>component unique id </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="a00002.html#a6e3668325ff8193e2690514a0a6fde57">TY_DEVICE_COMPONENT_LIST</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="a00002_source.html#l00210">210</a> of file <a class="el" href="a00002_source.html">TYApi.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00002_source.html#l00211">211</a> of file <a class="el" href="a00002_source.html">TYApi.h</a>.</p>
 
 </div>
 </div>
@@ -1275,7 +1277,7 @@ TY_CAPI&#160;</td><td class="memItemRight" valign="bottom"><b>_TYInitLib</b> (vo
 <p>feature unique id </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="a00002.html#ad106ea6dcff8f708ca26b57c430f9124" title="feature for component definitions ">TY_FEATURE_ID_LIST</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="a00002_source.html#l00324">324</a> of file <a class="el" href="a00002_source.html">TYApi.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00002_source.html#l00326">326</a> of file <a class="el" href="a00002_source.html">TYApi.h</a>.</p>
 
 </div>
 </div>
@@ -1415,7 +1417,7 @@ TY_CAPI&#160;</td><td class="memItemRight" valign="bottom"><b>_TYInitLib</b> (vo
 </td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="a00002_source.html#l00195">195</a> of file <a class="el" href="a00002_source.html">TYApi.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00002_source.html#l00196">196</a> of file <a class="el" href="a00002_source.html">TYApi.h</a>.</p>
 
 </div>
 </div>
@@ -1565,9 +1567,11 @@ TY_CAPI&#160;</td><td class="memItemRight" valign="bottom"><b>_TYInitLib</b> (vo
 </td></tr>
 <tr><td class="fieldname"><a id="ad106ea6dcff8f708ca26b57c430f9124a7249b83e4cbe52e1f18e75453c2f1e7a"></a>TY_INT_TOF_CHANNEL&#160;</td><td class="fielddoc"><p>the frequency channel of tof </p>
 </td></tr>
+<tr><td class="fieldname"><a id="ad106ea6dcff8f708ca26b57c430f9124a07c25e03e8dc286cb837fb1a8921e8b6"></a>TY_INT_TOF_MODULATION_THRESHOLD&#160;</td><td class="fielddoc"><p>the threshold of the tof modulation </p>
+</td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="a00002_source.html#l00229">229</a> of file <a class="el" href="a00002_source.html">TYApi.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00002_source.html#l00230">230</a> of file <a class="el" href="a00002_source.html">TYApi.h</a>.</p>
 
 </div>
 </div>
@@ -1613,7 +1617,7 @@ TY_CAPI&#160;</td><td class="memItemRight" valign="bottom"><b>_TYInitLib</b> (vo
 </td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="a00002_source.html#l00384">384</a> of file <a class="el" href="a00002_source.html">TYApi.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00002_source.html#l00386">386</a> of file <a class="el" href="a00002_source.html">TYApi.h</a>.</p>
 
 </div>
 </div>
@@ -1667,7 +1671,7 @@ TY_CAPI&#160;</td><td class="memItemRight" valign="bottom"><b>_TYInitLib</b> (vo
 </td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="a00002_source.html#l00404">404</a> of file <a class="el" href="a00002_source.html">TYApi.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00002_source.html#l00406">406</a> of file <a class="el" href="a00002_source.html">TYApi.h</a>.</p>
 
 </div>
 </div>
@@ -1696,7 +1700,7 @@ TY_CAPI&#160;</td><td class="memItemRight" valign="bottom"><b>_TYInitLib</b> (vo
 </td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="a00002_source.html#l00469">469</a> of file <a class="el" href="a00002_source.html">TYApi.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00002_source.html#l00471">471</a> of file <a class="el" href="a00002_source.html">TYApi.h</a>.</p>
 
 </div>
 </div>
