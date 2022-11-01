@@ -139,7 +139,7 @@ int main(int argc, char* argv[])
     TY_FRAME_DATA frame;
     int index = 0;
     while(!exit_main) {
-        ASSERT_OK( TYSendSoftTrigger(hDevice) );
+        while(TY_STATUS_BUSY == TYSendSoftTrigger(hDevice));
         int err = TYFetchFrame(hDevice, &frame, 20000);
         if( err == TY_STATUS_OK ) {
             LOGD("=== Get frame %d", ++index);

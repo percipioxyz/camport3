@@ -1,9 +1,10 @@
 var a00165 =
 [
-    [ "int_act", "a00165.html#abeb65c313f7c5d036fb3e1c9f2addfa8", null ],
-    [ "int_act_supported", "a00165.html#a7c4981af1329ad5b73d73a14b1a2cf39", null ],
-    [ "mode", "a00165.html#a86fbb321c3fdda32d23fe1bd322f4dda", null ],
-    [ "mode_supported", "a00165.html#a23f0977f1f22957f0f5920cf4d37f825", null ],
-    [ "reserved", "a00165.html#aa83b0f830f73b9cc4527926d6e4a8568", null ],
-    [ "status", "a00165.html#a4ba77cdac921a3eed5586338ad436ca9", null ]
+    [ "duty", "a00165.html#ac4a3104b77b1adc0046324d2c089cb92", null ],
+    [ "freq", "a00165.html#a024ec1ea3c9d08373044d0e028af138a", null ],
+    [ "mode", "a00165.html#a76015c9205569743a52fb82f4ef19643", null ],
+    [ "mode_supported", "a00165.html#a0d429d12055015d2ae3983e492be63c4", null ],
+    [ "reserved", "a00165.html#a50bde09f33a9ee22472630c900051eb1", null ],
+    [ "volt", "a00165.html#ac5f16965d352d927fab395a7cf476701", null ],
+    [ "volt_supported", "a00165.html#a51078ffcc07c1e5a8666e19c1b39da20", null ]
 ];

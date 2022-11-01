@@ -308,7 +308,7 @@ int main(int argc, char* argv[])
     ASSERT_OK( TYGetStruct(hDevice, TY_COMPONENT_DEPTH_CAM, TY_STRUCT_CAM_CALIB_DATA
         , &cb_data.depth_calib, sizeof(cb_data.depth_calib)));
 
-    ASSERT_OK(TYHasFeature(hDevice, TY_COMPONENT_DEVICE, TY_ENUM_DEPTH_QUALITY, &isTof));
+    ASSERT_OK(TYHasFeature(hDevice, TY_COMPONENT_DEPTH_CAM, TY_STRUCT_CAM_DISTORTION, &isTof));
 
     LOGD("=== Register event callback");
     ASSERT_OK(TYRegisterEventCallback(hDevice, eventCallback, NULL));

@@ -265,7 +265,7 @@ int main(int argc, char* argv[])
     ASSERT_OK( TYGetStruct(hDevice, TY_COMPONENT_RGB_CAM, TY_STRUCT_CAM_CALIB_DATA
           , &cb_data.color_calib, sizeof(cb_data.color_calib)) );
 
-    ASSERT_OK(TYHasFeature(hDevice, TY_COMPONENT_DEVICE, TY_ENUM_DEPTH_QUALITY, &cb_data.isTof));
+    ASSERT_OK(TYHasFeature(hDevice, TY_COMPONENT_DEPTH_CAM, TY_STRUCT_CAM_DISTORTION, &cb_data.isTof));
 
     LOGD("=== Start capture");
     ASSERT_OK( TYStartCapture(hDevice) );

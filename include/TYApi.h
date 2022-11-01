@@ -114,7 +114,7 @@
 
 #define TY_LIB_VERSION_MAJOR       3
 #define TY_LIB_VERSION_MINOR       6 
-#define TY_LIB_VERSION_PATCH       12
+#define TY_LIB_VERSION_PATCH       15
 
 
 //------------------------------------------------------------------------------
@@ -292,6 +292,8 @@ typedef enum TY_FEATURE_ID_LIST
     TY_INT_GAIN                     = 0x0303 | TY_FEATURE_INT,  ///< Sensor Gain
     TY_BOOL_AUTO_AWB                = 0x0304 | TY_FEATURE_BOOL, ///< Auto white balance
     TY_STRUCT_AEC_ROI               = 0x0305 | TY_FEATURE_STRUCT,  ///< region of aec statistics, see TY_AEC_ROI_PARAM
+    TY_INT_TOF_HDR_RATIO            = 0x0306 | TY_FEATURE_INT,  ///< tof sensor hdr ratio for depth
+    TY_INT_TOF_JITTER_THRESHOLD     = 0x0307 | TY_FEATURE_INT,  ///< tof jitter threshold for depth
 
     TY_INT_LASER_POWER              = 0x0500 | TY_FEATURE_INT,  ///< Laser power level
     TY_BOOL_LASER_AUTO_CTRL         = 0x0501 | TY_FEATURE_BOOL, ///< Laser auto ctrl
@@ -322,6 +324,7 @@ typedef enum TY_FEATURE_ID_LIST
     TY_INT_FILTER_THRESHOLD         = 0x0901 | TY_FEATURE_INT,   ///< the threshold of the noise filter, 0 for disabled
     TY_INT_TOF_CHANNEL              = 0x0902 | TY_FEATURE_INT,   ///< the frequency channel of tof
     TY_INT_TOF_MODULATION_THRESHOLD = 0x0903 | TY_FEATURE_INT,   ///< the threshold of the tof modulation
+    TY_STRUCT_TOF_FREQ              = 0x0904 | TY_FEATURE_STRUCT, ///< the frequency of tof, see TY_TOF_FREQ
 }TY_FEATURE_ID_LIST;
 typedef int32_t TY_FEATURE_ID;///< feature unique id @see TY_FEATURE_ID_LIST
 
@@ -839,6 +842,12 @@ typedef struct TY_CAMERA_TO_IMU
 {
     float data[4 * 4];
 }TY_CAMERA_TO_IMU;
+
+typedef struct TY_TOF_FREQ
+{
+    uint32_t freq1;
+    uint32_t freq2;
+}TY_TOF_FREQ;
 
 typedef enum TY_IMU_FPS_LIST
 {
