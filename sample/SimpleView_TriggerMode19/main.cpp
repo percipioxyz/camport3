@@ -37,7 +37,7 @@ int main(int argc, char* argv[])
         } else if(strcmp(argv[i], "-duty") == 0) {
             duty = atoi(argv[++i]);
         } else if(strcmp(argv[i], "-h") == 0) {
-            LOGI("Usage: SimpleView_Triggermode18 [-h]");
+            LOGI("Usage: SimpleView_Triggermode19 [-h] [-id <ID>] [-ip <IP>]");
             return 0;
         }
     }

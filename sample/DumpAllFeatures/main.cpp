@@ -173,7 +173,7 @@ int main(int argc, char* argv[])
         }else if(strcmp(argv[i], "-d") == 0){
             dumpConfig = true;
         }else if(strcmp(argv[i], "-h") == 0){
-            LOGI("Usage: SimpleView_Callback [-h]");
+            LOGI("Usage: DumpAllFeatures [-h] [-id <ID>]");
             return 0;
         }
     }

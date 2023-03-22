@@ -59,6 +59,16 @@ void eventCallback(TY_EVENT_INFO *event_info, void *userdata)
     }
 }
 
+
+void display_help() {
+    printf("Usage:\n");
+    printf("    -t <type>  : Select the device of the specified interface type (usb / net)\n");
+    printf("    -list <sn1 sn2 sn3>: Select the device of the specified serial numbers\n");
+    printf("\nExamples:\n");
+    printf("   SimpleView_MultiDevice -t usb                            : Select all usb devices.\n");
+    printf("   SimpleView_MultiDevice -list 207xxx1  207xxx2  207xxx3   : Select devices 207xxx1  207xxx2 207xxx3.\n");
+}
+
 int main(int argc, char* argv[])
 {
     int32_t deviceType = TY_INTERFACE_ETHERNET | TY_INTERFACE_USB;
@@ -70,7 +80,7 @@ int main(int argc, char* argv[])
 
     for(int i = 0; i < argc; i++) {
         if(strcmp(argv[i], "-h") == 0) {
-            LOGI("Usage: %s [-h]", argv[0]);
+            display_help();
             return 0;
         } else if (strcmp(argv[i], "-t") == 0) {
             if (argc == i+1) {

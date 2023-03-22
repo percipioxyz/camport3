@@ -7,7 +7,7 @@ SDK sample's GUI needs Opencv2.4.8+. opencv dependency can be removed if if you 
 
 ## Documents
 
-Please refer to [https://percipiodc.readthedocs.io/en/latest/](https://percipiodc.readthedocs.io/en/latest/) for more details.
+Please refer to [http://doc.percipio.xyz/cam/last/](http://doc.percipio.xyz/cam/last/) for more details.
 
 ## SDK Files
 ```

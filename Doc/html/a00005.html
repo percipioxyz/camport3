@@ -99,7 +99,7 @@ Include dependency graph for TYCoordinateMapper.h:</div>
 <div class="dyncontent">
 <div class="center"><img src="a00006.png" border="0" usemap="#_t_y_coordinate_mapper_8h" alt=""/></div>
 <map name="_t_y_coordinate_mapper_8h" id="_t_y_coordinate_mapper_8h">
-<area shape="rect" id="node3" href="a00002.html" title="TYApi.h includes camera control and data receiving interface, which supports configuration for image ..." alt="" coords="96,80,167,107"/>
+<area shape="rect" id="node3" href="a00002.html" title="TYApi.h includes camera control and data receiving interface, which supports configuration for image ..." alt="" coords="103,80,173,107"/>
 </map>
 </div>
 </div><div class="textblock"><div class="dynheader">
@@ -142,15 +142,15 @@ Functions</h2></td></tr>
 <tr class="memitem:a1d3c838a1ee03c5f030457d51c2fd375"><td class="memItemLeft" align="right" valign="top">TY_CAPI&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00005.html#a1d3c838a1ee03c5f030457d51c2fd375">TYMapDepthToPoint3d</a> (const <a class="el" href="a00077.html">TY_CAMERA_CALIB_INFO</a> *src_calib, uint32_t depthW, uint32_t depthH, const <a class="el" href="a00173.html">TY_PIXEL_DESC</a> *depthPixels, uint32_t count, <a class="el" href="a00061.html">TY_VECT_3F</a> *point3d, float f_scale_unit=1.0f)</td></tr>
 <tr class="memdesc:a1d3c838a1ee03c5f030457d51c2fd375"><td class="mdescLeft">&#160;</td><td class="mdescRight">Map pixels on depth image to 3D points.  <a href="#a1d3c838a1ee03c5f030457d51c2fd375">More...</a><br /></td></tr>
 <tr class="separator:a1d3c838a1ee03c5f030457d51c2fd375"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a32faf6be5df30fc39e58f135e0fe41a0"><td class="memItemLeft" align="right" valign="top">TY_CAPI&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00005.html#a32faf6be5df30fc39e58f135e0fe41a0">TYMapPoint3dToDepth</a> (const <a class="el" href="a00077.html">TY_CAMERA_CALIB_INFO</a> *dst_calib, const <a class="el" href="a00061.html">TY_VECT_3F</a> *point3d, uint32_t count, uint32_t depthW, uint32_t depthH, <a class="el" href="a00173.html">TY_PIXEL_DESC</a> *depth)</td></tr>
-<tr class="memdesc:a32faf6be5df30fc39e58f135e0fe41a0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Map 3D points to pixels on depth image. Reverse operation of TYMapDepthToPoint3d.  <a href="#a32faf6be5df30fc39e58f135e0fe41a0">More...</a><br /></td></tr>
-<tr class="separator:a32faf6be5df30fc39e58f135e0fe41a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1e2439dfd8aa6e5042be700911672ef4"><td class="memItemLeft" align="right" valign="top">TY_CAPI&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00005.html#a1e2439dfd8aa6e5042be700911672ef4">TYMapPoint3dToDepth</a> (const <a class="el" href="a00077.html">TY_CAMERA_CALIB_INFO</a> *dst_calib, const <a class="el" href="a00061.html">TY_VECT_3F</a> *point3d, uint32_t count, uint32_t depthW, uint32_t depthH, <a class="el" href="a00173.html">TY_PIXEL_DESC</a> *depth, float f_scale_unit=1.0f)</td></tr>
+<tr class="memdesc:a1e2439dfd8aa6e5042be700911672ef4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Map 3D points to pixels on depth image. Reverse operation of TYMapDepthToPoint3d.  <a href="#a1e2439dfd8aa6e5042be700911672ef4">More...</a><br /></td></tr>
+<tr class="separator:a1e2439dfd8aa6e5042be700911672ef4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3ae23d9ec90f2554984519826198e9df"><td class="memItemLeft" align="right" valign="top">TY_CAPI&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00005.html#a3ae23d9ec90f2554984519826198e9df">TYMapDepthImageToPoint3d</a> (const <a class="el" href="a00077.html">TY_CAMERA_CALIB_INFO</a> *src_calib, int32_t imageW, int32_t imageH, const uint16_t *depth, <a class="el" href="a00061.html">TY_VECT_3F</a> *point3d, float f_scale_unit=1.0f)</td></tr>
 <tr class="memdesc:a3ae23d9ec90f2554984519826198e9df"><td class="mdescLeft">&#160;</td><td class="mdescRight">Map depth image to 3D points. 0 depth pixels maps to (NAN, NAN, NAN).  <a href="#a3ae23d9ec90f2554984519826198e9df">More...</a><br /></td></tr>
 <tr class="separator:a3ae23d9ec90f2554984519826198e9df"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa8a7439648a50e28e3c83d5db528c5f6"><td class="memItemLeft" align="right" valign="top">TY_CAPI&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00005.html#aa8a7439648a50e28e3c83d5db528c5f6">TYMapPoint3dToDepthImage</a> (const <a class="el" href="a00077.html">TY_CAMERA_CALIB_INFO</a> *dst_calib, const <a class="el" href="a00061.html">TY_VECT_3F</a> *point3d, uint32_t count, uint32_t depthW, uint32_t depthH, uint16_t *depth)</td></tr>
-<tr class="memdesc:aa8a7439648a50e28e3c83d5db528c5f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Map 3D points to depth image. (NAN, NAN, NAN) will be skipped.  <a href="#aa8a7439648a50e28e3c83d5db528c5f6">More...</a><br /></td></tr>
-<tr class="separator:aa8a7439648a50e28e3c83d5db528c5f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acfb2b4bd62009380e5dd3e87b935b901"><td class="memItemLeft" align="right" valign="top">TY_CAPI&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00005.html#acfb2b4bd62009380e5dd3e87b935b901">TYMapPoint3dToDepthImage</a> (const <a class="el" href="a00077.html">TY_CAMERA_CALIB_INFO</a> *dst_calib, const <a class="el" href="a00061.html">TY_VECT_3F</a> *point3d, uint32_t count, uint32_t depthW, uint32_t depthH, uint16_t *depth, float f_target_scale=1.0f)</td></tr>
+<tr class="memdesc:acfb2b4bd62009380e5dd3e87b935b901"><td class="mdescLeft">&#160;</td><td class="mdescRight">Map 3D points to depth image. (NAN, NAN, NAN) will be skipped.  <a href="#acfb2b4bd62009380e5dd3e87b935b901">More...</a><br /></td></tr>
+<tr class="separator:acfb2b4bd62009380e5dd3e87b935b901"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a975218e39246e3aefaa357f69f2fba72"><td class="memItemLeft" align="right" valign="top">TY_CAPI&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00005.html#a975218e39246e3aefaa357f69f2fba72">TYMapPoint3dToPoint3d</a> (const <a class="el" href="a00069.html">TY_CAMERA_EXTRINSIC</a> *extrinsic, const <a class="el" href="a00061.html">TY_VECT_3F</a> *point3dFrom, int32_t count, <a class="el" href="a00061.html">TY_VECT_3F</a> *point3dTo)</td></tr>
 <tr class="memdesc:a975218e39246e3aefaa357f69f2fba72"><td class="mdescLeft">&#160;</td><td class="mdescRight">Map 3D points to another coordinate.  <a href="#a975218e39246e3aefaa357f69f2fba72">More...</a><br /></td></tr>
 <tr class="separator:a975218e39246e3aefaa357f69f2fba72"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -188,7 +188,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <b>Value:</b><div class="fragment"><div class="line"><span class="keywordflow">do</span>{ \</div><div class="line">    TY_STATUS err = (f); \</div><div class="line">    if(err){ \</div><div class="line">      if(bufToFree) \</div><div class="line">        free(bufToFree); \</div><div class="line">      return err; \</div><div class="line">    } \</div><div class="line">  } <span class="keywordflow">while</span>(0)</div></div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="a00005_source.html#l00227">227</a> of file <a class="el" href="a00005_source.html">TYCoordinateMapper.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00005_source.html#l00268">268</a> of file <a class="el" href="a00005_source.html">TYCoordinateMapper.h</a>.</p>
 
 </div>
 </div>
@@ -384,8 +384,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a32faf6be5df30fc39e58f135e0fe41a0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a32faf6be5df30fc39e58f135e0fe41a0">&#9670;&nbsp;</a></span>TYMapPoint3dToDepth()</h2>
+<a id="a1e2439dfd8aa6e5042be700911672ef4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1e2439dfd8aa6e5042be700911672ef4">&#9670;&nbsp;</a></span>TYMapPoint3dToDepth()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -424,7 +424,13 @@ Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="a00173.html">TY_PIXEL_DESC</a> *&#160;</td>
-          <td class="paramname"><em>depth</em>&#160;</td>
+          <td class="paramname"><em>depth</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>f_scale_unit</em> = <code>1.0f</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -455,8 +461,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="aa8a7439648a50e28e3c83d5db528c5f6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa8a7439648a50e28e3c83d5db528c5f6">&#9670;&nbsp;</a></span>TYMapPoint3dToDepthImage()</h2>
+<a id="acfb2b4bd62009380e5dd3e87b935b901"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acfb2b4bd62009380e5dd3e87b935b901">&#9670;&nbsp;</a></span>TYMapPoint3dToDepthImage()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -495,7 +501,13 @@ Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">uint16_t *&#160;</td>
-          <td class="paramname"><em>depth</em>&#160;</td>
+          <td class="paramname"><em>depth</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>f_target_scale</em> = <code>1.0f</code>&#160;</td>
         </tr>
         <tr>
           <td></td>

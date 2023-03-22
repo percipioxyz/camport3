@@ -32,7 +32,7 @@ int main(int argc, char* argv[])
         } else if(strcmp(argv[i], "-ir=off") == 0) {
             ir = 0;
         } else if(strcmp(argv[i], "-h") == 0) {
-            LOGI("Usage: SimpleView_FetchFrame [-h]");
+            LOGI("Usage: SimpleView_TriggerMode0 [-h] [-id <ID>] [-ip <IP>]");
             return 0;
         }
     }

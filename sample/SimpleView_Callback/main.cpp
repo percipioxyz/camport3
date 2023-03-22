@@ -91,7 +91,7 @@ int main(int argc, char* argv[])
       ir = 0;
     }
     else if (strcmp(argv[i], "-h") == 0) {
-      LOGI("Usage: SimpleView_FetchFrame [-h] [-id <ID>] [-ip <IP>]");
+      LOGI("Usage: SimpleView_Callback [-h] [-id <ID>] [-ip <IP>]");
       return 0;
     }
   }

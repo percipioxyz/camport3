@@ -35,7 +35,7 @@ int main(int argc, char* argv[])
     } else if (strcmp(argv[i], "-resend=on") == 0) {
             resend = 1;
         } else if(strcmp(argv[i], "-h") == 0) {
-            LOGI("Usage: SimpleView_FetchFrame [-h]");
+            LOGI("Usage: SimpleView_TriggerDelay [-h] [-id <ID>] [-ip <IP>]");
             return 0;
         }
     }

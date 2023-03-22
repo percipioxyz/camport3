@@ -30,6 +30,8 @@ set(ALL_SAMPLES
     SimpleView_ImuData
     SimpleView_DI_DO
     SimpleView_OpenWithIP
+    SimpleView_HDR
+    SimpleView_SGBM
     )
 
 set(SAMPLES_USED_GLUT
@@ -157,6 +159,10 @@ if (OPENGL_VIEW)
 
 endif()
 
+#install for sample header file
+file(GLOB SAMPLES_INC_SRC ${CMAKE_CURRENT_SOURCE_DIR}/common/*.cpp ${CMAKE_CURRENT_SOURCE_DIR}/common/*.hpp ${CMAKE_CURRENT_SOURCE_DIR}/common/*.h)
+install(FILES ${SAMPLES_INC_SRC} DESTINATION samples/common/ )
+
 foreach(sample ${ALL_SAMPLES})
     get_filename_component(spath "${sample}" ABSOLUTE )
     if (EXISTS "${spath}/")
@@ -165,6 +171,7 @@ foreach(sample ${ALL_SAMPLES})
         add_dependencies(${sample} sample_common ${TARGET_LIB})
         target_link_libraries(${sample} sample_common ${ABSOLUTE_TARGET_LIB} ${OpenCV_LIBS} ${CLOUD_VIEWER})
         set_target_properties(${sample} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin/)
+        set_target_properties(${sample} PROPERTIES CXX_STANDARD 11 CXX_STANDARD_REQUIRED ON )
         install(TARGETS ${sample} RUNTIME DESTINATION samples/)
     endif()
 endforeach()

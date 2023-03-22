@@ -8,7 +8,7 @@ var a00005 =
     [ "TYInvertExtrinsic", "a00005.html#a466f1f9ecdb947607c5da179d1826c19", null ],
     [ "TYMapDepthImageToPoint3d", "a00005.html#a3ae23d9ec90f2554984519826198e9df", null ],
     [ "TYMapDepthToPoint3d", "a00005.html#a1d3c838a1ee03c5f030457d51c2fd375", null ],
-    [ "TYMapPoint3dToDepth", "a00005.html#a32faf6be5df30fc39e58f135e0fe41a0", null ],
-    [ "TYMapPoint3dToDepthImage", "a00005.html#aa8a7439648a50e28e3c83d5db528c5f6", null ],
+    [ "TYMapPoint3dToDepth", "a00005.html#a1e2439dfd8aa6e5042be700911672ef4", null ],
+    [ "TYMapPoint3dToDepthImage", "a00005.html#acfb2b4bd62009380e5dd3e87b935b901", null ],
     [ "TYMapPoint3dToPoint3d", "a00005.html#a975218e39246e3aefaa357f69f2fba72", null ]
 ];

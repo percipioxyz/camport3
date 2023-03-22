@@ -22,7 +22,7 @@ cv::Mat tofundis_mapx, tofundis_mapy;
 static void doRegister(const TY_CAMERA_CALIB_INFO& depth_calib
                       , const TY_CAMERA_CALIB_INFO& color_calib
                       , const cv::Mat& depth
-	                  , const float f_scale_unit
+                      , const float f_scale_unit
                       , const cv::Mat& color
                       , bool needUndistort
                       , cv::Mat& undistort_color
@@ -30,22 +30,43 @@ static void doRegister(const TY_CAMERA_CALIB_INFO& depth_calib
                       , bool map_depth_to_color
                       )
 {
+  int32_t         image_size;   
+  TY_PIXEL_FORMAT color_fmt;
+  if(color.type() == CV_16U) {
+    image_size = color.size().area() * 2;
+    color_fmt = TY_PIXEL_FORMAT_MONO16;
+  }
+  else if(color.type() == CV_16UC3)
+  {
+    image_size = color.size().area() * 6;
+    color_fmt = TY_PIXEL_FORMAT_RGB48;
+  }
+  else {
+    image_size = color.size().area() * 3;
+    color_fmt = TY_PIXEL_FORMAT_RGB;
+  }
   // do undistortion
   if (needUndistort) {
+    if(color_fmt == TY_PIXEL_FORMAT_MONO16)
+      undistort_color = cv::Mat(color.size(), CV_16U);
+    else if(color_fmt == TY_PIXEL_FORMAT_RGB48)
+      undistort_color = cv::Mat(color.size(), CV_16UC3);
+    else
+      undistort_color = cv::Mat(color.size(), CV_8UC3);
+    
     TY_IMAGE_DATA src;
     src.width = color.cols;
     src.height = color.rows;
-    src.size = color.size().area() * 3;
-    src.pixelFormat = TY_PIXEL_FORMAT_RGB;
+    src.size = image_size;
+    src.pixelFormat = color_fmt;
     src.buffer = color.data;
 
-    undistort_color = cv::Mat(color.size(), CV_8UC3);
     TY_IMAGE_DATA dst;
     dst.width = color.cols;
     dst.height = color.rows;
-    dst.size = undistort_color.size().area() * 3;
+    dst.size = image_size;
+    dst.pixelFormat = color_fmt;
     dst.buffer = undistort_color.data;
-    dst.pixelFormat = TY_PIXEL_FORMAT_RGB;
     ASSERT_OK(TYUndistortImage(&color_calib, &src, NULL, &dst));
   }
   else {
@@ -70,16 +91,44 @@ static void doRegister(const TY_CAMERA_CALIB_INFO& depth_calib
     out = temp;
   }
   else {
-    out = cv::Mat::zeros(depth.size(), CV_8UC3);
-    ASSERT_OK(
-      TYMapRGBImageToDepthCoordinate(
-        &depth_calib,
-        depth.cols, depth.rows, depth.ptr<uint16_t>(),
-        &color_calib,
-        undistort_color.cols, undistort_color.rows, undistort_color.ptr<uint8_t>(),
-        out.ptr<uint8_t>(), f_scale_unit
-      )
-    );
+    if(color_fmt == TY_PIXEL_FORMAT_MONO16)
+    {
+      out = cv::Mat::zeros(depth.size(), CV_16U);
+      ASSERT_OK(
+        TYMapMono16ImageToDepthCoordinate(
+          &depth_calib,
+          depth.cols, depth.rows, depth.ptr<uint16_t>(),
+          &color_calib,
+          undistort_color.cols, undistort_color.rows, undistort_color.ptr<uint16_t>(),
+          out.ptr<uint16_t>(), f_scale_unit
+        )
+      );
+    }
+    else if(color_fmt == TY_PIXEL_FORMAT_RGB48)
+    {
+      out = cv::Mat::zeros(depth.size(), CV_16UC3);
+      ASSERT_OK(
+        TYMapRGB48ImageToDepthCoordinate(
+          &depth_calib,
+          depth.cols, depth.rows, depth.ptr<uint16_t>(),
+          &color_calib,
+          undistort_color.cols, undistort_color.rows, undistort_color.ptr<uint16_t>(),
+          out.ptr<uint16_t>(), f_scale_unit
+        )
+      );
+    }
+    else{
+      out = cv::Mat::zeros(depth.size(), CV_8UC3);
+      ASSERT_OK(
+        TYMapRGBImageToDepthCoordinate(
+          &depth_calib,
+          depth.cols, depth.rows, depth.ptr<uint16_t>(),
+          &color_calib,
+          undistort_color.cols, undistort_color.rows, undistort_color.ptr<uint8_t>(),
+          out.ptr<uint8_t>(), f_scale_unit
+        )
+      );
+    }
   }
 }
 
@@ -129,13 +178,36 @@ void handleFrame(TY_FRAME_DATA* frame, void* userdata)
     }
     cv::imshow("undistort color", undistort_color);
 
+    cv::Mat tmp, gray8, bgr;
     if (MAP_DEPTH_TO_COLOR) {
       cv::Mat depthDisplay = pData->render->Compute(out);
+      if(undistort_color.type() == CV_16U) {
+        gray8 = cv::Mat(undistort_color.size(), CV_8U);
+        cv::normalize(undistort_color, tmp, 0, 255, cv::NORM_MINMAX);
+        cv::convertScaleAbs(tmp, gray8);
+        cv::cvtColor(gray8, undistort_color, cv::COLOR_GRAY2BGR);
+      } else if(undistort_color.type() == CV_16UC3) {
+        bgr = cv::Mat(undistort_color.size(), CV_8UC3);
+        cv::normalize(undistort_color, tmp, 0, 255, cv::NORM_MINMAX);
+        cv::convertScaleAbs(tmp, bgr);
+        undistort_color = bgr.clone();
+      }
       depthDisplay = depthDisplay / 2 + undistort_color / 2;
       cv::imshow("depth2color RGBD", depthDisplay);
     }
     else {
       cv::imshow("mapped RGB", out);
+      if(out.type() == CV_16U) {
+        gray8 = cv::Mat(out.size(), CV_8U);
+        cv::normalize(out, tmp, 0, 255, cv::NORM_MINMAX);
+        cv::convertScaleAbs(tmp, gray8);
+        cv::cvtColor(gray8, out, cv::COLOR_GRAY2BGR);
+      } else if(undistort_color.type() == CV_16UC3) {
+        bgr = cv::Mat(out.size(), CV_8UC3);
+        cv::normalize(out, tmp, 0, 255, cv::NORM_MINMAX);
+        cv::convertScaleAbs(tmp, bgr);
+        out = bgr.clone();
+      }
       cv::Mat depthDisplay = pData->render->Compute(depth);
       depthDisplay = depthDisplay / 2 + out / 2;
       cv::imshow("color2depth RGBD", depthDisplay);
@@ -252,10 +324,11 @@ int main(int argc, char* argv[])
     cb_data.needUndistort = !hasUndistortSwitch && hasDistortionCoef;
     cb_data.IspHandle = isp_handle;
 
-	float scale_unit = 1.;
-	TYGetFloat(hDevice, TY_COMPONENT_DEPTH_CAM, TY_FLOAT_SCALE_UNIT, &scale_unit);
-	cb_data.scale_unit = scale_unit;
-	depthViewer.depth_scale_unit = scale_unit;
+    float scale_unit = 1.;
+    TYGetFloat(hDevice, TY_COMPONENT_DEPTH_CAM, TY_FLOAT_SCALE_UNIT, &scale_unit);
+    cb_data.scale_unit = scale_unit;
+    depthViewer.depth_scale_unit = scale_unit;
+
 
     LOGD("=== Read depth calib info");
     ASSERT_OK( TYGetStruct(hDevice, TY_COMPONENT_DEPTH_CAM, TY_STRUCT_CAM_CALIB_DATA

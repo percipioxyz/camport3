@@ -21,7 +21,7 @@ int main(int argc, char* argv[])
         } else if(strcmp(argv[i], "-ip") == 0) {
             IP = argv[++i];
         }else if(strcmp(argv[i], "-h") == 0){
-            LOGI("Usage: SimpleView_Callback [-h] [-id <ID>]");
+            LOGI("Usage: LoopDetect [-h] [-id <ID>]");
             return 0;
         }
     }

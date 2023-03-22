@@ -7,7 +7,7 @@
 
 /**@mainpage 
 * 
-* Copyright(C)2016-2021 Percipio All Rights Reserved
+* Copyright(C)2016-2023 Percipio All Rights Reserved
 *
 *
 *
@@ -112,10 +112,7 @@
 #   endif
 #endif
 
-#define TY_LIB_VERSION_MAJOR       3
-#define TY_LIB_VERSION_MINOR       6 
-#define TY_LIB_VERSION_PATCH       15
-
+#include "TYVer.h"
 
 //------------------------------------------------------------------------------
 ///@brief API call return status
@@ -245,6 +242,7 @@ typedef enum TY_FEATURE_ID_LIST
     TY_INT_ACCEPTABLE_PERCENT       = 0x0015 | TY_FEATURE_INT,
     TY_INT_NTP_SERVER_IP            = 0x0016 | TY_FEATURE_INT,    ///< Ntp server IP
     TY_INT_PACKET_SIZE              = 0x0017 | TY_FEATURE_INT,
+    TY_INT_LINK_CMD_TIMEOUT         = 0x0018 | TY_FEATURE_INT, ///< milliseconds
     TY_STRUCT_CAM_STATISTICS        = 0x00ff | TY_FEATURE_STRUCT, ///< statistical information, see TY_CAMERA_STATISTICS
 
     TY_INT_WIDTH_MAX                = 0x0100 | TY_FEATURE_INT,
@@ -320,6 +318,23 @@ typedef enum TY_FEATURE_ID_LIST
     TY_STRUCT_IMU_CAM_TO_IMU        = 0x0607 | TY_FEATURE_STRUCT, ///< IMU camera to imu matrix, see TY_CAMERA_TO_IMU
     TY_ENUM_IMU_FPS                 = 0x0608 | TY_FEATURE_ENUM, ///< IMU fps, see TY_IMU_FPS_LIST
 
+    TY_INT_SGBM_IMAGE_NUM           = 0x0610 | TY_FEATURE_INT,  ///< SGBM image channel num
+    TY_INT_SGBM_DISPARITY_NUM       = 0x0611 | TY_FEATURE_INT,  ///< SGBM disparity num
+    TY_INT_SGBM_DISPARITY_OFFSET    = 0x0612 | TY_FEATURE_INT,  ///< SGBM disparity offset
+    TY_INT_SGBM_MATCH_WIN_HEIGHT    = 0x0613 | TY_FEATURE_INT,  ///< SGBM match window height
+    TY_INT_SGBM_SEMI_PARAM_P1       = 0x0614 | TY_FEATURE_INT,  ///< SGBM semi global param p1
+    TY_INT_SGBM_SEMI_PARAM_P2       = 0x0615 | TY_FEATURE_INT,  ///< SGBM semi global param p2
+    TY_INT_SGBM_UNIQUE_FACTOR       = 0x0616 | TY_FEATURE_INT,  ///< SGBM uniqueness factor param
+    TY_INT_SGBM_UNIQUE_ABSDIFF      = 0x0617 | TY_FEATURE_INT,  ///< SGBM uniqueness min absolute diff
+    TY_INT_SGBM_COST_PARAM          = 0x0618 | TY_FEATURE_INT,  ///< SGBM cost param
+    TY_BOOL_SGBM_HFILTER_HALF_WIN   = 0x0619 | TY_FEATURE_BOOL, ///< SGBM enable half window size
+    TY_INT_SGBM_MATCH_WIN_WIDTH     = 0x061A | TY_FEATURE_INT,  ///< SGBM match window width
+    TY_BOOL_SGBM_MEDFILTER          = 0x061B | TY_FEATURE_BOOL, ///< SGBM enable median filter
+    TY_BOOL_SGBM_LRC                = 0x061C | TY_FEATURE_BOOL, ///< SGBM enable left right consist check
+    TY_INT_SGBM_LRC_DIFF            = 0x061D | TY_FEATURE_INT,  ///< SGBM max diff
+    TY_INT_SGBM_MEDFILTER_THRESH    = 0x061E | TY_FEATURE_INT,  ///< SGBM median filter thresh
+    TY_INT_SGBM_SEMI_PARAM_P1_SCALE = 0x061F | TY_FEATURE_INT,  ///< SGBM semi global param p1 scale
+
     TY_ENUM_DEPTH_QUALITY           = 0x0900 | TY_FEATURE_ENUM,  ///< the quality of generated depth, see TY_DEPTH_QUALITY
     TY_INT_FILTER_THRESHOLD         = 0x0901 | TY_FEATURE_INT,   ///< the threshold of the noise filter, 0 for disabled
     TY_INT_TOF_CHANNEL              = 0x0902 | TY_FEATURE_INT,   ///< the frequency channel of tof
@@ -382,28 +397,60 @@ typedef enum TY_PIXEL_BITS_LIST{
     TY_PIXEL_16BIT              = 0x2 << 28,
     TY_PIXEL_24BIT              = 0x3 << 28,
     TY_PIXEL_32BIT              = 0x4 << 28,
+
+    TY_PIXEL_10BIT              = 0x5 << 28,
+    TY_PIXEL_12BIT              = 0x6 << 28,
+    TY_PIXEL_14BIT              = 0x7 << 28,
+
+    TY_PIXEL_48BIT              = 0x8 << 28,
+
+    TY_PIXEL_64BIT              = 0xa << 28,
 }TY_PIXEL_BITS_LIST;
+typedef uint32_t TY_PIXEL_BITS;
 
 
 ///pixel format definitions
 typedef enum TY_PIXEL_FORMAT_LIST{
     TY_PIXEL_FORMAT_UNDEFINED   = 0,
     TY_PIXEL_FORMAT_MONO        = (TY_PIXEL_8BIT  | (0x0 << 24)), ///< 0x10000000
+    
     TY_PIXEL_FORMAT_BAYER8GB    = (TY_PIXEL_8BIT  | (0x1 << 24)), ///< 0x11000000
     TY_PIXEL_FORMAT_BAYER8BG    = (TY_PIXEL_8BIT  | (0x2 << 24)), ///< 0x12000000
     TY_PIXEL_FORMAT_BAYER8GR    = (TY_PIXEL_8BIT  | (0x3 << 24)), ///< 0x13000000
     TY_PIXEL_FORMAT_BAYER8RG    = (TY_PIXEL_8BIT  | (0x4 << 24)), ///< 0x14000000
-    TY_PIXEL_FORMAT_DEPTH16     = (TY_PIXEL_16BIT | (0x0 << 24)), ///< 0x20000000
-    TY_PIXEL_FORMAT_YVYU        = (TY_PIXEL_16BIT | (0x1 << 24)), ///< 0x21000000, yvyu422
-    TY_PIXEL_FORMAT_YUYV        = (TY_PIXEL_16BIT | (0x2 << 24)), ///< 0x22000000, yuyv422
-    TY_PIXEL_FORMAT_MONO16      = (TY_PIXEL_16BIT | (0x3 << 24)), ///< 0x23000000, 
+
+    TY_PIXEL_FORMAT_BAYER8GRBG  = TY_PIXEL_FORMAT_BAYER8GB,
+    TY_PIXEL_FORMAT_BAYER8RGGB  = TY_PIXEL_FORMAT_BAYER8BG,
+    TY_PIXEL_FORMAT_BAYER8GBRG  = TY_PIXEL_FORMAT_BAYER8GR,
+    TY_PIXEL_FORMAT_BAYER8BGGR  = TY_PIXEL_FORMAT_BAYER8RG,
+
+    TY_PIXEL_FORMAT_CSI_MONO10        = (TY_PIXEL_10BIT  | (0x0 << 24)), ///< 0x50000000
+    TY_PIXEL_FORMAT_CSI_BAYER10GRBG   = (TY_PIXEL_10BIT  | (0x1 << 24)), ///< 0x51000000
+    TY_PIXEL_FORMAT_CSI_BAYER10RGGB   = (TY_PIXEL_10BIT  | (0x2 << 24)), ///< 0x52000000
+    TY_PIXEL_FORMAT_CSI_BAYER10GBRG   = (TY_PIXEL_10BIT  | (0x3 << 24)), ///< 0x53000000
+    TY_PIXEL_FORMAT_CSI_BAYER10BGGR   = (TY_PIXEL_10BIT  | (0x4 << 24)), ///< 0x54000000
+
+    TY_PIXEL_FORMAT_CSI_MONO12        = (TY_PIXEL_12BIT  | (0x0 << 24)), ///< 0x60000000
+    TY_PIXEL_FORMAT_CSI_BAYER12GRBG   = (TY_PIXEL_12BIT  | (0x1 << 24)), ///< 0x61000000
+    TY_PIXEL_FORMAT_CSI_BAYER12RGGB   = (TY_PIXEL_12BIT  | (0x2 << 24)), ///< 0x62000000
+    TY_PIXEL_FORMAT_CSI_BAYER12GBRG   = (TY_PIXEL_12BIT  | (0x3 << 24)), ///< 0x63000000
+    TY_PIXEL_FORMAT_CSI_BAYER12BGGR   = (TY_PIXEL_12BIT  | (0x4 << 24)), ///< 0x64000000
+
+    TY_PIXEL_FORMAT_DEPTH16       = (TY_PIXEL_16BIT | (0x0 << 24)), ///< 0x20000000
+    TY_PIXEL_FORMAT_YVYU          = (TY_PIXEL_16BIT | (0x1 << 24)), ///< 0x21000000, yvyu422
+    TY_PIXEL_FORMAT_YUYV          = (TY_PIXEL_16BIT | (0x2 << 24)), ///< 0x22000000, yuyv422
+    TY_PIXEL_FORMAT_MONO16        = (TY_PIXEL_16BIT | (0x3 << 24)), ///< 0x23000000, 
+    TY_PIXEL_FORMAT_TOF_IR_MONO16 = (TY_PIXEL_64BIT | (0x4 << 24)), ///< 0xa4000000, 
+
     TY_PIXEL_FORMAT_RGB         = (TY_PIXEL_24BIT | (0x0 << 24)), ///< 0x30000000
     TY_PIXEL_FORMAT_BGR         = (TY_PIXEL_24BIT | (0x1 << 24)), ///< 0x31000000
     TY_PIXEL_FORMAT_JPEG        = (TY_PIXEL_24BIT | (0x2 << 24)), ///< 0x32000000
     TY_PIXEL_FORMAT_MJPG        = (TY_PIXEL_24BIT | (0x3 << 24)), ///< 0x33000000
+
+    TY_PIXEL_FORMAT_RGB48       = (TY_PIXEL_48BIT | (0x0 << 24)), ///< 0x60000000
+    TY_PIXEL_FORMAT_BGR48       = (TY_PIXEL_48BIT | (0x1 << 24)), ///< 0x61000000
 }TY_PIXEL_FORMAT_LIST;
 typedef int32_t TY_PIXEL_FORMAT;
-
 
 ///predefined resolution list
 typedef enum TY_RESOLUTION_MODE_LIST
@@ -425,6 +472,7 @@ typedef enum TY_RESOLUTION_MODE_LIST
     TY_RESOLUTION_MODE_1920x1080    = (1920<<12)+1080,   ///< 0x00780438
     TY_RESOLUTION_MODE_2560x1920    = (2560<<12)+1920,  ///< 0x00a00780
     TY_RESOLUTION_MODE_2592x1944    = (2592<<12)+1944,  ///< 0x00a20798
+    TY_RESOLUTION_MODE_1920x1440    = (1920<<12)+1440,  ///< 0x007805a0
 }TY_RESOLUTION_MODE_LIST;
 typedef int32_t TY_RESOLUTION_MODE;
 
@@ -447,7 +495,8 @@ typedef int32_t TY_RESOLUTION_MODE;
             TY_DECLARE_IMAGE_MODE0(pix, 1280x800), \
             TY_DECLARE_IMAGE_MODE0(pix, 1920x1080), \
             TY_DECLARE_IMAGE_MODE0(pix, 2560x1920), \
-            TY_DECLARE_IMAGE_MODE0(pix, 2592x1944)
+            TY_DECLARE_IMAGE_MODE0(pix, 2592x1944), \
+            TY_DECLARE_IMAGE_MODE0(pix, 1920x1440)
 
 
 ///@brief Predefined Image Mode List
@@ -456,15 +505,40 @@ typedef int32_t TY_RESOLUTION_MODE;
 typedef enum TY_IMAGE_MODE_LIST
 {
     TY_DECLARE_IMAGE_MODE1(MONO),
+    TY_DECLARE_IMAGE_MODE1(MONO16),
+    TY_DECLARE_IMAGE_MODE1(TOF_IR_MONO16),
     TY_DECLARE_IMAGE_MODE1(DEPTH16),
     TY_DECLARE_IMAGE_MODE1(YVYU),
     TY_DECLARE_IMAGE_MODE1(YUYV),
     TY_DECLARE_IMAGE_MODE1(RGB),
     TY_DECLARE_IMAGE_MODE1(JPEG),
+
     TY_DECLARE_IMAGE_MODE1(BAYER8GB),
     TY_DECLARE_IMAGE_MODE1(BAYER8BG),
     TY_DECLARE_IMAGE_MODE1(BAYER8GR),
-    TY_DECLARE_IMAGE_MODE1(BAYER8RG)
+    TY_DECLARE_IMAGE_MODE1(BAYER8RG),
+    
+    TY_DECLARE_IMAGE_MODE1(BAYER8GRBG),
+    TY_DECLARE_IMAGE_MODE1(BAYER8RGGB),
+    TY_DECLARE_IMAGE_MODE1(BAYER8GBRG),
+    TY_DECLARE_IMAGE_MODE1(BAYER8BGGR),
+
+    TY_DECLARE_IMAGE_MODE1(CSI_MONO10),
+    TY_DECLARE_IMAGE_MODE1(CSI_BAYER10GRBG),
+    TY_DECLARE_IMAGE_MODE1(CSI_BAYER10RGGB),
+    TY_DECLARE_IMAGE_MODE1(CSI_BAYER10GBRG),
+    TY_DECLARE_IMAGE_MODE1(CSI_BAYER10BGGR),
+
+    TY_DECLARE_IMAGE_MODE1(CSI_MONO12),
+    TY_DECLARE_IMAGE_MODE1(CSI_BAYER12GRBG),
+    TY_DECLARE_IMAGE_MODE1(CSI_BAYER12RGGB),
+    TY_DECLARE_IMAGE_MODE1(CSI_BAYER12GBRG),
+    TY_DECLARE_IMAGE_MODE1(CSI_BAYER12BGGR),
+
+    TY_DECLARE_IMAGE_MODE1(MJPG),
+    TY_DECLARE_IMAGE_MODE1(RGB48),
+    TY_DECLARE_IMAGE_MODE1(BGR48),
+    TY_DECLARE_IMAGE_MODE1(BGR)
 }TY_IMAGE_MODE_LIST;
 typedef int32_t TY_IMAGE_MODE;
 #undef TY_DECLARE_IMAGE_MODE0
@@ -978,10 +1052,41 @@ static inline TY_FEATURE_TYPE TYFeatureType(TY_FEATURE_ID id)
     return id & 0xf000;
 }
 
-///get pixel size in byte 
+///deprecated: get pixel size in byte, Invalid for 10/12/14bit mode
 static inline int32_t TYPixelSize(TY_IMAGE_MODE imageMode)
 {
     return ((imageMode >> 28) & 0xf);
+}
+
+///get pixel size in bits
+static inline int32_t TYBitsPerPixel(TY_IMAGE_MODE imageMode)
+{
+    TY_PIXEL_BITS bits = imageMode & (0xf  << 28);
+    switch(bits){
+      case TY_PIXEL_16BIT:
+        return 16;
+      case TY_PIXEL_24BIT:
+        return 24;
+      case TY_PIXEL_32BIT:
+        return 32;
+      case TY_PIXEL_48BIT:
+        return 48;
+      case TY_PIXEL_64BIT:
+        return 64;
+      case TY_PIXEL_10BIT:
+        return 10;
+      case TY_PIXEL_12BIT:
+        return 12;
+      case TY_PIXEL_8BIT:
+      default:
+        return 8;
+    }
+}
+
+///get line size in bytes
+static inline int32_t TYPixelLineSize(int width, TY_IMAGE_MODE imageMode)
+{
+    return (width * TYBitsPerPixel(imageMode)) >> 3;
 }
 
 ///make a image mode from pixel format & resolution mode

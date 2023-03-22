@@ -146,7 +146,17 @@ static inline const char* colorFormatName(TY_PIXEL_FORMAT fmt)
         FORMAT_CASE(TY_PIXEL_FORMAT_BAYER8GB);   
         FORMAT_CASE(TY_PIXEL_FORMAT_BAYER8BG);   
         FORMAT_CASE(TY_PIXEL_FORMAT_BAYER8GR);   
-        FORMAT_CASE(TY_PIXEL_FORMAT_BAYER8RG);   
+        FORMAT_CASE(TY_PIXEL_FORMAT_BAYER8RG);
+        FORMAT_CASE(TY_PIXEL_FORMAT_CSI_MONO10);
+        FORMAT_CASE(TY_PIXEL_FORMAT_CSI_BAYER10GBRG);
+        FORMAT_CASE(TY_PIXEL_FORMAT_CSI_BAYER10BGGR);
+        FORMAT_CASE(TY_PIXEL_FORMAT_CSI_BAYER10GRBG);
+        FORMAT_CASE(TY_PIXEL_FORMAT_CSI_BAYER10RGGB);
+        FORMAT_CASE(TY_PIXEL_FORMAT_CSI_MONO12);
+        FORMAT_CASE(TY_PIXEL_FORMAT_CSI_BAYER12GBRG);
+        FORMAT_CASE(TY_PIXEL_FORMAT_CSI_BAYER12BGGR);
+        FORMAT_CASE(TY_PIXEL_FORMAT_CSI_BAYER12GRBG);
+        FORMAT_CASE(TY_PIXEL_FORMAT_CSI_BAYER12RGGB);
         FORMAT_CASE(TY_PIXEL_FORMAT_BGR);   
         FORMAT_CASE(TY_PIXEL_FORMAT_JPEG);   
         FORMAT_CASE(TY_PIXEL_FORMAT_MJPG);   
@@ -286,17 +296,24 @@ static inline TY_STATUS get_feature_enum_list(TY_DEV_HANDLE handle,
     return TY_STATUS_OK;
 }
 
+static inline TY_STATUS get_image_mode(TY_DEV_HANDLE handle
+    , TY_COMPONENT_ID compID
+    , int32_t &image_mode, int idx)
+{
+    std::vector<TY_ENUM_ENTRY> image_mode_list;
+    ASSERT_OK(get_feature_enum_list(handle, compID, TY_ENUM_IMAGE_MODE, image_mode_list));
+    if (image_mode_list.size() == 0 || idx < 0
+        || idx > image_mode_list.size() -1){
+        return TY_STATUS_ERROR;
+    }
+    image_mode = image_mode_list[idx].value;
+    return TY_STATUS_OK;
+}
+
 static inline TY_STATUS get_default_image_mode(TY_DEV_HANDLE handle
     , TY_COMPONENT_ID compID
     , int32_t &image_mode)
 {
-    std::vector<TY_ENUM_ENTRY> image_mode_list;
-    ASSERT_OK(get_feature_enum_list(handle, compID, TY_ENUM_IMAGE_MODE, image_mode_list));
-    if (image_mode_list.size() == 0){
-        return TY_STATUS_ERROR;
-    }
-    image_mode = image_mode_list[0].value;
-    return TY_STATUS_OK;
+    return get_image_mode(handle, compID, image_mode, 0);
 }
-
 #endif

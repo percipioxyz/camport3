@@ -12,7 +12,7 @@
 class GLPointCloudViewer{
 public:
 
-    static int GlInit();
+    static int GlInit(const char* name = "CloudViewer", int w = 800, int h = 600);
     static int EnterMainLoop();
     static int LeaveMainLoop();
     static int Update(int point_num, const TY_VECT_3F* points, const uint8_t* color);

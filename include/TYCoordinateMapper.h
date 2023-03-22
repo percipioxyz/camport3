@@ -51,7 +51,7 @@ TY_CAPI   TYMapDepthToPoint3d       (const TY_CAMERA_CALIB_INFO* src_calib,
                                      uint32_t depthW, uint32_t depthH,
                                      const TY_PIXEL_DESC* depthPixels, uint32_t count,
                                      TY_VECT_3F* point3d,
-	                                 float f_scale_unit = 1.0f);
+                                     float f_scale_unit = 1.0f);
 
 /// @brief Map 3D points to pixels on depth image. Reverse operation of TYMapDepthToPoint3d.
 /// @param  [in]  dst_calib             Target depth image's calibration data.
@@ -64,7 +64,8 @@ TY_CAPI   TYMapDepthToPoint3d       (const TY_CAMERA_CALIB_INFO* src_calib,
 TY_CAPI   TYMapPoint3dToDepth       (const TY_CAMERA_CALIB_INFO* dst_calib,
                                      const TY_VECT_3F* point3d, uint32_t count,
                                      uint32_t depthW, uint32_t depthH,
-                                     TY_PIXEL_DESC* depth);
+                                     TY_PIXEL_DESC* depth,
+                                     float f_scale_unit = 1.0f);
 
 /// @brief Map depth image to 3D points. 0 depth pixels maps to (NAN, NAN, NAN).
 /// @param  [in]  src_calib             Depth image's calibration data.
@@ -77,7 +78,7 @@ TY_CAPI   TYMapDepthImageToPoint3d  (const TY_CAMERA_CALIB_INFO* src_calib,
                                      int32_t imageW, int32_t imageH,
                                      const uint16_t* depth,
                                      TY_VECT_3F* point3d, 
-	                                 float f_scale_unit = 1.0f);
+                                     float f_scale_unit = 1.0f);
 
 /// @brief Map 3D points to depth image. (NAN, NAN, NAN) will be skipped.
 /// @param  [in]  dst_calib             Target depth image's calibration data.
@@ -89,7 +90,8 @@ TY_CAPI   TYMapDepthImageToPoint3d  (const TY_CAMERA_CALIB_INFO* src_calib,
 /// @retval TY_STATUS_OK        Succeed.
 TY_CAPI   TYMapPoint3dToDepthImage  (const TY_CAMERA_CALIB_INFO* dst_calib,
                                      const TY_VECT_3F* point3d, uint32_t count,
-                                     uint32_t depthW, uint32_t depthH, uint16_t* depth);
+                                     uint32_t depthW, uint32_t depthH, uint16_t* depth,
+                                     float f_target_scale = 1.0f);
 
 /// @brief Map 3D points to another coordinate.
 /// @param  [in]  extrinsic             Extrinsic matrix.
@@ -123,7 +125,7 @@ static inline TY_STATUS TYMapDepthToColorCoordinate(
                   const TY_CAMERA_CALIB_INFO* color_calib,
                   uint32_t mappedW, uint32_t mappedH,
                   TY_PIXEL_DESC* mappedDepth,
-	              float f_scale_unit = 1.0f);
+                  float f_scale_unit = 1.0f);
 
 /// @brief Map original depth image to color coordinate depth image.
 /// @param  [in]  depth_calib           Depth image's calibration data.
@@ -140,7 +142,7 @@ static inline TY_STATUS TYMapDepthImageToColorCoordinate(
                   uint32_t depthW, uint32_t depthH, const uint16_t* depth,
                   const TY_CAMERA_CALIB_INFO* color_calib,
                   uint32_t mappedW, uint32_t mappedH, uint16_t* mappedDepth, 
-	              float f_scale_unit = 1.0f);
+                  float f_scale_unit = 1.0f);
 
 /// @brief Create depth image to color coordinate lookup table.
 /// @param  [in]  depth_calib           Depth image's calibration data.
@@ -158,7 +160,7 @@ static inline TY_STATUS TYCreateDepthToColorCoordinateLookupTable(
                   const TY_CAMERA_CALIB_INFO* color_calib,
                   uint32_t mappedW, uint32_t mappedH,
                   TY_PIXEL_DESC* lut,
-	              float f_scale_unit = 1.0f);
+                  float f_scale_unit = 1.0f);
 
 /// @brief Map original RGB pixels to depth coordinate.
 /// @param  [in]  depth_calib           Depth image's calibration data.
@@ -202,7 +204,46 @@ static inline TY_STATUS TYMapRGBImageToDepthCoordinate(
                   const TY_CAMERA_CALIB_INFO* color_calib,
                   uint32_t rgbW, uint32_t rgbH, const uint8_t* inRgb,
                   uint8_t* mappedRgb,
-	              float f_scale_unit = 1.0f);
+                  float f_scale_unit = 1.0f);
+
+/// @brief Map original RGB48 image to depth coordinate RGB image.
+/// @param  [in]  depth_calib           Depth image's calibration data.
+/// @param  [in]  depthW                Width of current depth image.
+/// @param  [in]  depthH                Height of current depth image.
+/// @param  [in]  depth                 Current depth image.
+/// @param  [in]  color_calib           Color image's calibration data.
+/// @param  [in]  rgbW                  Width of RGB48 image.
+/// @param  [in]  rgbH                  Height of RGB48 image.
+/// @param  [in]  inRgb                 Current RGB48 image.
+/// @param  [out] mappedRgb             Output RGB48 image.
+/// @retval TY_STATUS_OK        Succeed.
+static inline TY_STATUS TYMapRGB48ImageToDepthCoordinate(
+                  const TY_CAMERA_CALIB_INFO* depth_calib,
+                  uint32_t depthW, uint32_t depthH, const uint16_t* depth,
+                  const TY_CAMERA_CALIB_INFO* color_calib,
+                  uint32_t rgbW, uint32_t rgbH, const uint16_t* inRgb,
+                  uint16_t* mappedRgb, 
+                  float f_scale_unit = 1.0f);
+
+/// @brief Map original MONO16 image to depth coordinate MONO16 image.
+/// @param  [in]  depth_calib           Depth image's calibration data.
+/// @param  [in]  depthW                Width of current depth image.
+/// @param  [in]  depthH                Height of current depth image.
+/// @param  [in]  depth                 Current depth image.
+/// @param  [in]  color_calib           Color image's calibration data.
+/// @param  [in]  rgbW                  Width of MONO16 image.
+/// @param  [in]  rgbH                  Height of MONO16 image.
+/// @param  [in]  gray                  Current MONO16 image.
+/// @param  [out] mappedGray            Output MONO16 image.
+/// @retval TY_STATUS_OK        Succeed.
+static inline TY_STATUS TYMapMono16ImageToDepthCoordinate(
+                  const TY_CAMERA_CALIB_INFO* depth_calib,
+                  uint32_t depthW, uint32_t depthH, const uint16_t* depth,
+                  const TY_CAMERA_CALIB_INFO* color_calib,
+                  uint32_t rgbW, uint32_t rgbH, const uint16_t* gray,
+                  uint16_t* mappedGray, 
+                  float f_scale_unit = 1.0f);
+                  
 
 /// @brief Map original MONO8 image to depth coordinate MONO8 image.
 /// @param  [in]  depth_calib           Depth image's calibration data.
@@ -221,7 +262,7 @@ static inline TY_STATUS TYMapMono8ImageToDepthCoordinate(
                   const TY_CAMERA_CALIB_INFO* color_calib,
                   uint32_t monoW, uint32_t monoH, const uint8_t* inMono,
                   uint8_t* mappedMono,
-	              float f_scale_unit = 1.0f);
+                  float f_scale_unit = 1.0f);
 
 
 #define TYMAP_CHECKRET(f, bufToFree) \
@@ -242,14 +283,14 @@ static inline TY_STATUS TYMapDepthToColorCoordinate(
                   const TY_CAMERA_CALIB_INFO* color_calib,
                   uint32_t mappedW, uint32_t mappedH,
                   TY_PIXEL_DESC* mappedDepth,
-	              float f_scale_unit)
+                  float f_scale_unit)
 {
   TY_VECT_3F* p3d = (TY_VECT_3F*)malloc(sizeof(TY_VECT_3F) * count);
   TYMAP_CHECKRET(TYMapDepthToPoint3d(depth_calib, depthW, depthH, depth, count, p3d, f_scale_unit), p3d );
   TY_CAMERA_EXTRINSIC extri_inv;
   TYMAP_CHECKRET(TYInvertExtrinsic(&color_calib->extrinsic, &extri_inv), p3d);
   TYMAP_CHECKRET(TYMapPoint3dToPoint3d(&extri_inv, p3d, count, p3d), p3d );
-  TYMAP_CHECKRET(TYMapPoint3dToDepth(color_calib, p3d, count, mappedW, mappedH, mappedDepth), p3d );
+  TYMAP_CHECKRET(TYMapPoint3dToDepth(color_calib, p3d, count, mappedW, mappedH, mappedDepth, f_scale_unit), p3d );
   free(p3d);
   return TY_STATUS_OK;
 }
@@ -267,7 +308,7 @@ static inline TY_STATUS TYMapDepthImageToColorCoordinate(
   TYMAP_CHECKRET(TYInvertExtrinsic(&color_calib->extrinsic, &extri_inv), p3d);
   TYMAP_CHECKRET(TYMapPoint3dToPoint3d(&extri_inv, p3d, depthW * depthH, p3d), p3d);
   TYMAP_CHECKRET(TYMapPoint3dToDepthImage(
-        color_calib, p3d, depthW * depthH,  mappedW, mappedH, mappedDepth), p3d);
+        color_calib, p3d, depthW * depthH,  mappedW, mappedH, mappedDepth, f_scale_unit), p3d);
   free(p3d);
   return TY_STATUS_OK;
 }
@@ -299,7 +340,7 @@ static inline TY_STATUS TYMapRGBPixelsToDepthCoordinate(
     TYMapDepthToPoint3d(color_calib, rgbW, rgbH, pixels_array, m_distance_range, &p3d_array[0], f_scale_unit);
     TYMapPoint3dToPoint3d(&extri, &p3d_array[0], m_distance_range, &p3d_array[0]);
 
-    TYMapPoint3dToDepth(depth_calib, p3d_array, m_distance_range, depthW, depthH, pixels_mapped_array);
+    TYMapPoint3dToDepth(depth_calib, p3d_array, m_distance_range, depthW, depthH, pixels_mapped_array, f_scale_unit);
 
     uint16_t m_min_delt = 0xffff;
     dst[i].x = -1;
@@ -335,18 +376,17 @@ static inline TY_STATUS TYCreateDepthToColorCoordinateLookupTable(
                   const TY_CAMERA_CALIB_INFO* color_calib,
                   uint32_t mappedW, uint32_t mappedH,
                   TY_PIXEL_DESC* lut,
-	              float f_scale_unit)
+                  float f_scale_unit)
 {
   TY_VECT_3F* p3d = (TY_VECT_3F*)malloc(sizeof(TY_VECT_3F) * depthW * depthH);
   TYMAP_CHECKRET(TYMapDepthImageToPoint3d(depth_calib, depthW, depthH, depth, p3d, f_scale_unit), p3d);
   TY_CAMERA_EXTRINSIC extri_inv;
   TYMAP_CHECKRET(TYInvertExtrinsic(&color_calib->extrinsic, &extri_inv), p3d);
   TYMAP_CHECKRET(TYMapPoint3dToPoint3d(&extri_inv, p3d, depthW * depthH, p3d), p3d);
-  TYMAP_CHECKRET(TYMapPoint3dToDepth(color_calib, p3d, depthW * depthH, mappedW, mappedH, lut), p3d );
+  TYMAP_CHECKRET(TYMapPoint3dToDepth(color_calib, p3d, depthW * depthH, mappedW, mappedH, lut, f_scale_unit), p3d );
   free(p3d);
   return TY_STATUS_OK;
 }
-
 
 static inline TY_STATUS TYMapRGBImageToDepthCoordinate(
                   const TY_CAMERA_CALIB_INFO* depth_calib,
@@ -377,6 +417,61 @@ static inline TY_STATUS TYMapRGBImageToDepthCoordinate(
   return TY_STATUS_OK;
 }
 
+static inline TY_STATUS TYMapRGB48ImageToDepthCoordinate(
+                  const TY_CAMERA_CALIB_INFO* depth_calib,
+                  uint32_t depthW, uint32_t depthH, const uint16_t* depth,
+                  const TY_CAMERA_CALIB_INFO* color_calib,
+                  uint32_t rgbW, uint32_t rgbH, const uint16_t* inRgb,
+                  uint16_t* mappedRgb, float f_scale_unit)
+{
+  TY_PIXEL_DESC* lut = (TY_PIXEL_DESC*)malloc(sizeof(TY_PIXEL_DESC) * depthW * depthH);
+  TYMAP_CHECKRET(TYCreateDepthToColorCoordinateLookupTable(
+                    depth_calib, depthW, depthH, depth,
+                    color_calib, rgbW, rgbH, lut, f_scale_unit), lut);
+  for(uint32_t depthr = 0; depthr < depthH; depthr++)
+  for(uint32_t depthc = 0; depthc < depthW; depthc++)
+  {
+    TY_PIXEL_DESC* plut = &lut[depthr * depthW + depthc];
+    uint16_t* outPtr = &mappedRgb[depthW * depthr * 3 + depthc * 3];
+    if(plut->x < 0 || plut->x >= (int)rgbW || plut->y < 0 || plut->y >= (int)rgbH){
+      outPtr[0] = outPtr[1] = outPtr[2] = 0;
+    } else {
+      const uint16_t* inPtr = &inRgb[rgbW * plut->y * 3 + plut->x * 3];
+      outPtr[0] = inPtr[0];
+      outPtr[1] = inPtr[1];
+      outPtr[2] = inPtr[2];
+    }
+  }
+  free(lut);
+  return TY_STATUS_OK;
+}
+
+static inline TY_STATUS TYMapMono16ImageToDepthCoordinate(
+                  const TY_CAMERA_CALIB_INFO* depth_calib,
+                  uint32_t depthW, uint32_t depthH, const uint16_t* depth,
+                  const TY_CAMERA_CALIB_INFO* color_calib,
+                  uint32_t rgbW, uint32_t rgbH, const uint16_t* gray,
+                  uint16_t* mappedGray, float f_scale_unit)
+{
+  TY_PIXEL_DESC* lut = (TY_PIXEL_DESC*)malloc(sizeof(TY_PIXEL_DESC) * depthW * depthH);
+  TYMAP_CHECKRET(TYCreateDepthToColorCoordinateLookupTable(
+                    depth_calib, depthW, depthH, depth,
+                    color_calib, rgbW, rgbH, lut, f_scale_unit), lut);
+  for(uint32_t depthr = 0; depthr < depthH; depthr++)
+  for(uint32_t depthc = 0; depthc < depthW; depthc++)
+  {
+    TY_PIXEL_DESC* plut = &lut[depthr * depthW + depthc];
+    uint16_t* outPtr = &mappedGray[depthW * depthr + depthc];
+    if(plut->x < 0 || plut->x >= (int)rgbW || plut->y < 0 || plut->y >= (int)rgbH){
+      outPtr[0] = 0;
+    } else {
+      const uint16_t* inPtr = &gray[rgbW * plut->y + plut->x];
+      outPtr[0] = inPtr[0];
+    }
+  }
+  free(lut);
+  return TY_STATUS_OK;
+}
 
 static inline TY_STATUS TYMapMono8ImageToDepthCoordinate(
                   const TY_CAMERA_CALIB_INFO* depth_calib,

@@ -655,8 +655,8 @@ namespace {
     }
 
 
-    int _glInit(){
-        glutInitWindowSize(800, 600);
+    int _glInit(const char* name, int w, int h){
+        glutInitWindowSize(w, h);
         glutInitWindowPosition(40, 40);
         int argc = 1;
         char *argv[1];
@@ -673,7 +673,7 @@ namespace {
         //GL_CHECK_ERROR_RET();
         glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH);
         //GL_CHECK_ERROR_RET();
-        g_window = glutCreateWindow("CloudViewer");
+        g_window = glutCreateWindow(name);
         //GL_CHECK_ERROR_RET();
         glutDisplayFunc(&drawScene);
         glutReshapeFunc(&resizeScene);
@@ -695,9 +695,9 @@ namespace {
 
     }//anonymouse namespace
 
-    int GLPointCloudViewer::GlInit(){
+    int GLPointCloudViewer::GlInit(const char* name, int w, int h){
         exit_flag = false;
-        return _glInit();
+        return _glInit(name, w, h);
     }
 
     int GLPointCloudViewer::EnterMainLoop(){
