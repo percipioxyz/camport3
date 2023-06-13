@@ -121,7 +121,7 @@ static TY_STATUS ColorIspInitSetting(TY_ISP_HANDLE isp_handle, TY_DEV_HANDLE dev
 #endif
 
     //try to load specifical device config from  device storage
-    int32_t comp_all;
+    TY_COMPONENT_ID comp_all;
     ASSERT_OK(TYGetComponentIDs(dev_handle, &comp_all));
     if (!(comp_all & TY_COMPONENT_STORAGE)){
         return TY_STATUS_OK;

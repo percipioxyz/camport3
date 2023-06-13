@@ -88,7 +88,7 @@ int main(int argc, char *argv[])
     ASSERT_OK(TYOpenInterface(selectedDev.iface.id, &hIface));
     ASSERT_OK(TYOpenDevice(hIface, selectedDev.id, &hDevice));
 
-    int32_t allComps;
+    TY_COMPONENT_ID allComps;
     ASSERT_OK(TYGetComponentIDs(hDevice, &allComps));
 
     /// try to enable color camera
@@ -129,7 +129,7 @@ int main(int argc, char *argv[])
     DepthViewer depthViewer("Depth");
     if (allComps & TY_COMPONENT_DEPTH_CAM && depth)
     {
-        int32_t image_mode;
+        TY_IMAGE_MODE image_mode;
         ASSERT_OK(get_default_image_mode(hDevice, TY_COMPONENT_DEPTH_CAM, image_mode));
         LOGD("Select Depth Image Mode: %dx%d", TYImageWidth(image_mode), TYImageHeight(image_mode));
         ASSERT_OK(TYSetEnum(hDevice, TY_COMPONENT_DEPTH_CAM, TY_ENUM_IMAGE_MODE, image_mode));

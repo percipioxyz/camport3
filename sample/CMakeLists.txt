@@ -36,6 +36,7 @@ set(ALL_SAMPLES
 
 set(SAMPLES_USED_GLUT
     SimpleView_Point3D
+    SimpleView_Point3D_XYZ48
     )
 
 if (MSVC)

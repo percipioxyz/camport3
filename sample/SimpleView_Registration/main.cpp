@@ -261,7 +261,7 @@ int main(int argc, char* argv[])
     ASSERT_OK( TYOpenInterface(selectedDev.iface.id, &hIface) );
     ASSERT_OK( TYOpenDevice(hIface, selectedDev.id, &hDevice) );
 
-    int32_t allComps;
+    TY_COMPONENT_ID allComps;
     ASSERT_OK( TYGetComponentIDs(hDevice, &allComps) );
     if(!(allComps & TY_COMPONENT_RGB_CAM)){
         LOGE("=== Has no RGB camera, cant do registration");
@@ -278,7 +278,7 @@ int main(int argc, char* argv[])
 
 
     LOGD("=== Configure components");
-    int32_t componentIDs = TY_COMPONENT_DEPTH_CAM | TY_COMPONENT_RGB_CAM;
+    TY_COMPONENT_ID componentIDs = TY_COMPONENT_DEPTH_CAM | TY_COMPONENT_RGB_CAM;
     ASSERT_OK( TYEnableComponents(hDevice, componentIDs) );
 
     // ASSERT_OK( TYSetEnum(hDevice, TY_COMPONENT_RGB_CAM, TY_ENUM_IMAGE_MODE, TY_IMAGE_MODE_YUYV_640x480) );

@@ -66,7 +66,7 @@ int main(int argc, char* argv[])
             continue;
         }
 
-        int32_t allComps;
+        TY_COMPONENT_ID allComps;
         ret = TYGetComponentIDs(hDevice, &allComps);
         if (ret < 0) {
             LOGD("Get component failed!");

@@ -115,7 +115,7 @@ int main(int argc, char* argv[])
   ASSERT_OK(TYOpenInterface(selectedDev.iface.id, &hIface));
   ASSERT_OK(TYOpenDevice(hIface, selectedDev.id, &hDevice));
 
-  int32_t allComps;
+  TY_COMPONENT_ID allComps;
   ASSERT_OK(TYGetComponentIDs(hDevice, &allComps));
   if (allComps & TY_COMPONENT_RGB_CAM  && color) {
     LOGD("Has RGB camera, open RGB cam");
@@ -136,7 +136,7 @@ int main(int argc, char* argv[])
   LOGD("Configure components, open depth cam");
   DepthViewer depthViewer("Depth");
   if (allComps & TY_COMPONENT_DEPTH_CAM && depth) {
-      int32_t image_mode;
+      TY_IMAGE_MODE image_mode;
       ASSERT_OK(get_default_image_mode(hDevice, TY_COMPONENT_DEPTH_CAM, image_mode));
       LOGD("Select Depth Image Mode: %dx%d", TYImageWidth(image_mode), TYImageHeight(image_mode));
       ASSERT_OK(TYSetEnum(hDevice, TY_COMPONENT_DEPTH_CAM, TY_ENUM_IMAGE_MODE, image_mode));
@@ -186,7 +186,7 @@ int main(int argc, char* argv[])
   CallbackWrapper cbWrapper;
   cbWrapper.TYRegisterCallback(hDevice, frameCallback, &cb_data);
 
-  int32_t componentIDs = 0;
+  TY_COMPONENT_ID componentIDs = 0;
   ASSERT_OK(TYGetEnabledComponents(hDevice, &componentIDs));
   if (allComps & TY_COMPONENT_RGB_CAM & componentIDs){
       ASSERT_OK(TYISPCreate(&cb_data.hIspHandle));//create a isp handle to convert raw image(color bayer format) to rgb image

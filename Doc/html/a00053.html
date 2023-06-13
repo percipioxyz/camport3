@@ -87,23 +87,46 @@ $(document).ready(function(){initNavTree('a00053.html','');});
 <div class="title">TY_BYTEARRAY_ATTR Struct Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>byte array data structure  
+ <a href="a00053.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="a00002_source.html">TYApi.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:acdf25a8f44c2b532a6f25b5447fec42e"><td class="memItemLeft" align="right" valign="top"><a id="acdf25a8f44c2b532a6f25b5447fec42e"></a>
-int32_t&#160;</td><td class="memItemRight" valign="bottom"><b>size</b></td></tr>
+int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00053.html#acdf25a8f44c2b532a6f25b5447fec42e">size</a></td></tr>
+<tr class="memdesc:acdf25a8f44c2b532a6f25b5447fec42e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Bytes array size in bytes. <br /></td></tr>
 <tr class="separator:acdf25a8f44c2b532a6f25b5447fec42e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a98580d3f59f14a099c69d793fe1ee523"><td class="memItemLeft" align="right" valign="top"><a id="a98580d3f59f14a099c69d793fe1ee523"></a>
-int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00053.html#a98580d3f59f14a099c69d793fe1ee523">unit_size</a></td></tr>
-<tr class="memdesc:a98580d3f59f14a099c69d793fe1ee523"><td class="mdescLeft">&#160;</td><td class="mdescRight">Bytes array size in bytes. <br /></td></tr>
+<tr class="memitem:a98580d3f59f14a099c69d793fe1ee523"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00053.html#a98580d3f59f14a099c69d793fe1ee523">unit_size</a></td></tr>
 <tr class="separator:a98580d3f59f14a099c69d793fe1ee523"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a07ba18afdbaf51bfa57407eee61e25e8"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00053.html#a07ba18afdbaf51bfa57407eee61e25e8">valid_size</a></td></tr>
 <tr class="separator:a07ba18afdbaf51bfa57407eee61e25e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock">
-<p class="definition">Definition at line <a class="el" href="a00002_source.html#l00701">701</a> of file <a class="el" href="a00002_source.html">TYApi.h</a>.</p>
+<div class="textblock"><p>byte array data structure </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="a00002.html#a9cfe5842a0e8418783d9deff98b2cf90" title="Read byte array from device. ">TYGetByteArray</a> </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="a00002_source.html#l00716">716</a> of file <a class="el" href="a00002_source.html">TYApi.h</a>.</p>
 </div><h2 class="groupheader">Member Data Documentation</h2>
+<a id="a98580d3f59f14a099c69d793fe1ee523"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a98580d3f59f14a099c69d793fe1ee523">&#9670;&nbsp;</a></span>unit_size</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int32_t TY_BYTEARRAY_ATTR::unit_size</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>unit size in bytes for special parse </p>
+
+<p class="definition">Definition at line <a class="el" href="a00002_source.html#l00719">719</a> of file <a class="el" href="a00002_source.html">TYApi.h</a>.</p>
+
+</div>
+</div>
 <a id="a07ba18afdbaf51bfa57407eee61e25e8"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a07ba18afdbaf51bfa57407eee61e25e8">&#9670;&nbsp;</a></span>valid_size</h2>
 
@@ -115,9 +138,9 @@ int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a
         </tr>
       </table>
 </div><div class="memdoc">
-<p>unit size in bytes for special parse valid size in bytes in case has reserved member, Must be multiple of unit_size, mem_length = valid_size/unit_size </p>
+<p>valid size in bytes in case has reserved member, Must be multiple of unit_size, mem_length = valid_size/unit_size </p>
 
-<p class="definition">Definition at line <a class="el" href="a00002_source.html#l00707">707</a> of file <a class="el" href="a00002_source.html">TYApi.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00002_source.html#l00722">722</a> of file <a class="el" href="a00002_source.html">TYApi.h</a>.</p>
 
 </div>
 </div>

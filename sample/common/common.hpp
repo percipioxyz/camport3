@@ -91,6 +91,9 @@ static inline int parseIrFrame(const TY_IMAGE_DATA* img, cv::Mat* pIR)
     parseCsiRaw10((uchar*)img->buffer, (*pIR), img->width, img->height);
   } else if(img->pixelFormat == TY_PIXEL_FORMAT_MONO) {
     *pIR = cv::Mat(img->height, img->width, CV_8U, img->buffer).clone();
+  } else if(img->pixelFormat == TY_PIXEL_FORMAT_CSI_MONO12) {
+    *pIR = cv::Mat(img->height, img->width, CV_8U, img->buffer).clone();
+    parseCsiRaw12((uchar*)img->buffer, (*pIR), img->width, img->height);
   } 
   else {
 	  return -1;
@@ -262,8 +265,14 @@ static inline int parseFrame(const TY_FRAME_DATA& frame, cv::Mat* pDepth
 
         // get depth image
         if (pDepth && frame.image[i].componentID == TY_COMPONENT_DEPTH_CAM){
-            *pDepth = cv::Mat(frame.image[i].height, frame.image[i].width
-                              , CV_16U, frame.image[i].buffer).clone();
+                if (frame.image[i].pixelFormat == TY_PIXEL_FORMAT_XYZ48) {
+                *pDepth = cv::Mat(frame.image[i].height, frame.image[i].width
+                          , CV_16SC3, frame.image[i].buffer).clone();
+                }
+                else {
+                *pDepth = cv::Mat(frame.image[i].height, frame.image[i].width
+                          , CV_16U, frame.image[i].buffer).clone();
+                }
         }
         // get left ir image
         if (pLeftIR && frame.image[i].componentID == TY_COMPONENT_IR_CAM_LEFT){

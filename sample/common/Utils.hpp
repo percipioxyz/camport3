@@ -298,7 +298,7 @@ static inline TY_STATUS get_feature_enum_list(TY_DEV_HANDLE handle,
 
 static inline TY_STATUS get_image_mode(TY_DEV_HANDLE handle
     , TY_COMPONENT_ID compID
-    , int32_t &image_mode, int idx)
+    , TY_IMAGE_MODE &image_mode, int idx)
 {
     std::vector<TY_ENUM_ENTRY> image_mode_list;
     ASSERT_OK(get_feature_enum_list(handle, compID, TY_ENUM_IMAGE_MODE, image_mode_list));
@@ -312,7 +312,7 @@ static inline TY_STATUS get_image_mode(TY_DEV_HANDLE handle
 
 static inline TY_STATUS get_default_image_mode(TY_DEV_HANDLE handle
     , TY_COMPONENT_ID compID
-    , int32_t &image_mode)
+    , TY_IMAGE_MODE &image_mode)
 {
     return get_image_mode(handle, compID, image_mode, 0);
 }

@@ -36,7 +36,7 @@ Please refer to [http://doc.percipio.xyz/cam/last/](http://doc.percipio.xyz/cam/
 
 ## Build Sample From Source Code
 
- **for detail about SDK usage please refer to [HERE](https://percipiodc.readthedocs.io/en/latest/getstarted/index.html#software-preparation-label)**
+ **for detail about SDK usage please refer to [HERE](http://doc.percipio.xyz/cam/last/getstarted/sdk-compile.html)**
 
 ### Linux
 install opencv & cmake
@@ -79,7 +79,7 @@ using cmake to generate MSVC vcxproj project files & build with MSVC.
 
 ## NOTE
 - for cross compiling, you may need to build libusb & opencv from source code for your target platform.
-- for USB device running on Linux , you need root privilege or properly config udev rules for other account. see [HERE](https://percipiodc.readthedocs.io/en/latest/getstarted/index.html#acesspermission-label)
+- for USB device running on Linux , you need root privilege or properly config udev rules for other account. see [HERE](http://doc.percipio.xyz/cam/last/getstarted/sdk-compile.html#acesspermission-label)
 
 ---
 [www.percipio.xyz](https://www.percipio.xyz)

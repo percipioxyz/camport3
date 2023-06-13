@@ -251,7 +251,7 @@ int main(int argc, char* argv[])
     //try to enable depth map
     LOGD("Configure components, open depth cam");
     if (componentIDs & TY_COMPONENT_DEPTH_CAM) {
-        int32_t image_mode;
+        TY_IMAGE_MODE image_mode;
         ASSERT_OK(get_default_image_mode(hDevice, TY_COMPONENT_DEPTH_CAM, image_mode));
         LOGD("Select Depth Image Mode: %dx%d", TYImageWidth(image_mode), TYImageHeight(image_mode));
         ASSERT_OK(TYSetEnum(hDevice, TY_COMPONENT_DEPTH_CAM, TY_ENUM_IMAGE_MODE, image_mode));
@@ -267,7 +267,7 @@ int main(int argc, char* argv[])
         cb_data.f_depth_scale = scale_unit;
     }
 
-    int32_t allComps;
+    TY_COMPONENT_ID allComps;
     ASSERT_OK(TYGetComponentIDs(hDevice, &allComps));
     if ((allComps & TY_COMPONENT_RGB_CAM) && (with_color_cam)){
         LOGD("=== Has internal RGB camera, try to open it");

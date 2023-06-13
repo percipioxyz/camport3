@@ -135,6 +135,25 @@ void dumpComponentFeatures(TY_DEV_HANDLE handle, TY_COMPONENT_ID compID)
 
     DUMP_FEATURE(handle, compID, TY_INT_ACCEPTABLE_PERCENT);
     DUMP_FEATURE(handle, compID, TY_INT_NTP_SERVER_IP);
+
+    DUMP_FEATURE(handle, compID, TY_INT_SGBM_IMAGE_NUM);
+    DUMP_FEATURE(handle, compID, TY_INT_SGBM_DISPARITY_NUM);
+    DUMP_FEATURE(handle, compID, TY_INT_SGBM_DISPARITY_OFFSET);
+    DUMP_FEATURE(handle, compID, TY_INT_SGBM_MATCH_WIN_HEIGHT);
+    DUMP_FEATURE(handle, compID, TY_INT_SGBM_SEMI_PARAM_P1);
+    DUMP_FEATURE(handle, compID, TY_INT_SGBM_SEMI_PARAM_P2);
+    DUMP_FEATURE(handle, compID, TY_INT_SGBM_UNIQUE_FACTOR);
+    DUMP_FEATURE(handle, compID, TY_INT_SGBM_UNIQUE_ABSDIFF);
+    //Cost Param not impl in hw yet
+    //DUMP_FEATURE(handle, compID, TY_INT_SGBM_COST_PARAM);
+    DUMP_FEATURE(handle, compID, TY_BOOL_SGBM_HFILTER_HALF_WIN);
+    DUMP_FEATURE(handle, compID, TY_INT_SGBM_MATCH_WIN_WIDTH);
+    DUMP_FEATURE(handle, compID, TY_BOOL_SGBM_MEDFILTER);
+    DUMP_FEATURE(handle, compID, TY_BOOL_SGBM_LRC);
+    DUMP_FEATURE(handle, compID, TY_INT_SGBM_LRC_DIFF);
+    DUMP_FEATURE(handle, compID, TY_INT_SGBM_MEDFILTER_THRESH);
+    DUMP_FEATURE(handle, compID, TY_INT_SGBM_SEMI_PARAM_P1_SCALE);
+    DUMP_FEATURE(handle, compID, TY_FLOAT_SCALE_UNIT);
 }
 
 #define DUMP_COMPONENT(handle,compIds,id) \
@@ -224,7 +243,7 @@ int main(int argc, char* argv[])
 
     {
         // List all components
-        int32_t compIDs;
+        TY_COMPONENT_ID compIDs;
         std::string compNames;
         ASSERT_OK(TYGetComponentIDs(handle, &compIDs));
         dumpAllComponentFeatures(handle, compIDs);

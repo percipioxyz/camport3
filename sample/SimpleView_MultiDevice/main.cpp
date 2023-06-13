@@ -157,7 +157,7 @@ int main(int argc, char* argv[])
         //try to enable depth map
         LOGD("Configure components, open depth cam");
         if (componentIDs & TY_COMPONENT_DEPTH_CAM) {
-            int32_t image_mode;
+            TY_IMAGE_MODE image_mode;
             ASSERT_OK(get_default_image_mode(cams[count].hDev, TY_COMPONENT_DEPTH_CAM, image_mode));
             LOGD("Select Depth Image Mode: %dx%d", TYImageWidth(image_mode), TYImageHeight(image_mode));
             ASSERT_OK(TYSetEnum(cams[count].hDev, TY_COMPONENT_DEPTH_CAM, TY_ENUM_IMAGE_MODE, image_mode));
