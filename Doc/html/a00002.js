@@ -390,7 +390,8 @@ var a00002 =
       [ "TY_RESOLUTION_MODE_2560x1920", "a00002.html#aa939600b530fafe2f138a4e5d5f722cca5e52c93414842c0de45fd7a176349247", null ],
       [ "TY_RESOLUTION_MODE_2592x1944", "a00002.html#aa939600b530fafe2f138a4e5d5f722cca65724dba0eb33fa7f494f5105dccd3c7", null ],
       [ "TY_RESOLUTION_MODE_1920x1440", "a00002.html#aa939600b530fafe2f138a4e5d5f722ccae3303c955815bc3bc3cf62ff9cf64fd2", null ],
-      [ "TY_RESOLUTION_MODE_240x96", "a00002.html#aa939600b530fafe2f138a4e5d5f722cca4768ae13acc4bd79cfc9a0732397c4b3", null ]
+      [ "TY_RESOLUTION_MODE_240x96", "a00002.html#aa939600b530fafe2f138a4e5d5f722cca4768ae13acc4bd79cfc9a0732397c4b3", null ],
+      [ "TY_RESOLUTION_MODE_2048x1536", "a00002.html#aa939600b530fafe2f138a4e5d5f722ccab1756a9f67bc4a64f71c8d571e8ed224", null ]
     ] ],
     [ "TY_STATUS_LIST", "a00002.html#a3b4437d6e3428c34e713da2ae6cf9245", [
       [ "TY_STATUS_OK", "a00002.html#a3b4437d6e3428c34e713da2ae6cf9245ad87ffd822601f4ef790aef9928fdf1cc", null ],

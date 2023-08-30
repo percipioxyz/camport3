@@ -166,6 +166,7 @@ var searchData=
   ['ty_5fresolution_5fmode_5f160x120',['TY_RESOLUTION_MODE_160x120',['../a00002.html#aa939600b530fafe2f138a4e5d5f722ccacad8f46b1c53e26cef2207eb710061f0',1,'TYApi.h']]],
   ['ty_5fresolution_5fmode_5f1920x1080',['TY_RESOLUTION_MODE_1920x1080',['../a00002.html#aa939600b530fafe2f138a4e5d5f722ccaa6d3bf0789195a8fa6ccef0a225151db',1,'TYApi.h']]],
   ['ty_5fresolution_5fmode_5f1920x1440',['TY_RESOLUTION_MODE_1920x1440',['../a00002.html#aa939600b530fafe2f138a4e5d5f722ccae3303c955815bc3bc3cf62ff9cf64fd2',1,'TYApi.h']]],
+  ['ty_5fresolution_5fmode_5f2048x1536',['TY_RESOLUTION_MODE_2048x1536',['../a00002.html#aa939600b530fafe2f138a4e5d5f722ccab1756a9f67bc4a64f71c8d571e8ed224',1,'TYApi.h']]],
   ['ty_5fresolution_5fmode_5f240x320',['TY_RESOLUTION_MODE_240x320',['../a00002.html#aa939600b530fafe2f138a4e5d5f722cca1ed0a30a23d610db854635e0a394503f',1,'TYApi.h']]],
   ['ty_5fresolution_5fmode_5f240x96',['TY_RESOLUTION_MODE_240x96',['../a00002.html#aa939600b530fafe2f138a4e5d5f722cca4768ae13acc4bd79cfc9a0732397c4b3',1,'TYApi.h']]],
   ['ty_5fresolution_5fmode_5f2560x1920',['TY_RESOLUTION_MODE_2560x1920',['../a00002.html#aa939600b530fafe2f138a4e5d5f722cca5e52c93414842c0de45fd7a176349247',1,'TYApi.h']]],

@@ -69,7 +69,7 @@ struct DepthEnhenceParameters{
 /// @param  [in]  param                 Algorithm parameters.
 /// @retval TY_STATUS_OK        Succeed.
 /// @retval TY_STATUS_NULL_POINTER      Any depthImage, param, output or output->buffer is NULL.
-/// @retval TY_STATUS_INVALID_PARAMETER imageNum >= 5 or imageNum <= 0, or any image invalid
+/// @retval TY_STATUS_INVALID_PARAMETER imageNum >= 11 or imageNum <= 0, or any image invalid
 /// @retval TY_STATUS_OUT_OF_MEMORY     Output image not suitable.
 TY_CAPI TYDepthEnhenceFilter (const TY_IMAGE_DATA* depthImages
         , int imageNum
