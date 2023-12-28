@@ -342,6 +342,9 @@ typedef enum TY_FEATURE_ID_LIST :uint32_t
     TY_INT_TOF_MODULATION_THRESHOLD = 0x0903 | TY_FEATURE_INT,   ///< the threshold of the tof modulation
     TY_STRUCT_TOF_FREQ              = 0x0904 | TY_FEATURE_STRUCT, ///< the frequency of tof, see TY_TOF_FREQ
     TY_BOOL_TOF_ANTI_INTERFERENCE   = 0x0905 | TY_FEATURE_BOOL, ///< cooperation if multi-device used
+    TY_INT_TOF_ANTI_SUNLIGHT_INDEX  = 0x0906 | TY_FEATURE_INT,  ///< the index of anti-sunlight
+    TY_INT_MAX_SPECKLE_SIZE         = 0x0907 | TY_FEATURE_INT, ///< the max size of speckle
+    TY_INT_MAX_SPECKLE_DIFF         = 0x0908 | TY_FEATURE_INT, ///< the max diff of speckle
 }TY_FEATURE_ID_LIST;
 typedef uint32_t TY_FEATURE_ID;///< feature unique id @see TY_FEATURE_ID_LIST
 
@@ -973,12 +976,12 @@ typedef struct TY_IMAGE_DATA
     uint64_t        timestamp;      ///< Timestamp in microseconds
     int32_t         imageIndex;     ///< image index used in trigger mode
     int32_t         status;         ///< Status of this buffer
-    int32_t         componentID;    ///< Where current data come from
+    TY_COMPONENT_ID componentID;    ///< Where current data come from
     int32_t         size;           ///< Buffer size
     void*           buffer;         ///< Pointer to data buffer
     int32_t         width;          ///< Image width in pixels
     int32_t         height;         ///< Image height in pixels
-    int32_t         pixelFormat;    ///< Pixel format, see TY_PIXEL_FORMAT_LIST
+    TY_PIXEL_FORMAT pixelFormat;    ///< Pixel format, see TY_PIXEL_FORMAT_LIST
     int32_t         reserved[9];    ///< Reserved
 }TY_IMAGE_DATA;
 

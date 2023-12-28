@@ -5,6 +5,7 @@ var searchData=
   ['tycloseinterface',['TYCloseInterface',['../a00002.html#a2e9e8f6e173e9cc24a54dd2dc6fbab39',1,'TYApi.h']]],
   ['tydeinitlib',['TYDeinitLib',['../a00002.html#a4de30a0e4a07e002f13854edd66b4642',1,'TYApi.h']]],
   ['tydepthenhencefilter',['TYDepthEnhenceFilter',['../a00008.html#af8bb2a45b6fd8b542d250e2cd04e6d53',1,'TYImageProc.h']]],
+  ['tydepthimagefillemptyregion',['TYDepthImageFillEmptyRegion',['../a00005.html#a842203a8fe950af2a8c75d4ed096eeb9',1,'TYCoordinateMapper.h']]],
   ['tydepthspecklefilter',['TYDepthSpeckleFilter',['../a00008.html#a797c07c57a28e7903725dd41963957d4',1,'TYImageProc.h']]],
   ['tydisablecomponents',['TYDisableComponents',['../a00002.html#abfa7db4b34ebc9f909c6712d1ae51854',1,'TYApi.h']]],
   ['tyenablecomponents',['TYEnableComponents',['../a00002.html#a9ef1b7eb2343b75e650f1211452ad15d',1,'TYApi.h']]],

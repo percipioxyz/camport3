@@ -206,6 +206,7 @@ static inline int parseColorFrame(const TY_IMAGE_DATA* img, cv::Mat* pColor, TY_
   if (img->pixelFormat == TY_PIXEL_FORMAT_JPEG){
     std::vector<uchar> _v((uchar*)img->buffer, (uchar*)img->buffer + img->size);
     *pColor = cv::imdecode(_v, cv::IMREAD_COLOR);
+    ASSERT(img->width == pColor->cols && img->height == pColor->rows);
   }
   else if (img->pixelFormat == TY_PIXEL_FORMAT_YVYU){
     cv::Mat yuv(img->height, img->width, CV_8UC2, img->buffer);

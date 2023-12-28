@@ -148,12 +148,18 @@ Functions</h2></td></tr>
 <tr class="memitem:a3ae23d9ec90f2554984519826198e9df"><td class="memItemLeft" align="right" valign="top">TY_CAPI&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00005.html#a3ae23d9ec90f2554984519826198e9df">TYMapDepthImageToPoint3d</a> (const <a class="el" href="a00077.html">TY_CAMERA_CALIB_INFO</a> *src_calib, int32_t imageW, int32_t imageH, const uint16_t *depth, <a class="el" href="a00061.html">TY_VECT_3F</a> *point3d, float f_scale_unit=1.0f)</td></tr>
 <tr class="memdesc:a3ae23d9ec90f2554984519826198e9df"><td class="mdescLeft">&#160;</td><td class="mdescRight">Map depth image to 3D points. 0 depth pixels maps to (NAN, NAN, NAN).  <a href="#a3ae23d9ec90f2554984519826198e9df">More...</a><br /></td></tr>
 <tr class="separator:a3ae23d9ec90f2554984519826198e9df"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a842203a8fe950af2a8c75d4ed096eeb9"><td class="memItemLeft" align="right" valign="top">TY_CAPI&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00005.html#a842203a8fe950af2a8c75d4ed096eeb9">TYDepthImageFillEmptyRegion</a> (uint16_t *depth, uint32_t depthW, uint32_t depthH)</td></tr>
+<tr class="memdesc:a842203a8fe950af2a8c75d4ed096eeb9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fill depth image empty region.  <a href="#a842203a8fe950af2a8c75d4ed096eeb9">More...</a><br /></td></tr>
+<tr class="separator:a842203a8fe950af2a8c75d4ed096eeb9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acfb2b4bd62009380e5dd3e87b935b901"><td class="memItemLeft" align="right" valign="top">TY_CAPI&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00005.html#acfb2b4bd62009380e5dd3e87b935b901">TYMapPoint3dToDepthImage</a> (const <a class="el" href="a00077.html">TY_CAMERA_CALIB_INFO</a> *dst_calib, const <a class="el" href="a00061.html">TY_VECT_3F</a> *point3d, uint32_t count, uint32_t depthW, uint32_t depthH, uint16_t *depth, float f_target_scale=1.0f)</td></tr>
 <tr class="memdesc:acfb2b4bd62009380e5dd3e87b935b901"><td class="mdescLeft">&#160;</td><td class="mdescRight">Map 3D points to depth image. (NAN, NAN, NAN) will be skipped.  <a href="#acfb2b4bd62009380e5dd3e87b935b901">More...</a><br /></td></tr>
 <tr class="separator:acfb2b4bd62009380e5dd3e87b935b901"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a975218e39246e3aefaa357f69f2fba72"><td class="memItemLeft" align="right" valign="top">TY_CAPI&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00005.html#a975218e39246e3aefaa357f69f2fba72">TYMapPoint3dToPoint3d</a> (const <a class="el" href="a00069.html">TY_CAMERA_EXTRINSIC</a> *extrinsic, const <a class="el" href="a00061.html">TY_VECT_3F</a> *point3dFrom, int32_t count, <a class="el" href="a00061.html">TY_VECT_3F</a> *point3dTo)</td></tr>
 <tr class="memdesc:a975218e39246e3aefaa357f69f2fba72"><td class="mdescLeft">&#160;</td><td class="mdescRight">Map 3D points to another coordinate.  <a href="#a975218e39246e3aefaa357f69f2fba72">More...</a><br /></td></tr>
 <tr class="separator:a975218e39246e3aefaa357f69f2fba72"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a43f88edd5aa987b9d9d17ad2a32a7ede"><td class="memItemLeft" align="right" valign="top"><a id="a43f88edd5aa987b9d9d17ad2a32a7ede"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>TYPixelsOverlapRemove</b> (<a class="el" href="a00173.html">TY_PIXEL_DESC</a> *lut, uint32_t count, uint32_t imageW, uint32_t imageH)</td></tr>
+<tr class="separator:a43f88edd5aa987b9d9d17ad2a32a7ede"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Coordinate Conversion API. </p>
@@ -188,11 +194,55 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <b>Value:</b><div class="fragment"><div class="line"><span class="keywordflow">do</span>{ \</div><div class="line">    TY_STATUS err = (f); \</div><div class="line">    if(err){ \</div><div class="line">      if(bufToFree) \</div><div class="line">        free(bufToFree); \</div><div class="line">      return err; \</div><div class="line">    } \</div><div class="line">  } <span class="keywordflow">while</span>(0)</div></div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="a00005_source.html#l00268">268</a> of file <a class="el" href="a00005_source.html">TYCoordinateMapper.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00005_source.html#l00274">274</a> of file <a class="el" href="a00005_source.html">TYCoordinateMapper.h</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
+<a id="a842203a8fe950af2a8c75d4ed096eeb9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a842203a8fe950af2a8c75d4ed096eeb9">&#9670;&nbsp;</a></span>TYDepthImageFillEmptyRegion()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">TY_CAPI TYDepthImageFillEmptyRegion </td>
+          <td>(</td>
+          <td class="paramtype">uint16_t *&#160;</td>
+          <td class="paramname"><em>depth</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>depthW</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>depthH</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Fill depth image empty region. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">depth</td><td>Depth image pixels. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">depthW</td><td>Width of current depth image. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">depthH</td><td>Height of current depth image. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a466f1f9ecdb947607c5da179d1826c19"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a466f1f9ecdb947607c5da179d1826c19">&#9670;&nbsp;</a></span>TYInvertExtrinsic()</h2>
 

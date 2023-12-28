@@ -32,6 +32,8 @@ set(ALL_SAMPLES
     SimpleView_OpenWithIP
     SimpleView_HDR
     SimpleView_SGBM
+    SimpleView_XYZ48
+    SimpleView_LoadJson
     )
 
 set(SAMPLES_USED_GLUT

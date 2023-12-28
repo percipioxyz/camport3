@@ -5,8 +5,6 @@
 #include "../common/cloud_viewer/cloud_viewer.hpp"
 #include "TYImageProc.h"
 
-#define MAP_DEPTH_TO_COLOR      1
-
 struct CallbackData {
     int             index;
     TY_DEV_HANDLE   hDevice;
@@ -124,6 +122,7 @@ static void handleFrame(TY_FRAME_DATA* frame, void* userdata) {
         
         uint8_t *color_data = NULL;
         cv::Mat color_data_mat, out;
+        TY_CAMERA_CALIB_INFO* calib_data_ptr = NULL;
         if (!color.empty()){
             bool hasColorCalib = false;
             ASSERT_OK(TYHasFeature(pData->hDevice, TY_COMPONENT_RGB_CAM, TY_STRUCT_CAM_CALIB_DATA, &hasColorCalib));
@@ -137,16 +136,16 @@ static void handleFrame(TY_FRAME_DATA* frame, void* userdata) {
 
         if (pData->map_depth_to_color) {
             depth = out.clone();
-            p3d.resize(depth.size().area());
-            ASSERT_OK(TYMapDepthImageToPoint3d(&pData->color_calib, depth.cols, depth.rows
-                , (uint16_t*)depth.data, &p3d[0]));
+            calib_data_ptr = &pData->color_calib;
         }
         else
         {
-            p3d.resize(depth.size().area());
-            ASSERT_OK(TYMapDepthImageToPoint3d(&pData->depth_calib, depth.cols, depth.rows
-                , (uint16_t*)depth.data, &p3d[0], pData->f_depth_scale));
+            calib_data_ptr = &pData->depth_calib;
         }
+        p3d.resize(depth.size().area());
+        ASSERT_OK(TYMapDepthImageToPoint3d(calib_data_ptr, depth.cols, depth.rows
+                , (uint16_t*)depth.data, &p3d[0], pData->f_depth_scale));
+
         if (pData->saveOneFramePoint3d){
             char file[32];
             sprintf(file, "points-%d.xyz", pData->fileIndex++);

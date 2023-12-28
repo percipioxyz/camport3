@@ -692,7 +692,11 @@ Enumerations</h2></td></tr>
 &#160;&#160;<a class="el" href="a00002.html#a6ad12f8e99a29828f93af6916a846f38a7249b83e4cbe52e1f18e75453c2f1e7a">TY_INT_TOF_CHANNEL</a> = 0x0902 | TY_FEATURE_INT, 
 <a class="el" href="a00002.html#a6ad12f8e99a29828f93af6916a846f38a07c25e03e8dc286cb837fb1a8921e8b6">TY_INT_TOF_MODULATION_THRESHOLD</a> = 0x0903 | TY_FEATURE_INT, 
 <a class="el" href="a00002.html#a6ad12f8e99a29828f93af6916a846f38a567f2ae9c42ca97e9880419d2400ff28">TY_STRUCT_TOF_FREQ</a> = 0x0904 | TY_FEATURE_STRUCT, 
-<a class="el" href="a00002.html#a6ad12f8e99a29828f93af6916a846f38a9f9a69dac5043961461ce9780e531ac6">TY_BOOL_TOF_ANTI_INTERFERENCE</a> = 0x0905 | TY_FEATURE_BOOL
+<a class="el" href="a00002.html#a6ad12f8e99a29828f93af6916a846f38a9f9a69dac5043961461ce9780e531ac6">TY_BOOL_TOF_ANTI_INTERFERENCE</a> = 0x0905 | TY_FEATURE_BOOL, 
+<br />
+&#160;&#160;<a class="el" href="a00002.html#a6ad12f8e99a29828f93af6916a846f38a49ab608765b0631210032a58d5d8f908">TY_INT_TOF_ANTI_SUNLIGHT_INDEX</a> = 0x0906 | TY_FEATURE_INT, 
+<a class="el" href="a00002.html#a6ad12f8e99a29828f93af6916a846f38ad41aba0ae7aad78e0b087411118c3e8f">TY_INT_MAX_SPECKLE_SIZE</a> = 0x0907 | TY_FEATURE_INT, 
+<a class="el" href="a00002.html#a6ad12f8e99a29828f93af6916a846f38ab88c8aee78f4f44c8012d3ffd3daa711">TY_INT_MAX_SPECKLE_DIFF</a> = 0x0908 | TY_FEATURE_INT
 <br />
  }<tr class="memdesc:a6ad12f8e99a29828f93af6916a846f38"><td class="mdescLeft">&#160;</td><td class="mdescRight">feature for component definitions  <a href="a00002.html#a6ad12f8e99a29828f93af6916a846f38">More...</a><br /></td></tr>
 </td></tr>
@@ -1144,7 +1148,7 @@ typedef&#160;</td><td class="memItemRight" valign="bottom"><b>TY_E_DI_INT_ACTION
       </table>
 </div><div class="memdoc">
 <b>Value:</b><div class="fragment"><div class="line">TY_DECLARE_IMAGE_MODE0(pix, 160x100), \</div><div class="line">            TY_DECLARE_IMAGE_MODE0(pix, 160x120), \</div><div class="line">            TY_DECLARE_IMAGE_MODE0(pix, 320x180), \</div><div class="line">            TY_DECLARE_IMAGE_MODE0(pix, 320x200), \</div><div class="line">            TY_DECLARE_IMAGE_MODE0(pix, 320x240), \</div><div class="line">            TY_DECLARE_IMAGE_MODE0(pix, 480x640), \</div><div class="line">            TY_DECLARE_IMAGE_MODE0(pix, 640x360), \</div><div class="line">            TY_DECLARE_IMAGE_MODE0(pix, 640x400), \</div><div class="line">            TY_DECLARE_IMAGE_MODE0(pix, 640x480), \</div><div class="line">            TY_DECLARE_IMAGE_MODE0(pix, 960x1280), \</div><div class="line">            TY_DECLARE_IMAGE_MODE0(pix, 1280x720), \</div><div class="line">            TY_DECLARE_IMAGE_MODE0(pix, 1280x960), \</div><div class="line">            TY_DECLARE_IMAGE_MODE0(pix, 1280x800), \</div><div class="line">            TY_DECLARE_IMAGE_MODE0(pix, 1920x1080), \</div><div class="line">            TY_DECLARE_IMAGE_MODE0(pix, 2560x1920), \</div><div class="line">            TY_DECLARE_IMAGE_MODE0(pix, 2592x1944), \</div><div class="line">            TY_DECLARE_IMAGE_MODE0(pix, 1920x1440), \</div><div class="line">            TY_DECLARE_IMAGE_MODE0(pix, 2048x1536), \</div><div class="line">            TY_DECLARE_IMAGE_MODE0(pix, 240x96)</div></div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="a00002_source.html#l00491">491</a> of file <a class="el" href="a00002_source.html">TYApi.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00002_source.html#l00494">494</a> of file <a class="el" href="a00002_source.html">TYApi.h</a>.</p>
 
 </div>
 </div>
@@ -1436,7 +1440,7 @@ typedef&#160;</td><td class="memItemRight" valign="bottom"><b>TY_E_DI_INT_ACTION
 <p>feature unique id </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="a00002.html#a6ad12f8e99a29828f93af6916a846f38" title="feature for component definitions ">TY_FEATURE_ID_LIST</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="a00002_source.html#l00346">346</a> of file <a class="el" href="a00002_source.html">TYApi.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00002_source.html#l00349">349</a> of file <a class="el" href="a00002_source.html">TYApi.h</a>.</p>
 
 </div>
 </div>
@@ -1599,7 +1603,7 @@ typedef&#160;</td><td class="memItemRight" valign="bottom"><b>TY_E_DI_INT_ACTION
 </div><div class="memdoc">
 <p>Indicate a feature is readable or writable </p><dl class="section see"><dt>See also</dt><dd><a class="el" href="a00002.html#ae788feabfa82b2ff3a3e3a5c8c75601c" title="Get feature info. ">TYGetFeatureInfo</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="a00002_source.html#l00379">379</a> of file <a class="el" href="a00002_source.html">TYApi.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00002_source.html#l00382">382</a> of file <a class="el" href="a00002_source.html">TYApi.h</a>.</p>
 
 </div>
 </div>
@@ -1838,6 +1842,12 @@ typedef&#160;</td><td class="memItemRight" valign="bottom"><b>TY_E_DI_INT_ACTION
 </td></tr>
 <tr><td class="fieldname"><a id="a6ad12f8e99a29828f93af6916a846f38a9f9a69dac5043961461ce9780e531ac6"></a>TY_BOOL_TOF_ANTI_INTERFERENCE&#160;</td><td class="fielddoc"><p>cooperation if multi-device used </p>
 </td></tr>
+<tr><td class="fieldname"><a id="a6ad12f8e99a29828f93af6916a846f38a49ab608765b0631210032a58d5d8f908"></a>TY_INT_TOF_ANTI_SUNLIGHT_INDEX&#160;</td><td class="fielddoc"><p>the index of anti-sunlight </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a6ad12f8e99a29828f93af6916a846f38ad41aba0ae7aad78e0b087411118c3e8f"></a>TY_INT_MAX_SPECKLE_SIZE&#160;</td><td class="fielddoc"><p>the max size of speckle </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a6ad12f8e99a29828f93af6916a846f38ab88c8aee78f4f44c8012d3ffd3daa711"></a>TY_INT_MAX_SPECKLE_DIFF&#160;</td><td class="fielddoc"><p>the max diff of speckle </p>
+</td></tr>
 </table>
 
 <p class="definition">Definition at line <a class="el" href="a00002_source.html#l00227">227</a> of file <a class="el" href="a00002_source.html">TYApi.h</a>.</p>
@@ -1857,7 +1867,7 @@ typedef&#160;</td><td class="memItemRight" valign="bottom"><b>TY_E_DI_INT_ACTION
 </div><div class="memdoc">
 <p>Interface type definition </p><dl class="section see"><dt>See also</dt><dd><a class="el" href="a00002.html#ac8015a333965f280d5ae4d26e7a15ddb" title="Get interface info list. ">TYGetInterfaceList</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="a00002_source.html#l00366">366</a> of file <a class="el" href="a00002_source.html">TYApi.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00002_source.html#l00369">369</a> of file <a class="el" href="a00002_source.html">TYApi.h</a>.</p>
 
 </div>
 </div>
@@ -1874,7 +1884,7 @@ typedef&#160;</td><td class="memItemRight" valign="bottom"><b>TY_E_DI_INT_ACTION
 </div><div class="memdoc">
 <p>Pixel size type definitions to define the pixel size in bits </p><dl class="section see"><dt>See also</dt><dd><a class="el" href="a00002.html#ab4fa1d00f4fa00ce09115ba621aedc9a" title="pixel format definitions ">TY_PIXEL_FORMAT_LIST</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="a00002_source.html#l00401">401</a> of file <a class="el" href="a00002_source.html">TYApi.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00002_source.html#l00404">404</a> of file <a class="el" href="a00002_source.html">TYApi.h</a>.</p>
 
 </div>
 </div>
@@ -1948,7 +1958,7 @@ typedef&#160;</td><td class="memItemRight" valign="bottom"><b>TY_E_DI_INT_ACTION
 </td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="a00002_source.html#l00419">419</a> of file <a class="el" href="a00002_source.html">TYApi.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00002_source.html#l00422">422</a> of file <a class="el" href="a00002_source.html">TYApi.h</a>.</p>
 
 </div>
 </div>
@@ -2008,7 +2018,7 @@ typedef&#160;</td><td class="memItemRight" valign="bottom"><b>TY_E_DI_INT_ACTION
 </td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="a00002_source.html#l00463">463</a> of file <a class="el" href="a00002_source.html">TYApi.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00002_source.html#l00466">466</a> of file <a class="el" href="a00002_source.html">TYApi.h</a>.</p>
 
 </div>
 </div>
@@ -2037,7 +2047,7 @@ typedef&#160;</td><td class="memItemRight" valign="bottom"><b>TY_E_DI_INT_ACTION
 </td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="a00002_source.html#l00560">560</a> of file <a class="el" href="a00002_source.html">TYApi.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00002_source.html#l00563">563</a> of file <a class="el" href="a00002_source.html">TYApi.h</a>.</p>
 
 </div>
 </div>
