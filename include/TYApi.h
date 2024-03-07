@@ -286,7 +286,7 @@ typedef enum TY_FEATURE_ID_LIST :uint32_t
 
 
     TY_BOOL_AUTO_EXPOSURE           = 0x0300 | TY_FEATURE_BOOL, ///< Auto exposure switch
-    TY_INT_EXPOSURE_TIME            = 0x0301 | TY_FEATURE_INT,  ///< Exposure time in percentage
+    TY_INT_EXPOSURE_TIME            = 0x0301 | TY_FEATURE_INT,  ///< Exposure time
     TY_BOOL_AUTO_GAIN               = 0x0302 | TY_FEATURE_BOOL, ///< Auto gain switch
     TY_INT_GAIN                     = 0x0303 | TY_FEATURE_INT,  ///< Sensor Gain
     TY_BOOL_AUTO_AWB                = 0x0304 | TY_FEATURE_BOOL, ///< Auto white balance
@@ -308,6 +308,7 @@ typedef enum TY_FEATURE_ID_LIST :uint32_t
     TY_INT_ANALOG_GAIN              = 0x0524 | TY_FEATURE_INT,  ///< Analog gain
     TY_BOOL_HDR                     = 0x0525 | TY_FEATURE_BOOL, ///< HDR func enable/disable
     TY_BYTEARRAY_HDR_PARAMETER      = 0x0526 | TY_FEATURE_BYTEARRAY, ///< HDR parameters
+    TY_INT_AE_TARGET_V              = 0x0527 | TY_FEATURE_INT,  ///AE target y
 
     TY_BOOL_IMU_DATA_ONOFF          = 0x0600 | TY_FEATURE_BOOL, ///< IMU Data Onoff
     TY_STRUCT_IMU_ACC_BIAS          = 0x0601 | TY_FEATURE_STRUCT, ///< IMU acc bias matrix, see TY_ACC_BIAS

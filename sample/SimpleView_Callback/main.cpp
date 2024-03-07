@@ -167,12 +167,12 @@ int main(int argc, char* argv[])
   ASSERT_OK(TYRegisterEventCallback(hDevice, eventCallback, NULL));
 
   bool hasTrigger;
-  ASSERT_OK(TYHasFeature(hDevice, TY_COMPONENT_DEVICE, TY_STRUCT_TRIGGER_PARAM, &hasTrigger));
+  ASSERT_OK(TYHasFeature(hDevice, TY_COMPONENT_DEVICE, TY_STRUCT_TRIGGER_PARAM_EX, &hasTrigger));
   if (hasTrigger) {
     LOGD("Disable trigger mode");
-    TY_TRIGGER_PARAM trigger;
+    TY_TRIGGER_PARAM_EX trigger;
     trigger.mode = TY_TRIGGER_MODE_OFF;
-    ASSERT_OK(TYSetStruct(hDevice, TY_COMPONENT_DEVICE, TY_STRUCT_TRIGGER_PARAM, &trigger, sizeof(trigger)));
+    ASSERT_OK(TYSetStruct(hDevice, TY_COMPONENT_DEVICE, TY_STRUCT_TRIGGER_PARAM_EX, &trigger, sizeof(trigger)));
   }
   
   // Create callback thread

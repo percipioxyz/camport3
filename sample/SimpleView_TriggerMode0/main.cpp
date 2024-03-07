@@ -111,9 +111,9 @@ int main(int argc, char* argv[])
     ASSERT_OK(TYRegisterEventCallback(hDevice, eventCallback, NULL));
 
     LOGD("=== Disable trigger mode");
-    TY_TRIGGER_PARAM trigger;
+    TY_TRIGGER_PARAM_EX trigger;
     trigger.mode = TY_TRIGGER_MODE_OFF;
-    ASSERT_OK(TYSetStruct(hDevice, TY_COMPONENT_DEVICE, TY_STRUCT_TRIGGER_PARAM, &trigger, sizeof(trigger)));
+    ASSERT_OK(TYSetStruct(hDevice, TY_COMPONENT_DEVICE, TY_STRUCT_TRIGGER_PARAM_EX, &trigger, sizeof(trigger)));
 
     LOGD("=== Start capture");
     ASSERT_OK( TYStartCapture(hDevice) );

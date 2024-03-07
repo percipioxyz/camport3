@@ -186,16 +186,18 @@ int main(int argc, char* argv[])
             || ((count == 0) && (list.size() == 0))) {
             LOGD("=== set master device");
             cams[count].tag = std::string(cams[count].sn) + "_master";
+            //TY_TRIGGER_PARAM_EX Can be used when fw is larger than R3.13.68(include R3.13.68)
             TY_TRIGGER_PARAM param;
             param.mode = TY_TRIGGER_MODE_M_PER;
             param.fps = 5;
+            //TY_STRUCT_TRIGGER_PARAM_EX Can be used when fw is larger than R3.13.68(include R3.13.68)
             ASSERT_OK(TYSetStruct(cams[count].hDev, TY_COMPONENT_DEVICE, TY_STRUCT_TRIGGER_PARAM, (void*)&param, sizeof(param)));
         }
         else {
             cams[count].tag = std::string(cams[count].sn) + "_slave";
-            TY_TRIGGER_PARAM param;
+            TY_TRIGGER_PARAM_EX param;
             param.mode = TY_TRIGGER_MODE_SLAVE;
-            ASSERT_OK(TYSetStruct(cams[count].hDev, TY_COMPONENT_DEVICE, TY_STRUCT_TRIGGER_PARAM, (void*)&param, sizeof(param)));
+            ASSERT_OK(TYSetStruct(cams[count].hDev, TY_COMPONENT_DEVICE, TY_STRUCT_TRIGGER_PARAM_EX, (void*)&param, sizeof(param)));
         }
 
         //for network only

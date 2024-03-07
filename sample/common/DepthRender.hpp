@@ -79,7 +79,7 @@ public:
                     clr_disp = clr_disp * 255 / (max_distance - min_distance);
                     clr_disp.convertTo(clr_disp, CV_8UC1);
                 } else {
-                    short vmax, vmin;
+                    unsigned short vmax, vmin;
                     HistAdjustRange(clr_disp, invalid_label, min_distance, vmin, vmax);
                     clr_disp = (clr_disp - vmin) * 255 / (vmax - vmin);
                     //clr_disp = 255 - clr_disp;
@@ -178,11 +178,11 @@ private:
                     ptr += 3;
                 }
             }
-    void HistAdjustRange(const cv::Mat &dist, short invalid, int min_display_distance_range
-            , short &min_val, short &max_val) {
-                std::map<short, int> hist;
+    void HistAdjustRange(const cv::Mat &dist, ushort invalid, int min_display_distance_range
+            , ushort &min_val, ushort &max_val) {
+                std::map<ushort, int> hist;
                 int sz = dist.size().area();
-                const short* ptr = dist.ptr < short>();
+                const ushort* ptr = dist.ptr < ushort>();
                 int total_num = 0;
                 for (int idx = sz; idx != 0; idx--, ptr++) {
                     if (invalid == *ptr) {
@@ -203,7 +203,7 @@ private:
                 const int delta = total_num * 0.01;
                 int sum = 0;
                 min_val = hist.begin()->first;
-                for (std::map<short, int>::iterator it = hist.begin(); it != hist.end();it++){
+                for (std::map<ushort, int>::iterator it = hist.begin(); it != hist.end();it++){
                     sum += it->second;
                     if (sum > delta) {
                         min_val = it->first;
@@ -213,7 +213,7 @@ private:
 
                 sum = 0;
                 max_val = hist.rbegin()->first;
-                for (std::map<short, int>::reverse_iterator s = hist.rbegin()
+                for (std::map<ushort, int>::reverse_iterator s = hist.rbegin()
                         ; s != hist.rend(); s++) {
                     sum += s->second;
                     if (sum > delta) {

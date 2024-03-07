@@ -124,12 +124,12 @@ int main(int argc, char* argv[])
         ASSERT_OK(TYRegisterEventCallback(hDevice, eventCallback, &device_offline));
 
         bool hasTrigger;
-        ASSERT_OK(TYHasFeature(hDevice, TY_COMPONENT_DEVICE, TY_STRUCT_TRIGGER_PARAM, &hasTrigger));
+        ASSERT_OK(TYHasFeature(hDevice, TY_COMPONENT_DEVICE, TY_STRUCT_TRIGGER_PARAM_EX, &hasTrigger));
         if (hasTrigger) {
             LOGD("=== Disable trigger mode");
-            TY_TRIGGER_PARAM trigger;
+            TY_TRIGGER_PARAM_EX trigger;
             trigger.mode = TY_TRIGGER_MODE_OFF;
-            ret = TYSetStruct(hDevice, TY_COMPONENT_DEVICE, TY_STRUCT_TRIGGER_PARAM, &trigger, sizeof(trigger));
+            ret = TYSetStruct(hDevice, TY_COMPONENT_DEVICE, TY_STRUCT_TRIGGER_PARAM_EX, &trigger, sizeof(trigger));
             if (ret < 0) {
                 LOGD("Set trigger mode failed!");
                 ASSERT_OK(TYCloseDevice(hDevice));
