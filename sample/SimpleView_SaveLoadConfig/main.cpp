@@ -3,175 +3,7 @@
 #include <fstream>
 #include <sstream>
 #include <string>
-//#include "rapidjson/document.h"
-//#include "rapidjson/prettywriter.h"
-//#include "rapidjson/stringbuffer.h"
 #include "../common/common.hpp"
-#include "json11.hpp"
-
-using namespace json11;
-
-TY_STATUS write_int_feature(const TY_DEV_HANDLE hDevice, TY_COMPONENT_ID comp, TY_FEATURE_ID feat, const Json& value)
-{
-    if(value.is_number())
-        return TYSetInt(hDevice, comp, feat, static_cast<int>(value.number_value()));
-    else
-        return TY_STATUS_ERROR;
-}
-
-TY_STATUS write_float_feature(const TY_DEV_HANDLE hDevice, TY_COMPONENT_ID comp, TY_FEATURE_ID feat, const Json& value)
-{
-    if(value.is_number())
-        return TYSetFloat(hDevice, comp, feat, static_cast<float>(value.number_value()));
-    else
-        return TY_STATUS_ERROR;
-}
-
-TY_STATUS write_enum_feature(const TY_DEV_HANDLE hDevice, TY_COMPONENT_ID comp, TY_FEATURE_ID feat, const Json& value)
-{
-    if(value.is_number())
-        return TYSetEnum(hDevice, comp, feat, static_cast<uint>(value.number_value()));
-    else
-        return TY_STATUS_ERROR;
-}
-
-TY_STATUS write_bool_feature(const TY_DEV_HANDLE hDevice, TY_COMPONENT_ID comp, TY_FEATURE_ID feat, const Json& value)
-{
-    if(value.is_bool())
-        return TYSetBool(hDevice, comp, feat, value.bool_value());
-    else
-        return TY_STATUS_ERROR;
-}
-
-bool json_parse_arrar(const Json& value, std::vector<char>& buff)
-{
-    buff.clear();
-    if(value.is_array()) {
-        size_t size = value.array_items().size();
-        std::vector<char> buff(size+1);
-        for(size_t i = 0; i < size; i++)
-            buff[i] = static_cast<char>(value[i].number_value());
-        return true;
-    } else {
-        return false;
-    }
-}
-
-TY_STATUS write_string_feature(const TY_DEV_HANDLE hDevice, TY_COMPONENT_ID comp, TY_FEATURE_ID feat, const Json& value)
-{
-    std::vector<char> buff(0);
-    if(json_parse_arrar(value, buff)) {
-        buff.push_back(0);
-        return TYSetString(hDevice, comp, feat, &buff[0]);
-    } else {
-        return TY_STATUS_ERROR;
-    }
-}
-
-TY_STATUS write_bytearray_feature(const TY_DEV_HANDLE hDevice, TY_COMPONENT_ID comp, TY_FEATURE_ID feat, const Json& value)
-{
-    std::vector<char> buff(0);
-    if(json_parse_arrar(value, buff)) {
-        return TYSetByteArray(hDevice, comp, feat, (uint8_t*)(&buff[0]), buff.size());
-    } else {
-        return TY_STATUS_ERROR;
-    }
-}
-
-TY_STATUS write_struct_feature(const TY_DEV_HANDLE hDevice, TY_COMPONENT_ID comp, TY_FEATURE_ID feat, const Json& value)
-{
-    std::vector<char> buff(0);
-    if(json_parse_arrar(value, buff)) {
-        return TYSetStruct(hDevice, comp, feat, (void*)(&buff[0]), buff.size());
-    } else {
-        return TY_STATUS_ERROR;
-    }
-}
-
-
-TY_STATUS device_write_feature(const TY_DEV_HANDLE hDevice, TY_COMPONENT_ID comp, TY_FEATURE_ID feat, const Json& value)
-{
-    TY_STATUS status = TY_STATUS_OK;
-    TY_FEATURE_TYPE type = TYFeatureType(feat);
-    switch (type)
-    {
-    case TY_FEATURE_INT:
-        status = write_int_feature(hDevice, comp, feat, value);
-        break;
-    case TY_FEATURE_FLOAT:
-        status = write_float_feature(hDevice, comp, feat, value);
-        break;
-    case TY_FEATURE_ENUM:
-        status = write_enum_feature(hDevice, comp, feat, value);
-        break;
-    case TY_FEATURE_BOOL:
-        status = write_bool_feature(hDevice, comp, feat, value);
-        break;
-    case TY_FEATURE_STRING:
-        status = write_string_feature(hDevice, comp, feat, value);
-        break;
-    case TY_FEATURE_BYTEARRAY:
-        status = write_bytearray_feature(hDevice, comp, feat, value);
-        break;
-    case TY_FEATURE_STRUCT:
-        status = write_struct_feature(hDevice, comp, feat, value);
-        break;
-    default:
-        status = TY_STATUS_INVALID_FEATURE;
-        break;
-    }
-    return status;
-}
-
-void json_parse(const TY_DEV_HANDLE hDevice, const char* jscode)
-{
-    std::string err;
-    const auto json = Json::parse(jscode, err);
-    LOGD("Device sn:\t\t%s", json["sn"].string_value().c_str());
-    LOGD("Sdk version:\t\t%s", json["version"].string_value().c_str());
-    LOGD("Timestamp:\t\t%s", json["timestamp"].string_value().c_str());
-
-    Json components = json["component"];
-    if(components.is_array()) {
-        for (auto &k : components.array_items()) {
-            const Json& comp_id = k["id"];
-            const Json& comp_desc = k["desc"];
-            const Json& features = k["feature"];
-
-            if(!comp_id.is_string()) continue;
-            if(!comp_desc.is_string()) continue;
-            if(!features.is_array()) continue;
-
-            const char* comp_desc_str = comp_desc.string_value().c_str();
-            const char* comp_id_str   = comp_id.string_value().c_str();
-
-            TY_COMPONENT_ID m_comp_id;
-            sscanf(comp_id_str,"%x",&m_comp_id);
-
-            LOGD("\tComp ID : 0x%08x", m_comp_id);
-            LOGD("\tDesc : %s", comp_desc_str);
-
-            for (auto &f : features.array_items()) {
-                const Json& feat_name   = f["name"];
-                const Json& feat_id     = f["id"];
-                const Json& feat_value  = f["value"];
-
-                if(!feat_id.is_string()) continue;
-                if(!feat_name.is_string()) continue;
-
-                const char* feat_name_str = feat_name.string_value().c_str();
-                const char* feat_id_str = feat_id.string_value().c_str();
-
-                TY_FEATURE_ID m_feat_id;
-                sscanf(feat_id_str,"%x",&m_feat_id);
-
-                LOGD("\t\tFeat ID : 0x%08x", m_feat_id);
-                LOGD("\t\tFeat Name : %s", feat_name_str);
-                device_write_feature(hDevice, m_comp_id, m_feat_id, feat_value);
-            }
-        }
-    }
-}
 
 void eventCallback(TY_EVENT_INFO *event_info, void *userdata)
 {
@@ -188,12 +20,14 @@ void eventCallback(TY_EVENT_INFO *event_info, void *userdata)
 int main(int argc, char* argv[])
 {
     std::string ID, IP;
-    std::string json_file;
     TY_INTERFACE_HANDLE hIface = NULL;
     TY_ISP_HANDLE hColorIspHandle = NULL;
     TY_DEV_HANDLE hDevice = NULL;
     int32_t color, ir, depth;
     color = ir = depth = 1;
+    std::string config_file;
+    std::string output_file;
+    bool config_file_valid = true;
 
     for(int i = 1; i < argc; i++) {
         if(strcmp(argv[i], "-id") == 0){
@@ -206,10 +40,18 @@ int main(int argc, char* argv[])
             depth = 0;
         } else if(strcmp(argv[i], "-ir=off") == 0) {
             ir = 0;
-        } else if(strcmp(argv[i], "-json") == 0) {
-            json_file = argv[++i];
+        } else if(strcmp(argv[i], "-s") == 0) {
+            config_file = argv[++i];
+        } else if(strcmp(argv[i], "-o") == 0) {
+            output_file = argv[++i];
         } else if(strcmp(argv[i], "-h") == 0) {
-            LOGI("Usage: SimpleView_LoadJson [-h] [-id <ID>] [-ip <IP>] [-json <FILE>]");
+            LOGI("Usage: %s [-h] [-id <ID>] [-ip <IP>] [-s <config_file>] [-o <dump_file>]", argv[0]);
+            LOGI("\t[-h] Show this help info");
+            LOGI("\t[-id <ID>] select camera sn to work with");
+            LOGI("\t[-ip <IP>] select camera IP to work with");
+            LOGI("\t[-s <config_file>] save config_file to camera");
+            LOGI("\t[-o <dump_file>] save configs read from camera to dump_file");
+            LOGI("\t[-ir=off/-color=off/-depth=off] disable ir/color/depth");
             return 0;
         }
     }
@@ -233,14 +75,22 @@ int main(int argc, char* argv[])
     ASSERT_OK( TYOpenInterface(selectedDev.iface.id, &hIface) );
     ASSERT_OK( TYOpenDevice(hIface, selectedDev.id, &hDevice) );
 
-    if(!json_file.empty()) {
-        std::ifstream ifs(json_file);
-        std::stringstream buffer;
-        buffer << ifs.rdbuf();
-        ifs.close();
-
-        std::string text(buffer.str());
-        json_parse(hDevice, text.c_str());
+    if (!config_file.empty()) {
+        ASSERT_OK(write_parameters_to_storage(hDevice,  config_file));
+        LOGD("Write Config Done!");
+        ASSERT_OK( TYCloseDevice(hDevice));
+        ASSERT_OK( TYCloseInterface(hIface) );
+        ASSERT_OK( TYDeinitLib() );
+        return 0;
+    } else {
+        std::string js_data;
+        ASSERT_OK(load_parameters_from_storage(hDevice, js_data));
+        if (!js_data.empty()) {
+            FILE * fp = fopen(output_file.c_str(), "wb");
+            ASSERT(fp);
+            fwrite(js_data.data(), 1, js_data.length(), fp);
+            fclose(fp);
+        }
     }
 
     TY_COMPONENT_ID allComps;
@@ -276,14 +126,9 @@ int main(int argc, char* argv[])
         ASSERT_OK(TYEnableComponents(hDevice, TY_COMPONENT_IR_CAM_RIGHT));
     }
 
-    //try to enable depth map
-    LOGD("Configure components, open depth cam");
     DepthViewer depthViewer("Depth");
     if (allComps & TY_COMPONENT_DEPTH_CAM && depth) {
-        TY_IMAGE_MODE image_mode;
-        ASSERT_OK(get_default_image_mode(hDevice, TY_COMPONENT_DEPTH_CAM, image_mode));
-        LOGD("Select Depth Image Mode: %dx%d", TYImageWidth(image_mode), TYImageHeight(image_mode));
-        ASSERT_OK(TYSetEnum(hDevice, TY_COMPONENT_DEPTH_CAM, TY_ENUM_IMAGE_MODE, image_mode));
+        LOGD("Has depth camera, open depth cam");
         ASSERT_OK(TYEnableComponents(hDevice, TY_COMPONENT_DEPTH_CAM));
 
         //depth map pixel format is uint16_t ,which default unit is  1 mm
@@ -292,8 +137,6 @@ int main(int argc, char* argv[])
         TYGetFloat(hDevice, TY_COMPONENT_DEPTH_CAM, TY_FLOAT_SCALE_UNIT, &scale_unit);
         depthViewer.depth_scale_unit = scale_unit;
     }
-
-
 
     LOGD("Prepare image buffer");
     uint32_t frameSize;

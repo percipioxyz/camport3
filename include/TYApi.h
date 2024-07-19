@@ -163,6 +163,7 @@ typedef enum TY_FW_ERRORCODE_LIST:uint32_t
     TY_FW_ERRORCODE_RECMAP_NOT_CORRECT      = 0x00000010,
     TY_FW_ERRORCODE_LOOKUPTABLE_NOT_CORRECT = 0x00000020,
     TY_FW_ERRORCODE_DRV8899_NOT_INIT        = 0x00000040,
+    TY_FW_ERRORCODE_FOC_START_ERR           = 0x00000080,
     TY_FW_ERRORCODE_CONFIG_NOT_FOUND        = 0x00010000,
     TY_FW_ERRORCODE_CONFIG_NOT_CORRECT      = 0x00020000,
     TY_FW_ERRORCODE_XML_NOT_FOUND           = 0x00040000,
@@ -275,15 +276,18 @@ typedef enum TY_FEATURE_ID_LIST :uint32_t
     TY_INT_CAPTURE_TIME_US          = 0x0210 | TY_FEATURE_INT,  ///< capture time in multi-ir 
     TY_ENUM_TIME_SYNC_TYPE          = 0x0211 | TY_FEATURE_ENUM, ///< see TY_TIME_SYNC_TYPE
     TY_BOOL_TIME_SYNC_READY         = 0x0212 | TY_FEATURE_BOOL, ///< time sync done status
-    TY_BOOL_FLASHLIGHT              = 0x0213 | TY_FEATURE_BOOL, ///< flashlight on/off control
-    TY_INT_FLASHLIGHT_INTENSITY     = 0x0214 | TY_FEATURE_INT,  ///< flashlight intensity level [0, 63]
+    TY_BOOL_IR_FLASHLIGHT           = 0x0213 | TY_FEATURE_BOOL, ///< Enable switch for floodlight used in ir component
+    TY_INT_IR_FLASHLIGHT_INTENSITY  = 0x0214 | TY_FEATURE_INT,  ///< ir component flashlight intensity level
+    TY_BOOL_RGB_FLASHLIGHT          = 0x0221 | TY_FEATURE_BOOL, ///< Enable switch for floodlight used in rgb component
+    TY_INT_RGB_FLASHLIGHT_INTENSITY = 0x0222 | TY_FEATURE_INT,  ///< rgb component flashlight intensity level
     TY_STRUCT_DO0_WORKMODE          = 0x0215 | TY_FEATURE_STRUCT, ///< DO_0 workmode, see TY_DO_WORKMODE
     TY_STRUCT_DI0_WORKMODE          = 0x0216 | TY_FEATURE_STRUCT, ///< DI_0 workmode, see TY_DI_WORKMODE
     TY_STRUCT_DO1_WORKMODE          = 0x0217 | TY_FEATURE_STRUCT, ///< DO_1 workmode, see TY_DO_WORKMODE
     TY_STRUCT_DI1_WORKMODE          = 0x0218 | TY_FEATURE_STRUCT, ///< DI_1 workmode, see TY_DI_WORKMODE
     TY_STRUCT_DO2_WORKMODE          = 0x0219 | TY_FEATURE_STRUCT, ///< DO_2 workmode, see TY_DO_WORKMODE
     TY_STRUCT_DI2_WORKMODE          = 0x0220 | TY_FEATURE_STRUCT, ///< DI_2 workmode, see TY_DI_WORKMODE
-
+    TY_ENUM_CONFIG_MODE             = 0x0221 | TY_FEATURE_ENUM,
+    TY_FOC_CALIB_START              = 0x0222 | TY_FEATURE_INT,
 
     TY_BOOL_AUTO_EXPOSURE           = 0x0300 | TY_FEATURE_BOOL, ///< Auto exposure switch
     TY_INT_EXPOSURE_TIME            = 0x0301 | TY_FEATURE_INT,  ///< Exposure time
@@ -296,6 +300,23 @@ typedef enum TY_FEATURE_ID_LIST :uint32_t
 
     TY_INT_LASER_POWER              = 0x0500 | TY_FEATURE_INT,  ///< Laser power level
     TY_BOOL_LASER_AUTO_CTRL         = 0x0501 | TY_FEATURE_BOOL, ///< Laser auto ctrl
+    TY_STRUCT_LASER_PATTERN         = 0x0502 | TY_FEATURE_STRUCT,
+    TY_INT_LASER_CAM_TRIG_POS       = 0x0503 | TY_FEATURE_INT,
+    TY_INT_LASER_CAM_TRIG_LEN       = 0x0504 | TY_FEATURE_INT,
+    TY_INT_LASER_LUT_TRIG_POS       = 0x0505 | TY_FEATURE_INT,
+    TY_INT_LASER_LUT_NUM            = 0x0506 | TY_FEATURE_INT,
+    TY_INT_LASER_PATTERN_OFFSET     = 0x0507 | TY_FEATURE_INT,
+    TY_INT_LASER_MIRROR_NUM         = 0x0508 | TY_FEATURE_INT,
+    TY_INT_LASER_MIRROR_SEL         = 0x0509 | TY_FEATURE_INT,
+    TY_INT_LASER_LUT_IDX            = 0x050a | TY_FEATURE_INT,
+    TY_INT_LASER_FACET_IDX          = 0x050b | TY_FEATURE_INT,
+    TY_INT_LASER_FACET_POS          = 0x050c | TY_FEATURE_INT,
+    TY_INT_LASER_MODE               = 0x050d | TY_FEATURE_INT,
+    TY_INT_CONST_DRV_DUTY           = 0x050e | TY_FEATURE_INT,
+    TY_STRUCT_LASER_ENABLE_BY_IDX   = 0x0530 | TY_FEATURE_STRUCT, ///< Laser enable by device index
+    TY_STRUCT_LASER_POWER_BY_IDX    = 0x0531 | TY_FEATURE_STRUCT, ///< Laser power by device index
+    TY_STRUCT_FLOOD_ENABLE_BY_IDX   = 0x0532 | TY_FEATURE_STRUCT, ///< Flood enable by device index
+    TY_STRUCT_FLOOD_POWER_BY_IDX    = 0x0533 | TY_FEATURE_STRUCT, ///< Flood power by device index
 
     TY_BOOL_UNDISTORTION            = 0x0510 | TY_FEATURE_BOOL, ///< Output undistorted image
     TY_BOOL_BRIGHTNESS_HISTOGRAM    = 0x0511 | TY_FEATURE_BOOL, ///< Output bright histogram
@@ -308,7 +329,7 @@ typedef enum TY_FEATURE_ID_LIST :uint32_t
     TY_INT_ANALOG_GAIN              = 0x0524 | TY_FEATURE_INT,  ///< Analog gain
     TY_BOOL_HDR                     = 0x0525 | TY_FEATURE_BOOL, ///< HDR func enable/disable
     TY_BYTEARRAY_HDR_PARAMETER      = 0x0526 | TY_FEATURE_BYTEARRAY, ///< HDR parameters
-    TY_INT_AE_TARGET_V              = 0x0527 | TY_FEATURE_INT,  ///AE target y
+    TY_INT_AE_TARGET_Y              = 0x0527 | TY_FEATURE_INT,  ///AE target y
 
     TY_BOOL_IMU_DATA_ONOFF          = 0x0600 | TY_FEATURE_BOOL, ///< IMU Data Onoff
     TY_STRUCT_IMU_ACC_BIAS          = 0x0601 | TY_FEATURE_STRUCT, ///< IMU acc bias matrix, see TY_ACC_BIAS
@@ -328,7 +349,7 @@ typedef enum TY_FEATURE_ID_LIST :uint32_t
     TY_INT_SGBM_SEMI_PARAM_P2       = 0x0615 | TY_FEATURE_INT,  ///< SGBM semi global param p2
     TY_INT_SGBM_UNIQUE_FACTOR       = 0x0616 | TY_FEATURE_INT,  ///< SGBM uniqueness factor param
     TY_INT_SGBM_UNIQUE_ABSDIFF      = 0x0617 | TY_FEATURE_INT,  ///< SGBM uniqueness min absolute diff
-    TY_INT_SGBM_COST_PARAM          = 0x0618 | TY_FEATURE_INT,  ///< SGBM cost param
+    TY_INT_SGBM_UNIQUE_MAX_COST     = 0x0618 | TY_FEATURE_INT,  ///< SGBM uniqueness max cost param
     TY_BOOL_SGBM_HFILTER_HALF_WIN   = 0x0619 | TY_FEATURE_BOOL, ///< SGBM enable half window size
     TY_INT_SGBM_MATCH_WIN_WIDTH     = 0x061A | TY_FEATURE_INT,  ///< SGBM match window width
     TY_BOOL_SGBM_MEDFILTER          = 0x061B | TY_FEATURE_BOOL, ///< SGBM enable median filter
@@ -336,7 +357,12 @@ typedef enum TY_FEATURE_ID_LIST :uint32_t
     TY_INT_SGBM_LRC_DIFF            = 0x061D | TY_FEATURE_INT,  ///< SGBM max diff
     TY_INT_SGBM_MEDFILTER_THRESH    = 0x061E | TY_FEATURE_INT,  ///< SGBM median filter thresh
     TY_INT_SGBM_SEMI_PARAM_P1_SCALE = 0x061F | TY_FEATURE_INT,  ///< SGBM semi global param p1 scale
-
+    TY_INT_SGPM_PHASE_NUM           = 0x0620 | TY_FEATURE_INT,  ///< Phase num to calc a depth
+    TY_INT_SGPM_NORMAL_PHASE_SCALE  = 0x0621 | TY_FEATURE_INT,  ///< phase scale when calc a depth
+    TY_INT_SGPM_NORMAL_PHASE_OFFSET = 0x0622 | TY_FEATURE_INT,  ///< Phase offset when calc a depth
+    TY_INT_SGPM_REF_PHASE_SCALE     = 0x0623 | TY_FEATURE_INT,  ///< Reference Phase scale when calc a depth
+    TY_INT_SGPM_REF_PHASE_OFFSET    = 0x0624 | TY_FEATURE_INT,  ///< Reference Phase offset when calc a depth
+    TY_STRUCT_PHC_GROUP_ATTR        = 0x0710 | TY_FEATURE_STRUCT,  ///< Phase compute group attribute
     TY_ENUM_DEPTH_QUALITY           = 0x0900 | TY_FEATURE_ENUM,  ///< the quality of generated depth, see TY_DEPTH_QUALITY
     TY_INT_FILTER_THRESHOLD         = 0x0901 | TY_FEATURE_INT,   ///< the threshold of the noise filter, 0 for disabled
     TY_INT_TOF_CHANNEL              = 0x0902 | TY_FEATURE_INT,   ///< the frequency channel of tof
@@ -349,6 +375,27 @@ typedef enum TY_FEATURE_ID_LIST :uint32_t
 }TY_FEATURE_ID_LIST;
 typedef uint32_t TY_FEATURE_ID;///< feature unique id @see TY_FEATURE_ID_LIST
 
+//Incase some user has already use TY_INT_SGBM_COST_PARAM
+#define TY_INT_SGBM_COST_PARAM TY_INT_SGBM_UNIQUE_MAX_COST
+
+//Incase some user has already use TY_BOOL_FLASHLIGHT/TY_INT_FLASHLIGHT_INTENSITY
+#define TY_BOOL_FLASHLIGHT TY_BOOL_IR_FLASHLIGHT
+#define TY_INT_FLASHLIGHT_INTENSITY    TY_INT_IR_FLASHLIGHT_INTENSITY
+
+typedef enum TY_CONFIG_MODE_LIST :uint32_t
+{
+    TY_CONFIG_MODE_PRESET0 = 0,
+    TY_CONFIG_MODE_PRESET1, //1
+    TY_CONFIG_MODE_PRESET2, //2
+
+    TY_CONFIG_MODE_USERSET0 = (1<<16),
+    TY_CONFIG_MODE_USERSET1, //0x10001
+    TY_CONFIG_MODE_USERSET2, //0x10002
+}TY_CONFIG_MODE_LIST;
+typedef uint32_t TY_CONFIG_MODE;
+
+//Incase some user has already use TARGET_V
+#define  TY_INT_AE_TARGET_V   TY_INT_AE_TARGET_Y
 typedef enum TY_DEPTH_QUALITY_LIST :uint32_t
 {
     TY_DEPTH_QUALITY_BASIC   = 1,
@@ -480,6 +527,8 @@ typedef enum TY_RESOLUTION_MODE_LIST :uint32_t
     TY_RESOLUTION_MODE_1280x720     = (1280<<12)+720,   ///< 0x005002d0
     TY_RESOLUTION_MODE_1280x800     = (1280<<12)+800,   ///< 0x00500320
     TY_RESOLUTION_MODE_1280x960     = (1280<<12)+960,   ///< 0x005003c0
+    TY_RESOLUTION_MODE_1600x1200    = (1600<<12)+1200,  ///< 0x006404b0
+    TY_RESOLUTION_MODE_800x600      = (800<<12)+600,    ///< 0x00320258
     TY_RESOLUTION_MODE_1920x1080    = (1920<<12)+1080,  ///< 0x00780438
     TY_RESOLUTION_MODE_2560x1920    = (2560<<12)+1920,  ///< 0x00a00780
     TY_RESOLUTION_MODE_2592x1944    = (2592<<12)+1944,  ///< 0x00a20798
@@ -506,6 +555,8 @@ typedef int32_t TY_RESOLUTION_MODE;
             TY_DECLARE_IMAGE_MODE0(pix, 1280x720), \
             TY_DECLARE_IMAGE_MODE0(pix, 1280x960), \
             TY_DECLARE_IMAGE_MODE0(pix, 1280x800), \
+            TY_DECLARE_IMAGE_MODE0(pix, 1600x1200), \
+            TY_DECLARE_IMAGE_MODE0(pix, 800x600), \
             TY_DECLARE_IMAGE_MODE0(pix, 1920x1080), \
             TY_DECLARE_IMAGE_MODE0(pix, 2560x1920), \
             TY_DECLARE_IMAGE_MODE0(pix, 2592x1944), \
@@ -567,10 +618,12 @@ typedef enum TY_TRIGGER_MODE_LIST :uint32_t
     TY_TRIGGER_MODE_SLAVE       = 1, ///<slave mode, receive soft/hardware triggers
     TY_TRIGGER_MODE_M_SIG       = 2, ///<master mode 1, sending one trigger signal once received a soft/hardware trigger
     TY_TRIGGER_MODE_M_PER       = 3, ///<master mode 2, periodic sending one trigger signals, 'fps' param should be set
-    TY_TRIGGER_MODE_SIG_PASS    = 18,
-    TY_TRIGGER_MODE_PER_PASS    = 19,
+    TY_TRIGGER_MODE_SIG_PASS    = 18,///<discard, using TY_TRIGGER_MODE28
+    TY_TRIGGER_MODE_PER_PASS    = 19,///<discard, using TY_TRIGGER_MODE29
     TY_TRIGGER_MODE_TIMER_LIST  = 20,
     TY_TRIGGER_MODE_TIMER_PERIOD= 21,
+    TY_TRIGGER_MODE28           = 28,
+    TY_TRIGGER_MODE29           = 29,
     TY_TRIGGER_MODE_PER_PASS2   = 30,///<trigger mode 30,Alternate output depth image/ir image
     TY_TRIGGER_WORK_MODE31      = 31,
     TY_TRIGGER_MODE_SIG_LASER   = 34,
@@ -859,6 +912,64 @@ typedef struct TY_AEC_ROI_PARAM
     uint32_t  h;
 }TY_AEC_ROI_PARAM;
 
+enum {
+    TY_PATTERN_SINE_TYPE = 0,
+    TY_PATTERN_GRAY_TYPE,
+    TY_PATTERN_BIN_TYPE,
+
+    TY_PATTERN_EMPTY_TYPE = 0xffffffff, 
+};
+
+typedef struct TY_PHC_GROUP_ATTR
+{
+    uint32_t  offset;
+    uint32_t  size; //valid # of phc_attr in this struct
+    struct phc_group_attr {
+	    uint8_t type;
+        uint8_t amp_thresh;
+	    uint16_t ch;
+        uint8_t rsvd[28];
+    } phc_attr[16];
+}TY_PHC_GROUP_ATTR;
+
+typedef struct
+{
+    uint32_t phase_num;
+    float period;
+}pattern_sine_param;
+
+typedef struct
+{
+    uint32_t phase_num;
+    uint32_t param1;
+    uint32_t param2;
+    uint32_t param3;
+}pattern_gray_param;
+
+typedef struct
+{
+    uint32_t offset;
+    uint8_t data[512];
+}pattern_bin_param;
+
+typedef struct TY_LASER_PATTERN_PARAM
+{
+    uint32_t  img_index;
+    uint32_t  type;
+    union
+    {
+        uint8_t  payload[512+16];
+        pattern_sine_param sine_param;
+        pattern_gray_param gray_param;
+        pattern_bin_param bin;
+    };
+}TY_LASER_PATTERN_PARAM;
+
+enum {
+    TY_NORMAL_PHASE_TYPE = 0,
+    TY_REFER_PHASE_TYPE,
+};
+
 typedef struct TY_CAMERA_STATISTICS
 {
     uint64_t   packetReceived;
@@ -968,6 +1079,13 @@ typedef enum TY_IMU_FPS_LIST
     TY_IMU_FPS_200HZ,
     TY_IMU_FPS_400HZ,
 }TY_IMU_FPS_LIST;
+
+typedef struct TY_LASER_PARAM
+{
+    uint32_t idx;
+    uint32_t en;
+    uint32_t power;
+} TY_LASER_PARAM;
 
 //------------------------------------------------------------------------------
 //  Buffer & Callback

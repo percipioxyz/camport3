@@ -113,20 +113,23 @@ $(document).ready(function(){initNavTree('globals.html','');});
 <li>TY_BOOL_DEPTH_POSTPROC
 : <a class="el" href="a00002.html#a6ad12f8e99a29828f93af6916a846f38aa33c31670b3fedc298f957654b9a8825">TYApi.h</a>
 </li>
-<li>TY_BOOL_FLASHLIGHT
-: <a class="el" href="a00002.html#a6ad12f8e99a29828f93af6916a846f38a9b44f5577cdc860e3d509330b191c87c">TYApi.h</a>
-</li>
 <li>TY_BOOL_HDR
 : <a class="el" href="a00002.html#a6ad12f8e99a29828f93af6916a846f38a893e47e74f056b2fd1df01e31cc3385c">TYApi.h</a>
 </li>
 <li>TY_BOOL_IMU_DATA_ONOFF
 : <a class="el" href="a00002.html#a6ad12f8e99a29828f93af6916a846f38a1a00d0a48d1d0fabd6b1cab88c8644d6">TYApi.h</a>
 </li>
+<li>TY_BOOL_IR_FLASHLIGHT
+: <a class="el" href="a00002.html#a6ad12f8e99a29828f93af6916a846f38aaf995682a4e4360c512d27ba9f88df08">TYApi.h</a>
+</li>
 <li>TY_BOOL_KEEP_ALIVE_ONOFF
 : <a class="el" href="a00002.html#a6ad12f8e99a29828f93af6916a846f38a58674f119f443456b08f7532cc411995">TYApi.h</a>
 </li>
 <li>TY_BOOL_LASER_AUTO_CTRL
 : <a class="el" href="a00002.html#a6ad12f8e99a29828f93af6916a846f38a9e728970d3b6c1ba088891834f2d733e">TYApi.h</a>
+</li>
+<li>TY_BOOL_RGB_FLASHLIGHT
+: <a class="el" href="a00002.html#a6ad12f8e99a29828f93af6916a846f38a596bd0a4b1407d286619818b7bdfaec0">TYApi.h</a>
 </li>
 <li>TY_BOOL_SGBM_HFILTER_HALF_WIN
 : <a class="el" href="a00002.html#a6ad12f8e99a29828f93af6916a846f38ac6ac106d15fea1053a3fb74fa7a7032b">TYApi.h</a>
@@ -287,9 +290,6 @@ $(document).ready(function(){initNavTree('globals.html','');});
 <li>TY_INT_FILTER_THRESHOLD
 : <a class="el" href="a00002.html#a6ad12f8e99a29828f93af6916a846f38a3b5eba50d43b4f0112b475df4056ce30">TYApi.h</a>
 </li>
-<li>TY_INT_FLASHLIGHT_INTENSITY
-: <a class="el" href="a00002.html#a6ad12f8e99a29828f93af6916a846f38ad7200bf30902f5899817a1fa05891975">TYApi.h</a>
-</li>
 <li>TY_INT_FRAME_PER_TRIGGER
 : <a class="el" href="a00002.html#a6ad12f8e99a29828f93af6916a846f38af323a74de002972f3d0201cdb5f53f09">TYApi.h</a>
 </li>
@@ -301,6 +301,9 @@ $(document).ready(function(){initNavTree('globals.html','');});
 </li>
 <li>TY_INT_HEIGHT
 : <a class="el" href="a00002.html#a6ad12f8e99a29828f93af6916a846f38a9c2d4bbee1e06ec9d19c0b8d0374051e">TYApi.h</a>
+</li>
+<li>TY_INT_IR_FLASHLIGHT_INTENSITY
+: <a class="el" href="a00002.html#a6ad12f8e99a29828f93af6916a846f38a4c569ea68af01e088951a897756e169e">TYApi.h</a>
 </li>
 <li>TY_INT_KEEP_ALIVE_TIMEOUT
 : <a class="el" href="a00002.html#a6ad12f8e99a29828f93af6916a846f38aca08314da8146be2239c8fd8b8608d5a">TYApi.h</a>
@@ -326,8 +329,8 @@ $(document).ready(function(){initNavTree('globals.html','');});
 <li>TY_INT_R_GAIN
 : <a class="el" href="a00002.html#a6ad12f8e99a29828f93af6916a846f38af959400781d55f751ad6d9b433713b45">TYApi.h</a>
 </li>
-<li>TY_INT_SGBM_COST_PARAM
-: <a class="el" href="a00002.html#a6ad12f8e99a29828f93af6916a846f38a318e5c01daf44b8088128c34d0c16dc8">TYApi.h</a>
+<li>TY_INT_RGB_FLASHLIGHT_INTENSITY
+: <a class="el" href="a00002.html#a6ad12f8e99a29828f93af6916a846f38a81d51539094b47fc989e7b65d9646f89">TYApi.h</a>
 </li>
 <li>TY_INT_SGBM_DISPARITY_NUM
 : <a class="el" href="a00002.html#a6ad12f8e99a29828f93af6916a846f38a8293025d1e10f29c67b701f04085ea40">TYApi.h</a>
@@ -364,6 +367,24 @@ $(document).ready(function(){initNavTree('globals.html','');});
 </li>
 <li>TY_INT_SGBM_UNIQUE_FACTOR
 : <a class="el" href="a00002.html#a6ad12f8e99a29828f93af6916a846f38a6e633d2181bc7f7bd87d93ac72d106cf">TYApi.h</a>
+</li>
+<li>TY_INT_SGBM_UNIQUE_MAX_COST
+: <a class="el" href="a00002.html#a6ad12f8e99a29828f93af6916a846f38a3f3e59016942e1e1ba31e1e1932f954c">TYApi.h</a>
+</li>
+<li>TY_INT_SGPM_NORMAL_PHASE_OFFSET
+: <a class="el" href="a00002.html#a6ad12f8e99a29828f93af6916a846f38a2c8c3e9541f7e261dc29853bd046e516">TYApi.h</a>
+</li>
+<li>TY_INT_SGPM_NORMAL_PHASE_SCALE
+: <a class="el" href="a00002.html#a6ad12f8e99a29828f93af6916a846f38adf425905d30c58356c114fee6c70b8db">TYApi.h</a>
+</li>
+<li>TY_INT_SGPM_PHASE_NUM
+: <a class="el" href="a00002.html#a6ad12f8e99a29828f93af6916a846f38af2528e72db1f55d8780fb2434f801caa">TYApi.h</a>
+</li>
+<li>TY_INT_SGPM_REF_PHASE_OFFSET
+: <a class="el" href="a00002.html#a6ad12f8e99a29828f93af6916a846f38a7d38b13db399967f8c802178992efc9c">TYApi.h</a>
+</li>
+<li>TY_INT_SGPM_REF_PHASE_SCALE
+: <a class="el" href="a00002.html#a6ad12f8e99a29828f93af6916a846f38a72376db4bf791de9bcb541c93a9e9ca6">TYApi.h</a>
 </li>
 <li>TY_INT_TOF_ANTI_SUNLIGHT_INDEX
 : <a class="el" href="a00002.html#a6ad12f8e99a29828f93af6916a846f38a49ab608765b0631210032a58d5d8f908">TYApi.h</a>
@@ -533,6 +554,9 @@ $(document).ready(function(){initNavTree('globals.html','');});
 <li>TY_RESOLUTION_MODE_1280x960
 : <a class="el" href="a00002.html#aa939600b530fafe2f138a4e5d5f722ccafd2e5516aa45209b4ab6d005aa4968d2">TYApi.h</a>
 </li>
+<li>TY_RESOLUTION_MODE_1600x1200
+: <a class="el" href="a00002.html#aa939600b530fafe2f138a4e5d5f722cca3923c20fcf43917717051ad3aa186845">TYApi.h</a>
+</li>
 <li>TY_RESOLUTION_MODE_160x100
 : <a class="el" href="a00002.html#aa939600b530fafe2f138a4e5d5f722cca3e7a0f0284a8392ab4a489bc25cd5f20">TYApi.h</a>
 </li>
@@ -581,6 +605,9 @@ $(document).ready(function(){initNavTree('globals.html','');});
 <li>TY_RESOLUTION_MODE_640x480
 : <a class="el" href="a00002.html#aa939600b530fafe2f138a4e5d5f722cca71905e662d0b90c46582d5bf2904d844">TYApi.h</a>
 </li>
+<li>TY_RESOLUTION_MODE_800x600
+: <a class="el" href="a00002.html#aa939600b530fafe2f138a4e5d5f722cca44f4f0d96f577019e2bd937295fb3846">TYApi.h</a>
+</li>
 <li>TY_RESOLUTION_MODE_960x1280
 : <a class="el" href="a00002.html#aa939600b530fafe2f138a4e5d5f722ccac47c4c589747805873b0e25e064c59c1">TYApi.h</a>
 </li>
@@ -588,7 +615,7 @@ $(document).ready(function(){initNavTree('globals.html','');});
 : <a class="el" href="a00002.html#aa939600b530fafe2f138a4e5d5f722cc">TYApi.h</a>
 </li>
 <li>TY_STATUS_LIST
-: <a class="el" href="a00002.html#a3b4437d6e3428c34e713da2ae6cf9245">TYApi.h</a>
+: <a class="el" href="a00002.html#adee260e5d66e2e89973c04a023508a20">TYApi.h</a>
 </li>
 <li>TY_STREAM_ASYNC_MODE_LIST
 : <a class="el" href="a00002.html#afbdeaa73f2870f94cbf4dc79ec79d2ca">TYApi.h</a>
@@ -635,6 +662,12 @@ $(document).ready(function(){initNavTree('globals.html','');});
 <li>TY_STRUCT_EXTRINSIC_TO_IR_LEFT
 : <a class="el" href="a00002.html#a6ad12f8e99a29828f93af6916a846f38ad8095d515aa63d09c738d54d4f2bc543">TYApi.h</a>
 </li>
+<li>TY_STRUCT_FLOOD_ENABLE_BY_IDX
+: <a class="el" href="a00002.html#a6ad12f8e99a29828f93af6916a846f38a619cf24b19bb7b6f2392591960c9871f">TYApi.h</a>
+</li>
+<li>TY_STRUCT_FLOOD_POWER_BY_IDX
+: <a class="el" href="a00002.html#a6ad12f8e99a29828f93af6916a846f38a1247fcd01faa4e052e23cdd8eb085edb">TYApi.h</a>
+</li>
 <li>TY_STRUCT_IMU_ACC_BIAS
 : <a class="el" href="a00002.html#a6ad12f8e99a29828f93af6916a846f38a5fd4b63f15738888f3bea3c05c57c86a">TYApi.h</a>
 </li>
@@ -656,6 +689,15 @@ $(document).ready(function(){initNavTree('globals.html','');});
 <li>TY_STRUCT_IMU_GYRO_SCALE
 : <a class="el" href="a00002.html#a6ad12f8e99a29828f93af6916a846f38af45bde4f39fea3d09c66ab4992b32a2b">TYApi.h</a>
 </li>
+<li>TY_STRUCT_LASER_ENABLE_BY_IDX
+: <a class="el" href="a00002.html#a6ad12f8e99a29828f93af6916a846f38a2b688c6c016a4c33dad32e3bd1090642">TYApi.h</a>
+</li>
+<li>TY_STRUCT_LASER_POWER_BY_IDX
+: <a class="el" href="a00002.html#a6ad12f8e99a29828f93af6916a846f38a51981d20ac997650f46686e9a7d7a0a6">TYApi.h</a>
+</li>
+<li>TY_STRUCT_PHC_GROUP_ATTR
+: <a class="el" href="a00002.html#a6ad12f8e99a29828f93af6916a846f38a8f67c2513520fa2abd1bbc7c4a41841c">TYApi.h</a>
+</li>
 <li>TY_STRUCT_TOF_FREQ
 : <a class="el" href="a00002.html#a6ad12f8e99a29828f93af6916a846f38a567f2ae9c42ca97e9880419d2400ff28">TYApi.h</a>
 </li>
@@ -675,7 +717,7 @@ $(document).ready(function(){initNavTree('globals.html','');});
 : <a class="el" href="a00002.html#a5a81060429cd1e045b2952f184729c2f">TYApi.h</a>
 </li>
 <li>TY_TRIGGER_MODE_LIST
-: <a class="el" href="a00002.html#a196e4be51ec352e9cc6bd22cae206df3">TYApi.h</a>
+: <a class="el" href="a00002.html#a7a089285d054ee116d331b2472952729">TYApi.h</a>
 </li>
 <li>TY_TRIGGER_MODE_M_PER
 : <a class="el" href="a00002.html#a7a089285d054ee116d331b2472952729a72b26deaeee841838bb3c433f23db68c">TYApi.h</a>
@@ -686,8 +728,14 @@ $(document).ready(function(){initNavTree('globals.html','');});
 <li>TY_TRIGGER_MODE_OFF
 : <a class="el" href="a00002.html#a7a089285d054ee116d331b2472952729a0e57fa882e539966b9c99891708d64c9">TYApi.h</a>
 </li>
+<li>TY_TRIGGER_MODE_PER_PASS
+: <a class="el" href="a00002.html#a7a089285d054ee116d331b2472952729a203041904285d0cc15d13e7827175550">TYApi.h</a>
+</li>
 <li>TY_TRIGGER_MODE_PER_PASS2
 : <a class="el" href="a00002.html#a7a089285d054ee116d331b2472952729a3b1dae40f545db4c3a826466acc3e44f">TYApi.h</a>
+</li>
+<li>TY_TRIGGER_MODE_SIG_PASS
+: <a class="el" href="a00002.html#a7a089285d054ee116d331b2472952729ae621fd2f3b5daa3f7113e73d41c5142e">TYApi.h</a>
 </li>
 <li>TY_TRIGGER_MODE_SLAVE
 : <a class="el" href="a00002.html#a7a089285d054ee116d331b2472952729ac3238b405fc2cd3f572f33cb38174993">TYApi.h</a>

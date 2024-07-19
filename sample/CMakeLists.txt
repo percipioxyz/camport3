@@ -19,6 +19,8 @@ set(ALL_SAMPLES
     SimpleView_TriggerMode19
     SimpleView_TriggerMode20
     SimpleView_TriggerMode21
+    SimpleView_TriggerMode28
+    SimpleView_TriggerMode29
     SimpleView_TriggerMode30
     SimpleView_TriggerMode31
     SimpleView_TriggerMode_M2S1
@@ -33,7 +35,7 @@ set(ALL_SAMPLES
     SimpleView_HDR
     SimpleView_SGBM
     SimpleView_XYZ48
-    SimpleView_LoadJson
+    SimpleView_SaveLoadConfig
     )
 
 set(SAMPLES_USED_GLUT
@@ -83,7 +85,7 @@ endif()
 # ========================================
 # === common, build static lib to speed up
 # ========================================
-set(COMMON_SOURCES common/MatViewer.cpp common/TYThread.cpp common/ImageSpeckleFilter.cpp common/DepthInpainter.cpp)
+set(COMMON_SOURCES common/MatViewer.cpp common/TYThread.cpp common/crc32.cpp common/json11.cpp common/ParametersParse.cpp common/ImageSpeckleFilter.cpp common/DepthInpainter.cpp)
 
 add_library(sample_common STATIC ${COMMON_SOURCES})
 if(UNIX)

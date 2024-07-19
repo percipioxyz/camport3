@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.13"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>TYCamport3: TY_FRAME_DATA Struct Reference</title>
+<title>TYCamport3: TY_ACC_SCALE Struct Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -84,44 +84,31 @@ $(document).ready(function(){initNavTree('a00157.html','');});
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="a00154.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">TY_FRAME_DATA Struct Reference</div>  </div>
+<div class="title">TY_ACC_SCALE Struct Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="dynheader">
-Collaboration diagram for TY_FRAME_DATA:</div>
-<div class="dyncontent">
-<div class="center"><img src="a00155.png" border="0" usemap="#_t_y___f_r_a_m_e___d_a_t_a_coll__map" alt="Collaboration graph"/></div>
-<map name="_t_y___f_r_a_m_e___d_a_t_a_coll__map" id="_t_y___f_r_a_m_e___d_a_t_a_coll__map">
-<area shape="rect" id="node2" href="a00153.html" title="TY_IMAGE_DATA" alt="" coords="6,5,134,32"/>
-</map>
-<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
+
+<p><code>#include &lt;<a class="el" href="a00002_source.html">TYApi.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a91bf938ad9164a5f56a5798f5081295f"><td class="memItemLeft" align="right" valign="top"><a id="a91bf938ad9164a5f56a5798f5081295f"></a>
-void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00157.html#a91bf938ad9164a5f56a5798f5081295f">userBuffer</a></td></tr>
-<tr class="memdesc:a91bf938ad9164a5f56a5798f5081295f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to user enqueued buffer, user should enqueue this buffer in the end of callback. <br /></td></tr>
-<tr class="separator:a91bf938ad9164a5f56a5798f5081295f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac8ca7f4c699ee7fa6a3ee8ed65e5236a"><td class="memItemLeft" align="right" valign="top"><a id="ac8ca7f4c699ee7fa6a3ee8ed65e5236a"></a>
-int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00157.html#ac8ca7f4c699ee7fa6a3ee8ed65e5236a">bufferSize</a></td></tr>
-<tr class="memdesc:ac8ca7f4c699ee7fa6a3ee8ed65e5236a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Size of userBuffer. <br /></td></tr>
-<tr class="separator:ac8ca7f4c699ee7fa6a3ee8ed65e5236a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8e3a508ddd5eec680fc5c114dd297fe3"><td class="memItemLeft" align="right" valign="top"><a id="a8e3a508ddd5eec680fc5c114dd297fe3"></a>
-int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00157.html#a8e3a508ddd5eec680fc5c114dd297fe3">validCount</a></td></tr>
-<tr class="memdesc:a8e3a508ddd5eec680fc5c114dd297fe3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of valid data. <br /></td></tr>
-<tr class="separator:a8e3a508ddd5eec680fc5c114dd297fe3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a69f7bd4ad45a0700f4e53159230e0cc9"><td class="memItemLeft" align="right" valign="top"><a id="a69f7bd4ad45a0700f4e53159230e0cc9"></a>
-int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00157.html#a69f7bd4ad45a0700f4e53159230e0cc9">reserved</a> [6]</td></tr>
-<tr class="memdesc:a69f7bd4ad45a0700f4e53159230e0cc9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reserved: reserved[0],laser_val;. <br /></td></tr>
-<tr class="separator:a69f7bd4ad45a0700f4e53159230e0cc9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adaef6497e00abdb25f67c241acc789a0"><td class="memItemLeft" align="right" valign="top"><a id="adaef6497e00abdb25f67c241acc789a0"></a>
-<a class="el" href="a00153.html">TY_IMAGE_DATA</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00157.html#adaef6497e00abdb25f67c241acc789a0">image</a> [10]</td></tr>
-<tr class="memdesc:adaef6497e00abdb25f67c241acc789a0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Buffer data, max to 10 images per frame, each buffer data could be an image or something else. <br /></td></tr>
-<tr class="separator:adaef6497e00abdb25f67c241acc789a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2fa1bca2df0a2c4d71348fc370f96ad1"><td class="memItemLeft" align="right" valign="top"><a id="a2fa1bca2df0a2c4d71348fc370f96ad1"></a>
+float&#160;</td><td class="memItemRight" valign="bottom"><b>data</b> [3 *3]</td></tr>
+<tr class="separator:a2fa1bca2df0a2c4d71348fc370f96ad1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock">
-<p class="definition">Definition at line <a class="el" href="a00002_source.html#l00990">990</a> of file <a class="el" href="a00002_source.html">TYApi.h</a>.</p>
+<div class="textblock"><p>a 3x3 matrix </p><table class="doxtable">
+<tr>
+<th>.</th><th>.</th><th>.  </th></tr>
+<tr>
+<td>SCALEx</td><td>0 </td><td>0 </td></tr>
+<tr>
+<td>0 </td><td>SCALEy</td><td>0 </td></tr>
+<tr>
+<td>0 </td><td>0 </td><td>SCALEz </td></tr>
+</table>
+
+<p class="definition">Definition at line <a class="el" href="a00002_source.html#l01022">1022</a> of file <a class="el" href="a00002_source.html">TYApi.h</a>.</p>
 </div><hr/>The documentation for this struct was generated from the following file:<ul>
 <li><a class="el" href="a00002_source.html">TYApi.h</a></li>
 </ul>
@@ -130,7 +117,7 @@ int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="a00157.html">TY_FRAME_DATA</a></li>
+    <li class="navelem"><a class="el" href="a00157.html">TY_ACC_SCALE</a></li>
     <li class="footer">Generated by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>

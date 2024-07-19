@@ -1,5 +1,6 @@
 var a00181 =
 [
-    [ "max_speckle_diff", "a00181.html#afdd5935e2dcb0b359500c84c75c613c4", null ],
-    [ "max_speckle_size", "a00181.html#a101f480aa882c40a5e0ed4dc069d3655", null ]
+    [ "en", "a00181.html#a0a24746667c668b70eaaa7d276bb6fa7", null ],
+    [ "idx", "a00181.html#ad95d4a79aa7d123429a944dd666b225d", null ],
+    [ "power", "a00181.html#ab48233038592ef5d82964dedb2b2daa3", null ]
 ];

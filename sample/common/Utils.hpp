@@ -10,9 +10,14 @@
 #include <string.h>
 #include <string>
 #include <vector>
+#include <iostream>
+#include <fstream>
+#include <sstream>
 #include <inttypes.h>
 #include "TYApi.h"
 #include "TYThread.hpp"
+#include "crc32.h"
+#include "ParametersParse.h"
 
 #ifndef ASSERT
 #define ASSERT(x)   do{ \
@@ -315,5 +320,116 @@ static inline TY_STATUS get_default_image_mode(TY_DEV_HANDLE handle
     , TY_IMAGE_MODE &image_mode)
 {
     return get_image_mode(handle, compID, image_mode, 0);
+}
+
+//10MB
+#define MAX_STORAGE_SIZE        (10*1024*1024)
+static inline TY_STATUS clear_storage(const TY_DEV_HANDLE handle)
+{
+    uint32_t block_size;
+    ASSERT_OK( TYGetByteArraySize(handle, TY_COMPONENT_STORAGE, TY_BYTEARRAY_CUSTOM_BLOCK, &block_size) );
+
+    uint8_t* blocks = new uint8_t[MAX_STORAGE_SIZE] ();
+    ASSERT_OK( TYSetByteArray(handle, TY_COMPONENT_STORAGE, TY_BYTEARRAY_CUSTOM_BLOCK, blocks, block_size) );
+
+    delete []blocks;
+    return TY_STATUS_OK;
+}
+
+static inline TY_STATUS load_parameters_from_storage(const TY_DEV_HANDLE handle, std::string& js)
+{
+
+    uint32_t block_size;
+    uint8_t* blocks = new uint8_t[MAX_STORAGE_SIZE] ();
+    ASSERT_OK( TYGetByteArraySize(handle, TY_COMPONENT_STORAGE, TY_BYTEARRAY_CUSTOM_BLOCK, &block_size) );
+    ASSERT_OK( TYGetByteArray(handle, TY_COMPONENT_STORAGE, TY_BYTEARRAY_CUSTOM_BLOCK, blocks,  block_size) );
+    
+    uint32_t crc_data = *(uint32_t*)blocks;
+    if(!crc_data) {
+         LOGE("The CRC check code is empty.");
+        delete []blocks;
+        return TY_STATUS_ERROR;
+    }
+    uint8_t* js_string = blocks + sizeof(uint32_t);
+    uint32_t crc = crc32_bitwise(js_string, strlen((char*)js_string));
+    if(crc_data != crc) {
+        LOGE("The data in the storage area has a CRC check error.");
+        delete []blocks;
+        return TY_STATUS_ERROR;
+    }
+
+    if(!json_parse(handle, (const char* )js_string)) {
+        LOGW("parameters load fail!");
+        delete []blocks;
+        return TY_STATUS_ERROR;
+    }
+
+    js = std::string((const char* )js_string);
+
+    delete []blocks;
+    return TY_STATUS_OK;
+}
+
+static inline TY_STATUS write_parameters_to_storage(const TY_DEV_HANDLE handle,  const std::string& json_file)
+{
+    std::ifstream ifs(json_file);
+    std::stringstream buffer;
+    buffer << ifs.rdbuf();
+    ifs.close();
+
+    std::string text(buffer.str());
+    const char* str = text.c_str();
+    uint32_t crc = crc32_bitwise(str, strlen(str));
+
+    uint32_t block_size;
+    ASSERT_OK( TYGetByteArraySize(handle, TY_COMPONENT_STORAGE, TY_BYTEARRAY_CUSTOM_BLOCK, &block_size) );
+    if(block_size < strlen(str) + sizeof(crc)) {
+        LOGE("The configuration file is too large, the maximum size should not exceed 4000 bytes");
+        return TY_STATUS_ERROR;
+    }
+    
+    uint8_t* blocks = new uint8_t[block_size] ();
+    *(uint32_t*)blocks = crc;
+
+    strcpy((char*)blocks + sizeof(crc),  str);
+    ASSERT_OK( TYSetByteArray(handle, TY_COMPONENT_STORAGE, TY_BYTEARRAY_CUSTOM_BLOCK, blocks, block_size) );
+
+    delete []blocks;
+    return TY_STATUS_OK;
+}
+static inline void parse_firmware_errcode(TY_FW_ERRORCODE err_code) {
+    if (TY_FW_ERRORCODE_CAM0_NOT_DETECTED & err_code) {
+        LOGE("Left sensor Not Detected");
+    }
+    if (TY_FW_ERRORCODE_CAM1_NOT_DETECTED & err_code) {
+        LOGE("Right sensor Not Detected");
+    }
+    if (TY_FW_ERRORCODE_CAM2_NOT_DETECTED & err_code) {
+        LOGE("Color sensor Not Detected");
+    }
+    if (TY_FW_ERRORCODE_POE_NOT_INIT & err_code) {
+        LOGE("POE init error");
+    }
+    if (TY_FW_ERRORCODE_RECMAP_NOT_CORRECT & err_code) {
+        LOGE("RecMap error");
+    }
+    if (TY_FW_ERRORCODE_LOOKUPTABLE_NOT_CORRECT & err_code) {
+        LOGE("Disparity error");
+    }
+    if (TY_FW_ERRORCODE_DRV8899_NOT_INIT & err_code) {
+        LOGE("Motor init error");
+    }
+    if (TY_FW_ERRORCODE_CONFIG_NOT_FOUND & err_code) {
+        LOGE("Config file not exist");
+    }
+    if (TY_FW_ERRORCODE_CONFIG_NOT_CORRECT & err_code) {
+        LOGE("Broken Config file");
+    }
+    if (TY_FW_ERRORCODE_XML_NOT_FOUND & err_code) {
+        LOGE("XML file not exist");
+    }
+    if (TY_FW_ERRORCODE_XML_OVERRIDE_FAILED & err_code) {
+        LOGE("Illegal XML file");
+    }
 }
 #endif

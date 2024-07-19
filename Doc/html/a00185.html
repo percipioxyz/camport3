@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.13"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>TYCamport3: DepthEnhenceParameters Struct Reference</title>
+<title>TYCamport3: TY_IMAGE_DATA Struct Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -84,46 +84,65 @@ $(document).ready(function(){initNavTree('a00185.html','');});
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="a00182.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">DepthEnhenceParameters Struct Reference</div>  </div>
+<div class="title">TY_IMAGE_DATA Struct Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-
-<p>default parameter value definition  
- <a href="a00185.html#details">More...</a></p>
-
-<p><code>#include &lt;<a class="el" href="a00008_source.html">TYImageProc.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a005d6e28cca77a5964b0c588ee3839e9"><td class="memItemLeft" align="right" valign="top"><a id="a005d6e28cca77a5964b0c588ee3839e9"></a>
-float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00185.html#a005d6e28cca77a5964b0c588ee3839e9">sigma_s</a></td></tr>
-<tr class="memdesc:a005d6e28cca77a5964b0c588ee3839e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">filter param on space <br /></td></tr>
-<tr class="separator:a005d6e28cca77a5964b0c588ee3839e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a307c0f2750006519986ede18f461a33f"><td class="memItemLeft" align="right" valign="top"><a id="a307c0f2750006519986ede18f461a33f"></a>
-float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00185.html#a307c0f2750006519986ede18f461a33f">sigma_r</a></td></tr>
-<tr class="memdesc:a307c0f2750006519986ede18f461a33f"><td class="mdescLeft">&#160;</td><td class="mdescRight">filter param on range <br /></td></tr>
-<tr class="separator:a307c0f2750006519986ede18f461a33f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae710febd7b70a95c1ec51e8721cb4d6e"><td class="memItemLeft" align="right" valign="top"><a id="ae710febd7b70a95c1ec51e8721cb4d6e"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00185.html#ae710febd7b70a95c1ec51e8721cb4d6e">outlier_win_sz</a></td></tr>
-<tr class="memdesc:ae710febd7b70a95c1ec51e8721cb4d6e"><td class="mdescLeft">&#160;</td><td class="mdescRight">outlier filter windows ize <br /></td></tr>
-<tr class="separator:ae710febd7b70a95c1ec51e8721cb4d6e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac9d2fb2f66185d5e4e362fd68c688c1b"><td class="memItemLeft" align="right" valign="top"><a id="ac9d2fb2f66185d5e4e362fd68c688c1b"></a>
-float&#160;</td><td class="memItemRight" valign="bottom"><b>outlier_rate</b></td></tr>
-<tr class="separator:ac9d2fb2f66185d5e4e362fd68c688c1b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8515268e8c38c38c6ee295ebdace5397"><td class="memItemLeft" align="right" valign="top"><a id="a8515268e8c38c38c6ee295ebdace5397"></a>
+uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00185.html#a8515268e8c38c38c6ee295ebdace5397">timestamp</a></td></tr>
+<tr class="memdesc:a8515268e8c38c38c6ee295ebdace5397"><td class="mdescLeft">&#160;</td><td class="mdescRight">Timestamp in microseconds. <br /></td></tr>
+<tr class="separator:a8515268e8c38c38c6ee295ebdace5397"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0d31baf5fc46cc3dce2e1bdfe970d4e7"><td class="memItemLeft" align="right" valign="top"><a id="a0d31baf5fc46cc3dce2e1bdfe970d4e7"></a>
+int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00185.html#a0d31baf5fc46cc3dce2e1bdfe970d4e7">imageIndex</a></td></tr>
+<tr class="memdesc:a0d31baf5fc46cc3dce2e1bdfe970d4e7"><td class="mdescLeft">&#160;</td><td class="mdescRight">image index used in trigger mode <br /></td></tr>
+<tr class="separator:a0d31baf5fc46cc3dce2e1bdfe970d4e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a53474a38966b0f8267248f6bcbae8cbb"><td class="memItemLeft" align="right" valign="top"><a id="a53474a38966b0f8267248f6bcbae8cbb"></a>
+int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00185.html#a53474a38966b0f8267248f6bcbae8cbb">status</a></td></tr>
+<tr class="memdesc:a53474a38966b0f8267248f6bcbae8cbb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Status of this buffer. <br /></td></tr>
+<tr class="separator:a53474a38966b0f8267248f6bcbae8cbb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad7e9991bbb945d04f2308e555aac18b5"><td class="memItemLeft" align="right" valign="top"><a id="ad7e9991bbb945d04f2308e555aac18b5"></a>
+<a class="el" href="a00002.html#aaa1d56e97d20474ab83c4b42df3dc5b1">TY_COMPONENT_ID</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00185.html#ad7e9991bbb945d04f2308e555aac18b5">componentID</a></td></tr>
+<tr class="memdesc:ad7e9991bbb945d04f2308e555aac18b5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Where current data come from. <br /></td></tr>
+<tr class="separator:ad7e9991bbb945d04f2308e555aac18b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a982cff954ca09f781d9e7dd005ddf22d"><td class="memItemLeft" align="right" valign="top"><a id="a982cff954ca09f781d9e7dd005ddf22d"></a>
+int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00185.html#a982cff954ca09f781d9e7dd005ddf22d">size</a></td></tr>
+<tr class="memdesc:a982cff954ca09f781d9e7dd005ddf22d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Buffer size. <br /></td></tr>
+<tr class="separator:a982cff954ca09f781d9e7dd005ddf22d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9487ebef74472072b1da27c3bcf14984"><td class="memItemLeft" align="right" valign="top"><a id="a9487ebef74472072b1da27c3bcf14984"></a>
+void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00185.html#a9487ebef74472072b1da27c3bcf14984">buffer</a></td></tr>
+<tr class="memdesc:a9487ebef74472072b1da27c3bcf14984"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to data buffer. <br /></td></tr>
+<tr class="separator:a9487ebef74472072b1da27c3bcf14984"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a60c75fb814da37ed045888ac692cdaaa"><td class="memItemLeft" align="right" valign="top"><a id="a60c75fb814da37ed045888ac692cdaaa"></a>
+int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00185.html#a60c75fb814da37ed045888ac692cdaaa">width</a></td></tr>
+<tr class="memdesc:a60c75fb814da37ed045888ac692cdaaa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Image width in pixels. <br /></td></tr>
+<tr class="separator:a60c75fb814da37ed045888ac692cdaaa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adb0eed2a5679c1b3467d947593bf343b"><td class="memItemLeft" align="right" valign="top"><a id="adb0eed2a5679c1b3467d947593bf343b"></a>
+int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00185.html#adb0eed2a5679c1b3467d947593bf343b">height</a></td></tr>
+<tr class="memdesc:adb0eed2a5679c1b3467d947593bf343b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Image height in pixels. <br /></td></tr>
+<tr class="separator:adb0eed2a5679c1b3467d947593bf343b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acf67232d15a6b67bdc04c0d5a18e2fd6"><td class="memItemLeft" align="right" valign="top"><a id="acf67232d15a6b67bdc04c0d5a18e2fd6"></a>
+TY_PIXEL_FORMAT&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00185.html#acf67232d15a6b67bdc04c0d5a18e2fd6">pixelFormat</a></td></tr>
+<tr class="memdesc:acf67232d15a6b67bdc04c0d5a18e2fd6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pixel format, see TY_PIXEL_FORMAT_LIST. <br /></td></tr>
+<tr class="separator:acf67232d15a6b67bdc04c0d5a18e2fd6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab9490e29d33407f16f25bfa8f1e3da99"><td class="memItemLeft" align="right" valign="top"><a id="ab9490e29d33407f16f25bfa8f1e3da99"></a>
+int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00185.html#ab9490e29d33407f16f25bfa8f1e3da99">reserved</a> [9]</td></tr>
+<tr class="memdesc:ab9490e29d33407f16f25bfa8f1e3da99"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reserved. <br /></td></tr>
+<tr class="separator:ab9490e29d33407f16f25bfa8f1e3da99"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>default parameter value definition </p>
-
-<p class="definition">Definition at line <a class="el" href="a00008_source.html#l00054">54</a> of file <a class="el" href="a00008_source.html">TYImageProc.h</a>.</p>
+<div class="textblock">
+<p class="definition">Definition at line <a class="el" href="a00002_source.html#l01093">1093</a> of file <a class="el" href="a00002_source.html">TYApi.h</a>.</p>
 </div><hr/>The documentation for this struct was generated from the following file:<ul>
-<li><a class="el" href="a00008_source.html">TYImageProc.h</a></li>
+<li><a class="el" href="a00002_source.html">TYApi.h</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="a00185.html">DepthEnhenceParameters</a></li>
+    <li class="navelem"><a class="el" href="a00185.html">TY_IMAGE_DATA</a></li>
     <li class="footer">Generated by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
