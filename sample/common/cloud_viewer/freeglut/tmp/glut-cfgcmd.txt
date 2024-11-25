@@ -1,1 +1,0 @@
-cmd='C:/Program Files/CMake/bin/cmake.exe;-DCMAKE_INSTALL_PREFIX=C:/Program Files/point_cloud_view;-DBUILD_TESTING=OFF;-DCMAKE_BUILD_TYPE=;-GVisual Studio 12 2013 Win64;<SOURCE_DIR><SOURCE_SUBDIR>'
