@@ -362,6 +362,16 @@ typedef enum TY_FEATURE_ID_LIST :uint32_t
     TY_INT_SGPM_NORMAL_PHASE_OFFSET = 0x0622 | TY_FEATURE_INT,  ///< Phase offset when calc a depth
     TY_INT_SGPM_REF_PHASE_SCALE     = 0x0623 | TY_FEATURE_INT,  ///< Reference Phase scale when calc a depth
     TY_INT_SGPM_REF_PHASE_OFFSET    = 0x0624 | TY_FEATURE_INT,  ///< Reference Phase offset when calc a depth
+    TY_FLOAT_SGPM_EPI_HS            = 0x0625 | TY_FEATURE_FLOAT,  ///< Epipolar Constraint pattern scale
+    TY_INT_SGPM_EPI_HF              = 0x0626 | TY_FEATURE_INT,  ///< Epipolar Constraint pattern offset
+    TY_BOOL_SGPM_EPI_EN             = 0x0627 | TY_FEATURE_BOOL,  ///< Epipolar Constraint enable
+    TY_INT_SGPM_EPI_CH0             = 0x0628 | TY_FEATURE_INT,  ///< Epipolar Constraint channel0
+    TY_INT_SGPM_EPI_CH1             = 0x0629 | TY_FEATURE_INT,  ///< Epipolar Constraint channel1
+    TY_INT_SGPM_EPI_THRESH          = 0x062A | TY_FEATURE_INT,  ///< Epipolar Constraint thresh
+    TY_BOOL_SGPM_ORDER_FILTER_EN    = 0x062B | TY_FEATURE_BOOL,  ///< Phase order filter enable
+    TY_INT_SGPM_ORDER_FILTER_CHN    = 0x062C | TY_FEATURE_INT,  ///< Phase order filter channel
+    TY_INT_DEPTH_MIN_MM             = 0x062D | TY_FEATURE_INT,  ///< min depth in mm output
+    TY_INT_DEPTH_MAX_MM             = 0x062E | TY_FEATURE_INT,  ///< max depth in mm ouput
     TY_STRUCT_PHC_GROUP_ATTR        = 0x0710 | TY_FEATURE_STRUCT,  ///< Phase compute group attribute
     TY_ENUM_DEPTH_QUALITY           = 0x0900 | TY_FEATURE_ENUM,  ///< the quality of generated depth, see TY_DEPTH_QUALITY
     TY_INT_FILTER_THRESHOLD         = 0x0901 | TY_FEATURE_INT,   ///< the threshold of the noise filter, 0 for disabled
@@ -738,18 +748,27 @@ typedef struct TY_DEVICE_BASE_INFO
     char                reserved[256];
 }TY_DEVICE_BASE_INFO;
 
+typedef enum TY_VISIBILITY_TYPE
+{
+    BEGINNER = 0,
+    EXPERT = 1,
+    GURU = 2
+}TY_VISIBILITY_TYPE;
+
 typedef struct TY_FEATURE_INFO
 {
-    bool            isValid;            ///< true if feature exists, false otherwise
-    TY_ACCESS_MODE  accessMode;         ///< feature access privilege
-    bool            writableAtRun;      ///< feature can be written while capturing
-    char            reserved0[1];
-    TY_COMPONENT_ID componentID;        ///< owner of this feature
-    TY_FEATURE_ID   featureID;          ///< feature unique id
-    char            name[32];           ///< describe string
-    TY_COMPONENT_ID bindComponentID;    ///< component ID current feature bind to
-    TY_FEATURE_ID   bindFeatureID;      ///< feature ID current feature bind to
-    char            reserved[252];
+    bool                isValid;            ///< true if feature exists, false otherwise
+    TY_ACCESS_MODE      accessMode;         ///< feature access privilege
+    bool                writableAtRun;      ///< feature can be written while capturing
+    char                reserved0[1];
+    TY_COMPONENT_ID     componentID;        ///< owner of this feature
+    TY_FEATURE_ID       featureID;          ///< feature unique id
+    char                name[32];           ///< describe string
+    TY_COMPONENT_ID     bindComponentID;    ///< component ID current feature bind to
+    TY_FEATURE_ID       bindFeatureID;      ///< feature ID current feature bind to
+    TY_VISIBILITY_TYPE  visibility;
+
+    char                reserved[248];
 }TY_FEATURE_INFO;
 
 typedef struct TY_INT_RANGE
@@ -928,7 +947,15 @@ typedef struct TY_PHC_GROUP_ATTR
 	    uint8_t type;
         uint8_t amp_thresh;
 	    uint16_t ch;
-        uint8_t rsvd[28];
+        /*
+         * channel type
+         * 0 old pattern always chn0 is normal phase
+         *   other chn is reference pattern
+         * 1 normal phase
+         * 2 reference phase
+         */
+        uint8_t chn_type;
+        uint8_t rsvd[27];
     } phc_attr[16];
 }TY_PHC_GROUP_ATTR;
 
@@ -1905,7 +1932,27 @@ TY_CAPI TYGetDeviceFeatureNumber    (TY_DEV_HANDLE hDevice, TY_COMPONENT_ID comp
 TY_CAPI TYGetDeviceFeatureInfo    (TY_DEV_HANDLE hDevice, TY_COMPONENT_ID componentID
                 , TY_FEATURE_INFO* featureInfo, uint32_t entryCount, uint32_t* filledEntryCount);
 
- 
+/// @brief Get the Device xml size
+/// @param  [in]  hDevice       Device handle.
+/// @param  [out] size          The size of device xml string
+/// @retval TY_STATUS_OK        Succeed.
+/// @retval TY_STATUS_NOT_INITED        Not call TYInitLib
+/// @retval TY_STATUS_INVALID_HANDLE    Invalid device handle.
+/// @retval TY_STATUS_NULL_POINTER      size is NULL.
+TY_CAPI TYGetDeviceXMLSize     (TY_DEV_HANDLE hDevice, uint32_t* size);
+
+/// @brief Get the Device xml string
+/// @param  [in]  hDevice       Device handle.
+/// @param  [in]  xml           The buffer to store xml
+/// @param  [in]  in_size       The size buffer
+/// @param  [out] out_size      The actual size write in buffer
+/// @retval TY_STATUS_OK        Succeed.
+/// @retval TY_STATUS_NOT_INITED        Not call TYInitLib
+/// @retval TY_STATUS_INVALID_HANDLE    Invalid device handle.
+/// @retval TY_STATUS_NULL_POINTER      xml or out_size is NULL.
+TY_CAPI TYGetDeviceXML      (TY_DEV_HANDLE hDevice, char *xml
+                , const uint32_t in_size, uint32_t* out_size);
+
 /// @brief Read byte array from device.
 /// @param  [in]  hDevice       Device handle.
 /// @param  [in]  componentID   Component ID.

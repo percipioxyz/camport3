@@ -1,0 +1,77 @@
+ina219bidr: loading out-of-tree module taints kernel.
+init pwmfan init
+init temp init
+reg 0 adp map {00 ff}
+reg 1 adp map {01 ff}
+reg 2 adp map {02 ff}
+sensor addr 0x00
+SOCFPGA: Unable to find led0 prop in dtb
+init percipio_probe
+mkdev 246, 15
+reg 0 adp map {00 ff}
+reg 1 adp map {01 ff}
+reg 2 adp map {02 ff}
+mkdev 246, 17
+reg 0 adp map {00 ff}
+reg 1 adp map {01 ff}
+reg 2 adp map {02 ff}
+mkdev 246, 16
+mkdev 246, 35
+irq is 42!
+register irq 42 ret 0!
+mkdev 246, 2
+irq is 43!
+register irq 43 ret 0!
+mkdev 246, 1
+irq is 44!
+register irq 44 ret 0!
+mkdev 246, 3
+irq is 40!
+register irq 40 ret 0!
+mkdev 246, 22
+rec ver 00000ce3
+mkdev 246, 5
+mkdev 246, 4
+mkdev 246, 24
+percipio_trigger_out ff209100.xyz_trig_out: trig_ou_dev no bind chn!
+mkdev 246, 25
+mipi 2 <2 255 255 255>
+reg 2 mipi ver 00000010
+mkdev 246, 30
+mkdev 246, 39
+register irq 46 ret 0!
+phase compute max_ch = 32
+phase compute img_width = 2048
+phase compute img_height = 1536
+mkdev 246, 40
+ft_pwm_motor probe!
+mkdev 246, 41
+/etc/rc5.d/S90percipio_app.sh: line 11: IDCODE:: command not found
+/
+pwmfan_open
+temp_open
+Stopping Bootlog daemon: bootlogd.
+start /usr/local/etc/init.d/S*
+  262 root      4476 R    /usr/bin/gevcam
+adapter 0 forward 00
+adapter 1 forward 20
+adapter 2 forward 00
+init laser pattern {00 00 00 00 00 00 00 00}
+imx265  0 00000000!
+imx265  0 c0!
+imx265 00000000 Color!
+camid 0 got valid sensor imx265!
+imx265  1 00000000!
+imx265  1 c0!
+imx265 00000000 Color!
+camid 1 got valid sensor imx265!
+camid 2  ap1302 0x265!
+camid 2 got valid sensor ap1302!
+ap1302: wait download fw ...
+
+Poky 8.0 (Yocto Project 1.3 Reference Distro) 1.3 
+ ttyS0
+
+socfpga login: load success 0x4718 crc 0x2513
+set hispi raw12
+init ret 0

@@ -18,6 +18,7 @@
 #include "TYThread.hpp"
 #include "crc32.h"
 #include "ParametersParse.h"
+#include "huffman.h"
 
 #ifndef ASSERT
 #define ASSERT(x)   do{ \
@@ -40,6 +41,15 @@
             }while(0)
 #endif
 
+#ifndef CHECK_RET 
+#define CHECK_RET(x)    do{ \
+                int err = (x); \
+                if(err != TY_STATUS_OK) { \
+                    LOGD(#x " failed: error %d(%s)", err, TYErrorString(err)); \
+                    LOGD("at %s:%d", __FILE__, __LINE__); \
+                } \
+            }while(0)
+#endif
 
 #ifdef _WIN32
 # include <windows.h>
@@ -322,8 +332,13 @@ static inline TY_STATUS get_default_image_mode(TY_DEV_HANDLE handle
     return get_image_mode(handle, compID, image_mode, 0);
 }
 
+enum EncodingType : uint32_t  
+{
+    HUFFMAN = 0,
+};
 //10MB
 #define MAX_STORAGE_SIZE        (10*1024*1024)
+
 static inline TY_STATUS clear_storage(const TY_DEV_HANDLE handle)
 {
     uint32_t block_size;
@@ -338,34 +353,55 @@ static inline TY_STATUS clear_storage(const TY_DEV_HANDLE handle)
 
 static inline TY_STATUS load_parameters_from_storage(const TY_DEV_HANDLE handle, std::string& js)
 {
-
     uint32_t block_size;
     uint8_t* blocks = new uint8_t[MAX_STORAGE_SIZE] ();
     ASSERT_OK( TYGetByteArraySize(handle, TY_COMPONENT_STORAGE, TY_BYTEARRAY_CUSTOM_BLOCK, &block_size) );
     ASSERT_OK( TYGetByteArray(handle, TY_COMPONENT_STORAGE, TY_BYTEARRAY_CUSTOM_BLOCK, blocks,  block_size) );
     
     uint32_t crc_data = *(uint32_t*)blocks;
-    if(!crc_data) {
+    if(0 == crc_data || 0xffffffff == crc_data) {
          LOGE("The CRC check code is empty.");
         delete []blocks;
         return TY_STATUS_ERROR;
     }
-    uint8_t* js_string = blocks + sizeof(uint32_t);
-    uint32_t crc = crc32_bitwise(js_string, strlen((char*)js_string));
-    if(crc_data != crc) {
-        LOGE("The data in the storage area has a CRC check error.");
-        delete []blocks;
-        return TY_STATUS_ERROR;
+
+    uint32_t crc;
+    uint8_t* js_code = blocks + 4;
+    crc = crc32_bitwise(js_code, strlen((const char*)js_code));
+    if((crc != crc_data) || !isValidJsonString((const char*)js_code)) {
+        EncodingType type     = *(EncodingType*)(blocks + 4);
+        ASSERT(type == HUFFMAN);
+        uint32_t huffman_size = *(uint32_t*)(blocks + 8);
+        uint8_t* huffman_ptr  = (uint8_t*)(blocks + 12);
+        if(huffman_size > (MAX_STORAGE_SIZE - 12)) {
+            LOGE("Data length error.");
+            delete []blocks;
+            return TY_STATUS_ERROR;
+        }
+        
+        crc = crc32_bitwise(huffman_ptr, huffman_size);
+        if(crc_data != crc) {
+            LOGE("The data in the storage area has a CRC check error.");
+            delete []blocks;
+            return TY_STATUS_ERROR;
+        }
+
+        std::string huffman_string(huffman_ptr, huffman_ptr + huffman_size);
+        if(!TextHuffmanDecompression(huffman_string, js)) {
+            LOGE("Huffman decoding error");
+            delete []blocks;
+            return TY_STATUS_ERROR;
+        }
+    } else {
+        js = std::string((const char*)js_code);
     }
 
-    if(!json_parse(handle, (const char* )js_string)) {
+    if(!json_parse(handle, (const char* )js.c_str())) {
         LOGW("parameters load fail!");
         delete []blocks;
         return TY_STATUS_ERROR;
     }
-
-    js = std::string((const char* )js_string);
-
+    
     delete []blocks;
     return TY_STATUS_OK;
 }
@@ -373,30 +409,42 @@ static inline TY_STATUS load_parameters_from_storage(const TY_DEV_HANDLE handle,
 static inline TY_STATUS write_parameters_to_storage(const TY_DEV_HANDLE handle,  const std::string& json_file)
 {
     std::ifstream ifs(json_file);
+    if (!ifs.is_open()) {
+        LOGE("Unable to open file");
+        return TY_STATUS_ERROR;
+    }
+
     std::stringstream buffer;
     buffer << ifs.rdbuf();
     ifs.close();
 
-    std::string text(buffer.str());
-    const char* str = text.c_str();
-    uint32_t crc = crc32_bitwise(str, strlen(str));
+    std::string huffman_string;
+    if(!TextHuffmanCompression(buffer.str(), huffman_string)) {
+        LOGE("Huffman compression error");
+        return TY_STATUS_ERROR;
+    }
+
+    const char* str = huffman_string.data();
+    uint32_t crc = crc32_bitwise(str, huffman_string.length());
 
     uint32_t block_size;
     ASSERT_OK( TYGetByteArraySize(handle, TY_COMPONENT_STORAGE, TY_BYTEARRAY_CUSTOM_BLOCK, &block_size) );
-    if(block_size < strlen(str) + sizeof(crc)) {
+    if(block_size < huffman_string.length() + 12) {
         LOGE("The configuration file is too large, the maximum size should not exceed 4000 bytes");
         return TY_STATUS_ERROR;
     }
     
     uint8_t* blocks = new uint8_t[block_size] ();
     *(uint32_t*)blocks = crc;
-
-    strcpy((char*)blocks + sizeof(crc),  str);
+    *(uint32_t*)(blocks + 4) = HUFFMAN;
+    *(uint32_t*)(blocks + 8) = huffman_string.length();
+    memcpy((char*)blocks + 12,  str, huffman_string.length());
     ASSERT_OK( TYSetByteArray(handle, TY_COMPONENT_STORAGE, TY_BYTEARRAY_CUSTOM_BLOCK, blocks, block_size) );
 
     delete []blocks;
     return TY_STATUS_OK;
 }
+
 static inline void parse_firmware_errcode(TY_FW_ERRORCODE err_code) {
     if (TY_FW_ERRORCODE_CAM0_NOT_DETECTED & err_code) {
         LOGE("Left sensor Not Detected");
@@ -419,6 +467,9 @@ static inline void parse_firmware_errcode(TY_FW_ERRORCODE err_code) {
     if (TY_FW_ERRORCODE_DRV8899_NOT_INIT & err_code) {
         LOGE("Motor init error");
     }
+    if (TY_FW_ERRORCODE_FOC_START_ERR & err_code) {
+        LOGE("Motor start failed");
+    }
     if (TY_FW_ERRORCODE_CONFIG_NOT_FOUND & err_code) {
         LOGE("Config file not exist");
     }
@@ -428,8 +479,18 @@ static inline void parse_firmware_errcode(TY_FW_ERRORCODE err_code) {
     if (TY_FW_ERRORCODE_XML_NOT_FOUND & err_code) {
         LOGE("XML file not exist");
     }
-    if (TY_FW_ERRORCODE_XML_OVERRIDE_FAILED & err_code) {
-        LOGE("Illegal XML file");
+    if (TY_FW_ERRORCODE_XML_NOT_CORRECT & err_code) {
+        LOGE("XML Parse err");
     }
+    if (TY_FW_ERRORCODE_XML_OVERRIDE_FAILED & err_code) {
+        LOGE("Illegal XML file overrided, Only Used in Debug Mode!");
+    }
+    if (TY_FW_ERRORCODE_CAM_INIT_FAILED & err_code) {
+        LOGE("Init default cam feature failed!");
+    }
+    if (TY_FW_ERRORCODE_LASER_INIT_FAILED & err_code) {
+        LOGE("Init default laser feature failed!");
+    }
+
 }
 #endif

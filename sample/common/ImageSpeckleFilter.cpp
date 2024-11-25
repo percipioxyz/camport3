@@ -1,3 +1,4 @@
+
 #include "ImageSpeckleFilter.hpp"
 #include <stdio.h>
 #include <stdexcept>
@@ -6,6 +7,7 @@
 #include <stdint.h>
 #endif
 
+#ifdef OPENCV_DEPENDENCIES
 struct Point2s {
   Point2s(short _x, short _y) {
     x = _x;
@@ -115,3 +117,4 @@ void ImageSpeckleFilter::Compute(cv::Mat &image, int newVal, int maxSpeckleSize,
     }
 }
 
+#endif

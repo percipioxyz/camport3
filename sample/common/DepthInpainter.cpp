@@ -1,6 +1,8 @@
 #include "DepthInpainter.hpp"
 #include <stdint.h>
 
+#ifdef OPENCV_DEPENDENCIES
+
 #include <opencv2/opencv.hpp>
 #ifndef CV_VERSION_EPOCH
 #if defined (CV_MAJOR_VERSION) && (CV_VERSION_MAJOR == 4)
@@ -642,3 +644,4 @@ void DepthInpainter::inpaint(const cv::Mat& depth, cv::Mat& out, const cv::Mat& 
         out = newDepth;
     }
 }
+#endif

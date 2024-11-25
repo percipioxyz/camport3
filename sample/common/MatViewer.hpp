@@ -1,6 +1,8 @@
 #ifndef XYZ_MAT_VIEWER_HPP_
 #define XYZ_MAT_VIEWER_HPP_
 
+#ifdef OPENCV_DEPENDENCIES
+
 #include <opencv2/opencv.hpp>
 #include <string>
 #include "DepthRender.hpp"
@@ -138,4 +140,5 @@ private:
 };
 
 
+#endif
 #endif

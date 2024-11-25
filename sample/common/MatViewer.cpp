@@ -3,6 +3,7 @@
 #include "MatViewer.hpp"
 
 
+#ifdef OPENCV_DEPENDENCIES
 int GraphicItem::globalID = 0;
 
 
@@ -91,3 +92,4 @@ void DepthViewer::onMouseCallback(cv::Mat& img, int event, const cv::Point pnt
     }
 }
 
+#endif

@@ -548,7 +548,7 @@ static inline TY_STATUS TYMapMono8ImageToDepthCoordinate(
       uint16_t scale_y =  (uint16_t)(1.f * plut->y * monoH / depthH + 0.5);
       if(scale_x >= monoW) scale_x = monoW - 1;
       if(scale_y >= monoH) scale_y = monoH - 1;
-      const uint8_t* inPtr = &inMono[monoW * scale_y + plut->x];
+      const uint8_t* inPtr = &inMono[monoW * scale_y + scale_x];
       outPtr[0] = inPtr[0];
     }
   }

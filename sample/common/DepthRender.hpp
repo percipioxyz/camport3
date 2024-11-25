@@ -1,6 +1,7 @@
 #ifndef PERCIPIO_SAMPLE_COMMON_DEPTH_RENDER_HPP_
 #define PERCIPIO_SAMPLE_COMMON_DEPTH_RENDER_HPP_
 
+#ifdef OPENCV_DEPENDENCIES
 #include <opencv2/opencv.hpp>
 #ifndef CV_VERSION_EPOCH
 #if defined (CV_MAJOR_VERSION) && (CV_VERSION_MAJOR == 4)
@@ -244,4 +245,5 @@ private:
     std::vector<cv::Scalar> _color_lookup_table;
 };
 
+#endif
 #endif

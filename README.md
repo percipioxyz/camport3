@@ -7,7 +7,7 @@ SDK sample's GUI needs Opencv2.4.8+. opencv dependency can be removed if if you 
 
 ## Documents
 
-Please refer to [http://doc.percipio.xyz/cam/last/](http://doc.percipio.xyz/cam/last/) for more details.
+Please refer to [https://doc.percipio.xyz/cam/latest/index.html](https://doc.percipio.xyz/cam/latest/index.html) for more details.
 
 ## SDK Files
 ```
@@ -18,7 +18,8 @@ Please refer to [http://doc.percipio.xyz/cam/last/](http://doc.percipio.xyz/cam/
 |   \---win
 |       +---driver      windows device driver 
 |       \---hostapp     pre-built sample executables
-\---sample              sample application source code
+|---sample              old sample application source code on orignal API
+\---sample_v2           new sample application source code easier to use, This is recommended if you want to set up a new project
 
 ```
 
@@ -36,7 +37,7 @@ Please refer to [http://doc.percipio.xyz/cam/last/](http://doc.percipio.xyz/cam/
 
 ## Build Sample From Source Code
 
- **for detail about SDK usage please refer to [HERE](http://doc.percipio.xyz/cam/last/getstarted/sdk-compile.html)**
+ **for detail about SDK usage please refer to [HERE](https://doc.percipio.xyz/cam/latest/index.html) compile section**
 
 ### Linux
 install opencv & cmake
@@ -79,7 +80,7 @@ using cmake to generate MSVC vcxproj project files & build with MSVC.
 
 ## NOTE
 - for cross compiling, you may need to build libusb & opencv from source code for your target platform.
-- for USB device running on Linux , you need root privilege or properly config udev rules for other account. see [HERE](http://doc.percipio.xyz/cam/last/getstarted/sdk-compile.html#acesspermission-label)
+- for USB device running on Linux , you need root privilege or properly config udev rules for other account. see [HERE](https://doc.percipio.xyz/cam/latest/index.html) compile section
 
 ---
 [www.percipio.xyz](https://www.percipio.xyz)

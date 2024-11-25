@@ -24,6 +24,8 @@ var searchData=
   ['tygetdeviceinterface',['TYGetDeviceInterface',['../a00002.html#a108e0a6fa6d913fb662a85af629e14a9',1,'TYApi.h']]],
   ['tygetdevicelist',['TYGetDeviceList',['../a00002.html#af55ee324c69ef7378b84893150dad240',1,'TYApi.h']]],
   ['tygetdevicenumber',['TYGetDeviceNumber',['../a00002.html#a3a315428739e9b4d6e72e7c9418c6774',1,'TYApi.h']]],
+  ['tygetdevicexml',['TYGetDeviceXML',['../a00002.html#aeb91a70d57e82a103f112c4a69a6d270',1,'TYApi.h']]],
+  ['tygetdevicexmlsize',['TYGetDeviceXMLSize',['../a00002.html#ae42b5cab06b642e0259ad53aa59cf373',1,'TYApi.h']]],
   ['tygetenabledcomponents',['TYGetEnabledComponents',['../a00002.html#af3388d4c77ce04a6e9360f4e1a7bd0a0',1,'TYApi.h']]],
   ['tygetenum',['TYGetEnum',['../a00002.html#aa7a967b1acc282ec29f0e63f40488fa5',1,'TYApi.h']]],
   ['tygetenumentrycount',['TYGetEnumEntryCount',['../a00002.html#a3be8a612e50543093ec97f3269db365e',1,'TYApi.h']]],

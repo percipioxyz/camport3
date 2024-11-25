@@ -1,7 +1,7 @@
 #ifndef XYZ_IMAGE_SPECKLE_FILTER_HPP_
 #define XYZ_IMAGE_SPECKLE_FILTER_HPP_
 
-
+#ifdef OPENCV_DEPENDENCIES
 #include <vector>
 #include <opencv2/opencv.hpp>
 
@@ -17,6 +17,6 @@ private:
 
 extern ImageSpeckleFilter gSpeckleFilter;
 
-
+#endif
 
 #endif

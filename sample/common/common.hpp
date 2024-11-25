@@ -5,11 +5,19 @@
 
 #include <fstream>
 #include <iterator>
+
+#include <memory>
+#include <iostream>
+#include <typeinfo>
+
+#ifdef OPENCV_DEPENDENCIES
 #include <opencv2/opencv.hpp>
 #include "DepthRender.hpp"
 #include "MatViewer.hpp"
-#include "TYThread.hpp"
 #include "DepthInpainter.hpp"
+#endif
+
+#include "TYThread.hpp"
 #include "TyIsp.h"
 #include "BayerISP.hpp"
 #include "CommandLineParser.hpp"
@@ -64,6 +72,7 @@ static inline int decodeCsiRaw14(unsigned char* src, unsigned short* dst, int wi
     return 0;
 }
 
+#ifdef OPENCV_DEPENDENCIES
 static inline int parseCsiRaw10(unsigned char* src, cv::Mat &dst, int width, int height)
 {
     cv::Mat m(height, width, CV_16U);
@@ -221,7 +230,7 @@ static inline int parseColorFrame(const TY_IMAGE_DATA* img, cv::Mat* pColor, TY_
     cv::cvtColor(rgb, *pColor, cv::COLOR_RGB2BGR);
   }
   else if (img->pixelFormat == TY_PIXEL_FORMAT_BGR){
-    *pColor = cv::Mat(img->height, img->width, CV_8UC3, img->buffer);
+    *pColor = cv::Mat(img->height, img->width, CV_8UC3, img->buffer).clone();
   }
   else if (img->pixelFormat == TY_PIXEL_FORMAT_BAYER8GBRG || 
            img->pixelFormat == TY_PIXEL_FORMAT_BAYER8BGGR || 
@@ -252,6 +261,73 @@ static inline int parseColorFrame(const TY_IMAGE_DATA* img, cv::Mat* pColor, TY_
     cv::Mat gray16(img->height, img->width, CV_16U);
     parseCsiRaw10((uchar*)img->buffer, gray16, img->width, img->height);
     *pColor = gray16.clone();
+  }
+
+  return ret;
+}
+
+static inline int parseImage(const TY_IMAGE_DATA* img, cv::Mat* image, TY_ISP_HANDLE color_isp_handle = NULL)
+{
+  int ret = 0;
+  if (img->pixelFormat == TY_PIXEL_FORMAT_JPEG){
+    std::vector<uchar> _v((uchar*)img->buffer, (uchar*)img->buffer + img->size);
+    *image = cv::imdecode(_v, cv::IMREAD_COLOR);
+    ASSERT(img->width == image->cols && img->height == image->rows);
+  }
+  else if (img->pixelFormat == TY_PIXEL_FORMAT_YVYU){
+    cv::Mat yuv(img->height, img->width, CV_8UC2, img->buffer);
+    cv::cvtColor(yuv, *image, cv::COLOR_YUV2BGR_YVYU);
+  }
+  else if (img->pixelFormat == TY_PIXEL_FORMAT_YUYV){
+    cv::Mat yuv(img->height, img->width, CV_8UC2, img->buffer);
+    cv::cvtColor(yuv, *image, cv::COLOR_YUV2BGR_YUYV);
+  }
+  else if (img->pixelFormat == TY_PIXEL_FORMAT_RGB){
+    cv::Mat rgb(img->height, img->width, CV_8UC3, img->buffer);
+    cv::cvtColor(rgb, *image, cv::COLOR_RGB2BGR);
+  }
+  else if (img->pixelFormat == TY_PIXEL_FORMAT_BGR){
+    *image = cv::Mat(img->height, img->width, CV_8UC3, img->buffer).clone();
+  }
+  else if (img->pixelFormat == TY_PIXEL_FORMAT_BAYER8GBRG || 
+           img->pixelFormat == TY_PIXEL_FORMAT_BAYER8BGGR || 
+           img->pixelFormat == TY_PIXEL_FORMAT_BAYER8GRBG || 
+           img->pixelFormat == TY_PIXEL_FORMAT_BAYER8RGGB) 
+  {
+    ret = parseBayer8Frame(img, image, color_isp_handle);
+  }
+  else if (img->pixelFormat == TY_PIXEL_FORMAT_CSI_BAYER10GBRG || 
+           img->pixelFormat == TY_PIXEL_FORMAT_CSI_BAYER10BGGR || 
+           img->pixelFormat == TY_PIXEL_FORMAT_CSI_BAYER10GRBG || 
+           img->pixelFormat == TY_PIXEL_FORMAT_CSI_BAYER10RGGB) 
+  {
+    ret = parseBayer10Frame(img, image);
+  }
+  else if(img->pixelFormat == TY_PIXEL_FORMAT_CSI_BAYER12GBRG || 
+          img->pixelFormat == TY_PIXEL_FORMAT_CSI_BAYER12BGGR || 
+          img->pixelFormat == TY_PIXEL_FORMAT_CSI_BAYER12GRBG || 
+          img->pixelFormat == TY_PIXEL_FORMAT_CSI_BAYER12RGGB) 
+  {
+    ret = parseBayer12Frame(img, image);
+  }
+  else if(img->pixelFormat == TY_PIXEL_FORMAT_MONO) {
+    *image = cv::Mat(img->height, img->width, CV_8U, img->buffer).clone();
+  }
+  else if (img->pixelFormat == TY_PIXEL_FORMAT_CSI_MONO10){
+    cv::Mat gray16(img->height, img->width, CV_16U);
+    ret = parseCsiRaw10((uchar*)img->buffer, gray16, img->width, img->height);
+    *image = gray16.clone();
+  }
+  else if(img->pixelFormat == TY_PIXEL_FORMAT_CSI_MONO12) {
+    cv::Mat gray16(img->height, img->width, CV_16U);
+    ret = parseCsiRaw12((uchar*)img->buffer, gray16, img->width, img->height);
+    *image = gray16.clone();
+  } 
+  else if (img->pixelFormat == TY_PIXEL_FORMAT_MONO16 || img->pixelFormat==TY_PIXEL_FORMAT_TOF_IR_MONO16){
+    *image = cv::Mat(img->height, img->width, CV_16U, img->buffer).clone();
+  }
+  else {
+	  return -1;
   }
 
   return ret;
@@ -331,7 +407,10 @@ static void writePointCloud(const cv::Point3f* pnts, const cv::Vec3b *color, siz
 
     fclose(fp);
 }
+#else
 
+
+#endif
 
 class CallbackWrapper
 {

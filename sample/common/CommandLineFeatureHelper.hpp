@@ -26,8 +26,8 @@ public:
 
     /// @brief  add feature param to command line parser
     /// @param param  command line param name
-    /// @param comp_id  component id
-    /// @param feat_id  feature id
+    /// @param comp_id  component id , 0 for not a feature setting
+    /// @param feat_id  feature id , 0 for not a feature setting
     /// @param val  default value
     /// @param desc  describe
     /// @param is_flag  is a flag only , no value
@@ -38,8 +38,8 @@ public:
 
     /// @brief  add feature param to command line parser
     /// @param param  command line param name
-    /// @param comp_id   component id
-    /// @param feat_id  feature id
+    /// @param comp_id   component id , 0 for not a feature setting
+    /// @param feat_id  feature id , 0 for not a feature setting
     /// @param val  default value
     /// @param desc  describe
     /// @param is_flag  is a flag only , no value

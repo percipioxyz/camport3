@@ -1,6 +1,7 @@
 #ifndef XYZ_INPAINTER_HPP_
 #define XYZ_INPAINTER_HPP_
 
+#ifdef OPENCV_DEPENDENCIES
 
 #include <opencv2/opencv.hpp>
 #include "ImageSpeckleFilter.hpp"
@@ -31,4 +32,5 @@ private:
     cv::Mat genValidMask(const cv::Mat& depth);
 };
 
+#endif
 #endif
