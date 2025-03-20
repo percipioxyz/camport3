@@ -29,6 +29,8 @@ class TYImage
     uint64_t timestamp()  const { return image_data.timestamp; }
     int32_t  imageIndex() const { return image_data.imageIndex; }
 
+    bool     resize(int w, int h);
+
     TY_PIXEL_FORMAT pixelFormat() const { return image_data.pixelFormat; }
     TY_COMPONENT_ID componentID() const { return image_data.componentID; }
 
@@ -63,10 +65,10 @@ class TYFrame
 class ImageProcesser
 {
   public:
-    ImageProcesser(const char* win, const std::shared_ptr<TYImage>& image, const TY_CAMERA_CALIB_INFO* calib_data = nullptr, const TY_ISP_HANDLE isp_handle = nullptr);
-    ~ImageProcesser() {}
+    ImageProcesser(const char* win,  const TY_CAMERA_CALIB_INFO* calib_data = nullptr, const TY_ISP_HANDLE isp_handle = nullptr);
+    ~ImageProcesser() {clear();}
 
-    int parse();
+    virtual int parse(const std::shared_ptr<TYImage>& image);
     int DepthImageRender();
     TY_STATUS doUndistortion();
     int show();
@@ -76,12 +78,14 @@ class ImageProcesser
     
     const std::shared_ptr<TYImage>& image() const { return _image; }
     const std::string& win() { return win_name; }
+protected:
+    std::shared_ptr<TYImage> _image;
 
   private:
     std::string win_name;
-    std::shared_ptr<TYImage> _image;
     TY_ISP_HANDLE color_isp_handle;
     std::shared_ptr<TY_CAMERA_CALIB_INFO> _calib_data;
+    bool hasWin;
 };
 
 
@@ -91,17 +95,19 @@ typedef std::map<TY_COMPONENT_ID, std::shared_ptr<ImageProcesser>> ty_stream;
 class TYFrameParser
 {
   public:
-    TYFrameParser(uint32_t max_queue_size = 4);
+    TYFrameParser(uint32_t max_queue_size = 4, const TY_ISP_HANDLE isp_handle = nullptr);
     ~TYFrameParser();
 
     void RegisterKeyBoardEventCallback(TYFrameKeyBoardEventCallback cb, void* data) {
       user_data = data;
       func_keyboard_event = cb;
     }
+    int setImageProcesser(TY_COMPONENT_ID id, std::shared_ptr<ImageProcesser> proc);
+    virtual int doProcess(const std::shared_ptr<TYFrame>& frame);
+    void update(const std::shared_ptr<TYFrame>& frame);
 
-    void update(const std::shared_ptr<TYFrame>& frame,  const TY_ISP_HANDLE isp_handle = nullptr);
-    void update(const std::shared_ptr<ImageProcesser>& image);
-
+protected:
+    ty_stream stream;
   private:
     std::mutex      _queue_lock;
     uint32_t        _max_queue_size;
@@ -112,10 +118,9 @@ class TYFrameParser
     void* user_data;
     TYFrameKeyBoardEventCallback     func_keyboard_event;
 
-    ty_stream stream;
-    std::queue<std::shared_ptr<ImageProcesser>> images;
+    std::queue<std::shared_ptr<TYFrame>> images;
 
-    inline void ImageProcesserQueueSizeCheck();
+    inline void ImageQueueSizeCheck();
     inline void display();
 };
 }

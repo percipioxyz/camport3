@@ -1,6 +1,14 @@
 #include "Device.hpp"
 
 using namespace percipio_layer;
+class undistortionProcesser: public ImageProcesser {
+public:
+    undistortionProcesser(TY_CAMERA_CALIB_INFO &calib):ImageProcesser("depth", &calib) {}
+    int parse(const std::shared_ptr<TYImage>& image) {
+        ImageProcesser::parse(image);
+        return ImageProcesser::doUndistortion();
+    }
+};
 
 class TofCamera : public FastCamera
 {
@@ -9,8 +17,8 @@ class TofCamera : public FastCamera
         ~TofCamera() {}; 
 
         TY_STATUS Init();
-        void process(TYFrameParser& parser, const std::shared_ptr<TYImage>&  depth);
-
+        bool needUndistortion() {return depth_needUndistort;}
+        TY_CAMERA_CALIB_INFO &getCalib() { return depth_calib;} 
     private:
         float f_depth_scale_unit = 1.f;
         bool depth_needUndistort = false;
@@ -27,14 +35,6 @@ TY_STATUS TofCamera::Init()
     TYHasFeature(handle(), TY_COMPONENT_DEPTH_CAM, TY_STRUCT_CAM_DISTORTION, &depth_needUndistort);
     TYGetStruct(handle(), TY_COMPONENT_DEPTH_CAM, TY_STRUCT_CAM_CALIB_DATA, &depth_calib, sizeof(depth_calib));
     return TY_STATUS_OK;
-}
-
-void TofCamera::process(TYFrameParser& parser, const std::shared_ptr<TYImage>&  depth)
-{
-    std::shared_ptr<ImageProcesser> depth_process = std::shared_ptr<ImageProcesser>(new ImageProcesser("depth", depth, &depth_calib));
-    if(depth_needUndistort)
-        depth_process->doUndistortion();
-    parser.update(depth_process);
 }
 
 
@@ -57,7 +57,12 @@ int main(int argc, char* argv[])
     }
 
     bool process_exit = false;
+    tof.Init();
     TYFrameParser parser;
+    if (tof.needUndistortion()) {
+        std::shared_ptr<ImageProcesser> depth_process = std::shared_ptr<ImageProcesser>(new undistortionProcesser(tof.getCalib()));
+        parser.setImageProcesser(TY_COMPONENT_DEPTH_CAM, depth_process);
+    }
     parser.RegisterKeyBoardEventCallback([](int key, void* data) {
         if(key == 'q' || key == 'Q') {
             *(bool*)data = true;
@@ -65,17 +70,16 @@ int main(int argc, char* argv[])
         }
     }, &process_exit);
 
-    tof.Init();
     if(TY_STATUS_OK != tof.start()) {
         std::cout << "stream start failed!" << std::endl;
         return -1;
     }
 
+
     while(!process_exit) {
         auto frame = tof.tryGetFrames(2000);
         if(frame) {
-            auto depth = frame->depthImage();
-            if(depth) tof.process(parser, depth);
+            parser.update(frame);
         }
     }
     

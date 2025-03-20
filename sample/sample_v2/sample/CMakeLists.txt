@@ -8,6 +8,7 @@ set(ALL_CPP_API_SAMPLES
     ExposureTimeSetting
     ResolutionSetting
     OfflineReconnection
+    MultiDeviceOfflineReconnection
     OpenWithIP
     OpenWithInterface
     NetStatistic
@@ -19,6 +20,7 @@ set(ALL_CPP_API_SAMPLES
 
 set(SAMPLES_DEPENDS_OPENCV
     Registration
+    IREnhance
     )
 
 

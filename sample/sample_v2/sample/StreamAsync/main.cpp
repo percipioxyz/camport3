@@ -9,7 +9,6 @@ class StreamAsyncCamera : public FastCamera
         ~StreamAsyncCamera() {}; 
 
         TY_STATUS Init(bool color_en, bool depth_en, bool ir_en, bool resend_en);
-        int process(const char* win, const std::shared_ptr<TYImage>&  depth);
 
         uint32_t streams = 0;
 };
@@ -51,12 +50,6 @@ TY_STATUS StreamAsyncCamera::Init(bool color_en, bool depth_en, bool ir_en, bool
     ASSERT_OK(TYSetEnum(handle(), TY_COMPONENT_DEVICE, TY_ENUM_STREAM_ASYNC, TY_STREAM_ASYNC_ALL));
 
     return TY_STATUS_OK;
-}
-
-int StreamAsyncCamera::process(const char* win, const std::shared_ptr<TYImage>&  depth)
-{
-    ImageProcesser depth_process = ImageProcesser(win, depth);
-    return depth_process.show();
 }
 
 int main(int argc, char* argv[])

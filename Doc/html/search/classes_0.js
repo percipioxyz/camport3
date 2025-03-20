@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['depthenhenceparameters',['DepthEnhenceParameters',['../a00217.html',1,'']]],
-  ['depthspecklefilterparameters',['DepthSpeckleFilterParameters',['../a00213.html',1,'']]]
+  ['depthenhenceparameters_382',['DepthEnhenceParameters',['../a00231.html',1,'']]],
+  ['depthspecklefilterparameters_383',['DepthSpeckleFilterParameters',['../a00227.html',1,'']]]
 ];

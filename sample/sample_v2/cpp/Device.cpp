@@ -577,6 +577,9 @@ bool TYContext::ForceNetDeviceIP(const ForceIPStyle style, const std::string& ma
     switch(style)
     {
         case ForceIPStyleDynamic:
+            if(strcmp(ip_save, "0.0.0.0") != 0) {
+                open_needed = true;
+            }
             ip_save      = "0.0.0.0";
             netmask_save = "0.0.0.0";
             gateway_save = "0.0.0.0";

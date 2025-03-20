@@ -1,3 +1,11 @@
-<map id="TyIsp.h" name="TyIsp.h">
-<area shape="rect" id="node2" href="$a00002.html" title="TYApi.h includes camera control and data receiving interface, which supports configuration for image ..." alt="" coords="151,80,222,107"/>
+<map id="TYImageProc.h" name="TYImageProc.h">
+<area shape="rect" id="node1" title=" " alt="" coords="129,5,247,32"/>
+<area shape="rect" id="node2" href="$a00002.html" title="TYApi.h includes camera control and data receiving interface, which supports configuration for image ..." alt="" coords="153,155,223,181"/>
+<area shape="rect" id="node8" href="$a00005.html" title="Coordinate Conversion API." alt="" coords="246,80,413,107"/>
+<area shape="rect" id="node9" href="$a00014.html" title=" " alt="" coords="155,80,221,107"/>
+<area shape="rect" id="node3" href="$a00008.html" title="TYDefs.h includes camera control and data receiving data definitions which supports configuration for..." alt="" coords="148,229,228,256"/>
+<area shape="rect" id="node4" title=" " alt="" coords="5,304,80,331"/>
+<area shape="rect" id="node5" title=" " alt="" coords="294,304,365,331"/>
+<area shape="rect" id="node6" title=" " alt="" coords="105,304,175,331"/>
+<area shape="rect" id="node7" href="$a00017_source.html" title=" " alt="" coords="199,304,270,331"/>
 </map>

@@ -32,7 +32,7 @@ void dumpFeature(TY_DEV_HANDLE handle, TY_COMPONENT_ID compID, TY_FEATURE_ID fea
                 std::vector<TY_ENUM_ENTRY> entry(n);
                 ASSERT_OK(TYGetEnumEntryInfo(handle, compID, featID, &entry[0], n, &n));
                 for(uint32_t i = 0; i < n; i++){
-                    LOGD("===         %14s:     value(%d), desc(%s)", "", entry[i].value, entry[i].description);
+                    LOGD("===         %14s:     value(0x%08x), desc(%s)", "", entry[i].value, entry[i].description);
                 }
             }
         }

@@ -47,6 +47,52 @@ TYImage::TYImage(int32_t width, int32_t height, TY_COMPONENT_ID compID, TY_PIXEL
     }
 }
 
+bool TYImage::resize(int w, int h)
+{
+#ifdef OPENCV_DEPENDENCIES
+    cv::Mat src, dst;
+    switch(image_data.pixelFormat)
+    {
+        case TY_PIXEL_FORMAT_BGR:
+        case TY_PIXEL_FORMAT_RGB:
+            src = cv::Mat(cv::Size(width(), height()), CV_8UC3, buffer());
+            break;
+        case TY_PIXEL_FORMAT_MONO:
+            src = cv::Mat(cv::Size(width(), height()), CV_8U, buffer());
+            break;
+        case TY_PIXEL_FORMAT_MONO16:
+            src = cv::Mat(cv::Size(width(), height()), CV_16U, buffer());
+            break;
+        case TY_PIXEL_FORMAT_BGR48:
+            src = cv::Mat(cv::Size(width(), height()), CV_16UC3, buffer());
+            break;
+        case TY_PIXEL_FORMAT_RGB48:
+            src = cv::Mat(cv::Size(width(), height()), CV_16UC3, buffer());
+            break;
+        case TY_PIXEL_FORMAT_DEPTH16:
+            src = cv::Mat(cv::Size(width(), height()), CV_16U, buffer());
+            break;
+        default:
+            return false;
+    }
+
+    if(image_data.pixelFormat == TY_PIXEL_FORMAT_DEPTH16)
+        cv::resize(src, dst, cv::Size(w, h), 0, 0, cv::INTER_NEAREST);
+    else
+        cv::resize(src, dst, cv::Size(w, h));
+    image_data.size = dst.cols * dst.rows * dst.elemSize() * dst.channels();
+    image_data.width = dst.cols;
+    image_data.height = dst.rows;
+    if(m_isOwner) free(image_data.buffer);
+    image_data.buffer = malloc(image_data.size);
+    memcpy(image_data.buffer, dst.data, image_data.size);
+    return true;
+#else
+    std::cout << "not support!" << std::endl;
+    return false;
+#endif
+}
+
 TYImage::~TYImage()
 {
     if(m_isOwner) {
@@ -54,79 +100,86 @@ TYImage::~TYImage()
     }
 }
 
-ImageProcesser::ImageProcesser(const char* win, const std::shared_ptr<TYImage>& image, const TY_CAMERA_CALIB_INFO* calib_data, const TY_ISP_HANDLE isp_handle) 
+ImageProcesser::ImageProcesser(const char* win, const TY_CAMERA_CALIB_INFO* calib_data, const TY_ISP_HANDLE isp_handle) 
 {
     win_name = win;
-    _image = std::shared_ptr<TYImage>(new TYImage(*image));
+    hasWin = false;
     color_isp_handle = isp_handle;
     if(calib_data != nullptr) {
         _calib_data = std::shared_ptr<TY_CAMERA_CALIB_INFO>(new TY_CAMERA_CALIB_INFO(*calib_data));
     } 
 }
 
-int ImageProcesser::parse()
+int ImageProcesser::parse(const std::shared_ptr<TYImage>& image)
 {
-    if(!_image) return -1;
-    TY_PIXEL_FORMAT format = _image->pixelFormat();
+    if(!image) return -1;
+    TY_PIXEL_FORMAT format = image->pixelFormat();
+#ifndef OPENCV_DEPENDENCIES
+    std::cout << win() << " image size : " << image->width() << " x " << image->height() << std::endl;
+#endif
     switch(format) {
+        /*
         case TY_PIXEL_FORMAT_BGR:
         case TY_PIXEL_FORMAT_RGB:
         case TY_PIXEL_FORMAT_MONO:
         case TY_PIXEL_FORMAT_MONO16:
         case TY_PIXEL_FORMAT_BGR48:
         case TY_PIXEL_FORMAT_RGB48:
+        */
         case TY_PIXEL_FORMAT_DEPTH16:
         {
+            _image = std::shared_ptr<TYImage>(new TYImage(*image));
             return 0;
         }
         case TY_PIXEL_FORMAT_XYZ48:
         {
-            std::vector<int16_t> depth_data(_image->width() * _image->height());
-            int16_t* src = static_cast<int16_t*>(_image->buffer());
-            for (int pix = 0; pix < _image->width()*_image->height(); pix++) {
+            std::vector<int16_t> depth_data(image->width() * image->height());
+            int16_t* src = static_cast<int16_t*>(image->buffer());
+            for (int pix = 0; pix < image->width()*image->height(); pix++) {
                 depth_data[pix] = *(src + 3*pix + 2);
             }
 
-            _image = std::shared_ptr<TYImage>(new TYImage(_image->width(), _image->height(), _image->componentID(), TY_PIXEL_FORMAT_DEPTH16, depth_data.size() * sizeof(int16_t)));
-            memcpy(_image->buffer(), depth_data.data(), _image->size());
+            _image = std::shared_ptr<TYImage>(new TYImage(image->width(), image->height(), image->componentID(), TY_PIXEL_FORMAT_DEPTH16, depth_data.size() * sizeof(int16_t)));
+            memcpy(_image->buffer(), depth_data.data(), image->size());
             return 0;
         }
         default:
         {
 #ifdef OPENCV_DEPENDENCIES
-            cv::Mat image;
+            cv::Mat cvImage;
             int32_t         image_size;
             TY_PIXEL_FORMAT image_fmt;
             TY_COMPONENT_ID comp_id;
-            comp_id = _image->componentID();
-            parseImage(_image->image(), &image, color_isp_handle);
-            switch(image.type())
+            comp_id = image->componentID();
+            parseImage(image->image(),  &cvImage, color_isp_handle);
+            switch(cvImage.type())
             {
             case CV_8U:
                 //MONO8
-                image_size = image.size().area();
+                image_size = cvImage.size().area();
                 image_fmt = TY_PIXEL_FORMAT_MONO;
                 break;
             case CV_16U:
                 //MONO16
-                image_size = image.size().area() * 2;
+                image_size = cvImage.size().area() * 2;
                 image_fmt = TY_PIXEL_FORMAT_MONO16;
                 break;
             case  CV_16UC3:
                 //BGR48
-                image_size = image.size().area() * 6;
+                image_size = cvImage.size().area() * 6;
                 image_fmt = TY_PIXEL_FORMAT_BGR48;
                 break;
             default:
                 //BGR888
-                image_size = image.size().area() * 3;
+                image_size = cvImage.size().area() * 3;
                 image_fmt = TY_PIXEL_FORMAT_BGR;
                 break;
             }
-            _image = std::shared_ptr<TYImage>(new TYImage(image.cols, image.rows, comp_id, image_fmt, image_size));
-            memcpy(_image->buffer(), image.data, image_size);
+            _image = std::shared_ptr<TYImage>(new TYImage(cvImage.cols, cvImage.rows, comp_id, image_fmt, image_size));
+            memcpy(_image->buffer(), cvImage.data, image_size);
             return 0;
     #else
+
             //Without the OpenCV library, image decoding is not supported yet.
             return -1;
     #endif
@@ -156,7 +209,7 @@ int ImageProcesser::DepthImageRender()
 
 TY_STATUS ImageProcesser::doUndistortion()
 {
-    int ret = parse();
+    int ret = 0;
     if(ret == 0) {
         if(!_calib_data) {
             std::cout << "Calib data is empty!" << std::endl;
@@ -225,6 +278,12 @@ int ImageProcesser::show()
             display = cv::Mat(_image->height(), _image->width(), CV_16UC3, _image->buffer());
             break;
         }
+        case TY_PIXEL_FORMAT_DEPTH16:
+        {
+            DepthImageRender();
+            display = cv::Mat(_image->height(), _image->width(), CV_8UC3, _image->buffer());
+            break;
+        }
         default:
         {
             break;
@@ -232,6 +291,7 @@ int ImageProcesser::show()
     }
 
     if(!display.empty()) {
+        hasWin = true;
         cv::imshow(win_name.c_str(), display);
         int key = cv::waitKey(1);
         return key;
@@ -245,7 +305,9 @@ int ImageProcesser::show()
 void ImageProcesser::clear()
 {
 #ifdef OPENCV_DEPENDENCIES
-    cv::destroyWindow(win_name.c_str());   
+    if (hasWin) {
+        cv::destroyWindow(win_name.c_str());   
+    }
 #endif
 }
 
@@ -293,10 +355,16 @@ TYFrame::~TYFrame()
 }
 
 
-TYFrameParser::TYFrameParser(uint32_t max_queue_size)
+TYFrameParser::TYFrameParser(uint32_t max_queue_size, const TY_ISP_HANDLE isp_handle)
 {
     _max_queue_size = max_queue_size;
     isRuning = true;
+
+    setImageProcesser(TY_COMPONENT_DEPTH_CAM, std::shared_ptr<ImageProcesser>(new ImageProcesser("depth")));
+    setImageProcesser(TY_COMPONENT_IR_CAM_LEFT, std::shared_ptr<ImageProcesser>(new ImageProcesser("Left-IR")));
+    setImageProcesser(TY_COMPONENT_IR_CAM_RIGHT, std::shared_ptr<ImageProcesser>(new ImageProcesser("Right-IR")));
+    setImageProcesser(TY_COMPONENT_RGB_CAM, std::shared_ptr<ImageProcesser>(new ImageProcesser("color", nullptr, isp_handle)));
+
     processThread_ = std::thread(&TYFrameParser::display, this);
 }
 
@@ -306,24 +374,49 @@ TYFrameParser::~TYFrameParser()
     processThread_.join();
 }
 
+int TYFrameParser::setImageProcesser(TY_COMPONENT_ID id, std::shared_ptr<ImageProcesser> proc)
+{
+    stream[id] = proc;
+    return 0;
+}
+
+int TYFrameParser::doProcess(const std::shared_ptr<TYFrame>& img)
+{           
+    auto depth = img->depthImage();
+    auto color = img->colorImage();
+    auto left_ir = img->leftIRImage();
+    auto right_ir = img->rightIRImage();
+
+    if (left_ir) {
+        stream[TY_COMPONENT_IR_CAM_LEFT]->parse(left_ir);
+    }
+
+    if (right_ir) {
+        stream[TY_COMPONENT_IR_CAM_RIGHT]->parse(right_ir);
+    }
+
+    if (color) {
+        stream[TY_COMPONENT_RGB_CAM]->parse(color);
+    }
+
+    if (depth) {
+        stream[TY_COMPONENT_DEPTH_CAM]->parse(depth);
+    }
+    return 0;
+}
+
 void TYFrameParser::display()
 {
     int ret = 0;
     while(isRuning) {
         if(images.size()) {
             std::unique_lock<std::mutex> lock(_queue_lock);
-            std::shared_ptr<ImageProcesser> img = images.front();
+            std::shared_ptr<TYFrame> img = images.front();
 
-            if(img) images.pop();
-            img->parse();
-            if(img->image()->pixelFormat() == TY_PIXEL_FORMAT_DEPTH16) {
-                img->DepthImageRender();
+            if(img) {
+                images.pop();
+                doProcess(img);
             }
-            TY_COMPONENT_ID comp_id = img->image()->componentID();
-            stream[comp_id] = img;
-#ifndef OPENCV_DEPENDENCIES
-            std::cout << img->win() << " image size : " << img->image()->width() << " x " << img->image()->height() << std::endl;
-#endif
         }
 
         for(auto& iter : stream) {
@@ -333,40 +426,47 @@ void TYFrameParser::display()
             }
         }
     }
-
-    for(auto& iter : stream) {
-        iter.second->clear();
-    }
 }
 
-inline void TYFrameParser::ImageProcesserQueueSizeCheck()
+inline void TYFrameParser::ImageQueueSizeCheck()
 {
     while(images.size() >= _max_queue_size)
         images.pop();
 }
 
-void TYFrameParser::update(const std::shared_ptr<ImageProcesser>& image)
+void TYFrameParser::update(const std::shared_ptr<TYFrame>& frame)
 {
     std::unique_lock<std::mutex> lock(_queue_lock);
-    if(image) {
-        ImageProcesserQueueSizeCheck();
-        images.push(std::shared_ptr<ImageProcesser>(new ImageProcesser(image->win().c_str(), image->image(), nullptr, image->isp_handle())));
+    if(frame) {
+        ImageQueueSizeCheck();
+        images.push(frame);
+#ifndef OPENCV_DEPENDENCIES        
+        auto depth = frame->depthImage();
+        auto color = frame->colorImage();
+        auto left_ir = frame->leftIRImage();
+        auto right_ir = frame->rightIRImage();
+
+        if (left_ir) {
+            auto image = left_ir;
+            std::cout << "Left" << " image size : " << image->width() << " x " << image->height() << std::endl;
+        }
+
+        if (right_ir) {
+            auto image = right_ir;
+            std::cout << "Right" << " image size : " << image->width() << " x " << image->height() << std::endl;
+        }
+
+        if (color) {
+            auto image = color;
+            std::cout << "Color" << " image size : " << image->width() << " x " << image->height() << std::endl;
+        }
+
+        if (depth) {
+            auto image = depth;
+            std::cout << "Depth" << " image size : " << image->width() << " x " << image->height() << std::endl;
+        }
+
+#endif
     }
 }
-
-void TYFrameParser::update(const std::shared_ptr<TYFrame>& frame, const TY_ISP_HANDLE isp_handle)
-{
-    auto depth = frame->depthImage();
-    if(depth) update(std::shared_ptr<ImageProcesser>(new ImageProcesser("depth", depth)));
-    
-    auto color = frame->colorImage();
-    if(color) update(std::shared_ptr<ImageProcesser>(new ImageProcesser("color", color, nullptr, isp_handle)));
-
-    auto left_ir = frame->leftIRImage();
-    if(left_ir) update(std::shared_ptr<ImageProcesser>(new ImageProcesser("Left-IR", left_ir)));
-
-    auto right_ir = frame->rightIRImage();
-    if(right_ir) update(std::shared_ptr<ImageProcesser>(new ImageProcesser("Right-IR", right_ir)));
-}
-
-}
+}//namespace percipio_layer

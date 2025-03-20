@@ -1,7 +1,7 @@
 var a00005 =
 [
-    [ "TY_PIXEL_DESC", "a00205.html", "a00205" ],
-    [ "TY_PIXEL_COLOR_DESC", "a00209.html", "a00209" ],
+    [ "TY_PIXEL_DESC", "a00023.html", "a00023" ],
+    [ "TY_PIXEL_COLOR_DESC", "a00027.html", "a00027" ],
     [ "TYMAP_CHECKRET", "a00005.html#a99ad1ca94cfe3d4307b6b6a2d3a5d5ef", null ],
     [ "TY_PIXEL_COLOR_DESC", "a00005.html#af8509aa795f9ebb98bce7071f3f6b79a", null ],
     [ "TY_PIXEL_DESC", "a00005.html#a002acf43ed000ada08b17692452033c8", null ],

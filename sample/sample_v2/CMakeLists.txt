@@ -80,7 +80,9 @@ if (BUILD_SAMPLE_V2_WITH_OPENCV)
 endif()
 
 add_library(cpp_api_lib STATIC ${COMMON_SOURCES} ${CPLUSPLUS_SAMPLE_API_SOURCE})
-
+if (DEFINED TARGET_LIB_API)
+  add_dependencies(cpp_api_lib ${TARGET_LIB_API})
+endif()
 
 
 if(UNIX)

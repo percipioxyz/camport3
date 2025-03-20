@@ -16,18 +16,15 @@ class OfflineDetectCamera : public FastCamera
         TY_STATUS start();
         std::shared_ptr<TYFrame> tryGetFrames(uint32_t timeout_ms);
 
-        static bool is_offline;
+        bool is_offline = false;
     private:
         std::string id;
         CamInitCallback     parameters_init = nullptr;
 };
 
-bool OfflineDetectCamera::is_offline = false;
-
 TY_STATUS OfflineDetectCamera::open(const char* sn)
 {
     TY_STATUS st;
-    is_offline = false;
     while(1) {
         st = FastCamera::open(sn);
         if(st == TY_STATUS_OK) {

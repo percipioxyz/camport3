@@ -22,16 +22,17 @@ class FastCamera;
 
 static std::string parseInterfaceID(std::string &ifaceId)
 {
-    std::string type_s = ifaceId.substr(0,3);
+    std::string type_s = ifaceId.substr(0, ifaceId.find('-'));
     if ("usb" == type_s) {
         //add usb specific parse if needed
     }
-    if ("eth" == type_s) {
+    if ("eth" == type_s || "wifi" == type_s) {
         //eth-2c:f0:5d:ac:5d:6265eea8c0
         //eth-2c:f0:5d:ac:5d:62
-        std::string new_id = ifaceId.substr(0, 21);
+        size_t IdLength = 18 + type_s.length();
+        std::string new_id = ifaceId.substr(0, IdLength);
         //                     65eea8c0
-        std::string ip_s = ifaceId.substr(21, ifaceId.size() - 21);
+        std::string ip_s = ifaceId.substr(IdLength, ifaceId.size() - IdLength);
         //base = 16
         uint32_t ip = static_cast<uint32_t>(std::stoul(ip_s, nullptr, 16));
         uint8_t *ip_arr = (uint8_t *)&ip;

@@ -75,7 +75,9 @@ static void doRegister(const TY_CAMERA_CALIB_INFO& depth_calib
 
   // do register
   if (map_depth_to_color) {
-    out = cv::Mat::zeros(undistort_color.size(), CV_16U);
+    int outW = depth.cols;
+    int outH = depth.cols * undistort_color.rows / undistort_color.cols;
+    out = cv::Mat::zeros(cv::Size(outW, outH), CV_16U);
     ASSERT_OK(
       TYMapDepthImageToColorCoordinate(
         &depth_calib,
@@ -85,9 +87,7 @@ static void doRegister(const TY_CAMERA_CALIB_INFO& depth_calib
       )
     );
     cv::Mat temp;
-    //you may want to use median filter to fill holes in projected depth image
-    //or do something else here
-    cv::medianBlur(out, temp, 5);
+    cv::resize(out, temp, undistort_color.size(), 0, 0, cv::INTER_NEAREST);
     out = temp;
   }
   else {

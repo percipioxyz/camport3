@@ -18,8 +18,11 @@ Please refer to [https://doc.percipio.xyz/cam/latest/index.html](https://doc.per
 |   \---win
 |       +---driver      windows device driver 
 |       \---hostapp     pre-built sample executables
-|---sample              old sample application source code on orignal API
-\---sample_v2           new sample application source code easier to use, This is recommended if you want to set up a new project
+\---sample
+    +---cloud_viewer    point cloud render and show dependencies
+    +---common          common API and image data wrapper code for sample_v1 and sample_v2
+    +---sample_v1       old sample application source code on orignal API
+    \---sample_v2       new sample application source code easier to use, This is recommended if you want to set up a new project
 
 ```
 

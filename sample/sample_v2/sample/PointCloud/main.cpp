@@ -48,7 +48,6 @@ class P3DCamera : public FastCamera
         ~P3DCamera() {}; 
 
         TY_STATUS Init();
-        int process(const std::shared_ptr<TYImage>&  depth);
         int process(const std::shared_ptr<TYImage>&  depth, const std::shared_ptr<TYImage>&  color);
 
     private:
@@ -56,11 +55,14 @@ class P3DCamera : public FastCamera
         bool depth_needUndistort = false;
         bool b_points_with_color = false;
         TY_CAMERA_CALIB_INFO depth_calib, color_calib;
+        std::shared_ptr<ImageProcesser> depth_processer;
+        std::shared_ptr<ImageProcesser> color_processer;
         void savePointsToPly(const std::vector<TY_VECT_3F>& p3d, const std::shared_ptr<TYImage>& color, const char* fileName);
         void processDepth16(const std::shared_ptr<TYImage>&  depth, std::vector<TY_VECT_3F>& p3d);
         void processXYZ48(const std::shared_ptr<TYImage>&  depth, std::vector<TY_VECT_3F>& p3d);
-        void processDepth16(const std::shared_ptr<TYImage>&  depth, const std::shared_ptr<TYImage>&  color, std::vector<TY_VECT_3F>& p3d,  std::shared_ptr<TYImage>& registration_color);
-        void processXYZ48(const std::shared_ptr<TYImage>&  depth, const std::shared_ptr<TYImage>&  color, std::vector<TY_VECT_3F>& p3d,  std::shared_ptr<TYImage>& registration_color);
+
+        void processDepth16ToPoint3D(const std::shared_ptr<TYImage>&  depth, const std::shared_ptr<TYImage>&  color, std::vector<TY_VECT_3F>& p3d,  std::shared_ptr<TYImage>& registration_color);
+        void processXYZ48ToPoint3D(const std::shared_ptr<TYImage>&  depth, const std::shared_ptr<TYImage>&  color, std::vector<TY_VECT_3F>& p3d,  std::shared_ptr<TYImage>& registration_color);
 };
 
 TY_STATUS P3DCamera::Init()
@@ -78,12 +80,14 @@ TY_STATUS P3DCamera::Init()
         if (hasColorCalib)
         {
             ASSERT_OK(TYGetStruct(handle(), TY_COMPONENT_RGB_CAM, TY_STRUCT_CAM_CALIB_DATA, &color_calib, sizeof(color_calib)));
+            color_processer = std::shared_ptr<ImageProcesser>(new ImageProcesser("color", &color_calib));
         }
     }
     
     ASSERT_OK(TYGetFloat(handle(), TY_COMPONENT_DEPTH_CAM, TY_FLOAT_SCALE_UNIT, &f_depth_scale_unit));
     ASSERT_OK(TYHasFeature(handle(), TY_COMPONENT_DEPTH_CAM, TY_STRUCT_CAM_DISTORTION, &depth_needUndistort));
     ASSERT_OK(TYGetStruct(handle(), TY_COMPONENT_DEPTH_CAM, TY_STRUCT_CAM_CALIB_DATA, &depth_calib, sizeof(depth_calib)));
+    depth_processer = std::shared_ptr<ImageProcesser>(new ImageProcesser("depth", &depth_calib));
 
     return TY_STATUS_OK;
 }
@@ -151,6 +155,7 @@ void P3DCamera::savePointsToPly(const std::vector<TY_VECT_3F>& p3d, const std::s
                 break;
             }
             default:
+            {
                 std::cout << "Unsupported RGB format!" << std::endl;
                 for(int i = 0; i < p3d.size(); i++) {
                     if(!std::isnan(point->z)) {
@@ -160,6 +165,7 @@ void P3DCamera::savePointsToPly(const std::vector<TY_VECT_3F>& p3d, const std::s
                     point++;
                 }
                 break;
+            }
         }
     } else {
         for(int i = 0; i < p3d.size(); i++) {
@@ -193,7 +199,7 @@ void P3DCamera::processDepth16(const std::shared_ptr<TYImage>&  depth, std::vect
 {
     if(!depth) return;
 
-    if(depth->pixelFormat() == TY_PIXEL_FORMAT_DEPTH16) {    
+    if(depth->pixelFormat() == TY_PIXEL_FORMAT_DEPTH16) {
         p3d.resize(depth->width() * depth->height());
         TYMapDepthImageToPoint3d(&depth_calib, depth->width(), depth->height(), (uint16_t*)depth->buffer(), &p3d[0], f_depth_scale_unit);
     }
@@ -214,60 +220,69 @@ void P3DCamera::processXYZ48(const std::shared_ptr<TYImage>&  depth, std::vector
     }
 }
 
-void P3DCamera::processDepth16(const std::shared_ptr<TYImage>&  depth, const std::shared_ptr<TYImage>&  color, std::vector<TY_VECT_3F>& p3d, std::shared_ptr<TYImage>& registration_color)
+void P3DCamera::processDepth16ToPoint3D(const std::shared_ptr<TYImage>&  depth, const std::shared_ptr<TYImage>&  color, std::vector<TY_VECT_3F>& p3d, std::shared_ptr<TYImage>& registration_color)
 {
     if(!depth) return;
 
-    ImageProcesser depth_processer = ImageProcesser("depth", depth, &depth_calib);
-    ImageProcesser color_processer = ImageProcesser("color", color, &color_calib);
+    depth_processer->parse(depth);
     if(depth_needUndistort)
-        depth_processer.doUndistortion();
+        depth_processer->doUndistortion();
+        
+    if(color) {
+        color_processer->parse(color);
+        if(TY_STATUS_OK == color_processer->doUndistortion()) {
+            //do rgbd registration
+            const std::shared_ptr<TYImage>& depth_image = depth_processer->image();
+            const std::shared_ptr<TYImage>& color_image = color_processer->image();
+            int dstW = depth_image->width();
+            int dstH = depth_image->width() * color_image->height() / color_image->width();
+            std::shared_ptr<TYImage> registration_depth = std::shared_ptr<TYImage>(new TYImage(dstW, dstH, 
+                                                                depth_image->componentID(), 
+                                                                TY_PIXEL_FORMAT_DEPTH16, 
+                                                                sizeof(uint16_t) * dstW * dstH));
 
-    if(TY_STATUS_OK == color_processer.doUndistortion()) {
-        //do rgbd registration
-        const std::shared_ptr<TYImage>& depth_image = depth_processer.image();
-        const std::shared_ptr<TYImage>& color_image = color_processer.image();
-        std::shared_ptr<TYImage> registration_depth = 
-                std::shared_ptr<TYImage>(new TYImage(color_image->width(), 
-                                            color_image->height(), 
-                                            depth_image->componentID(), 
-                                            TY_PIXEL_FORMAT_DEPTH16, 
-                                            sizeof(uint16_t) * color_image->width() * color_image->height()));
-
-        TYMapDepthImageToColorCoordinate(
-            &depth_calib,
-            depth_image->width(), depth_image->height(), static_cast<const uint16_t*>(depth_image->buffer()),
-            &color_calib,
-            registration_depth->width(), registration_depth->height(), static_cast<uint16_t*>(registration_depth->buffer()), f_depth_scale_unit
-        );
-        registration_color = color_image;
-        p3d.resize(registration_depth->width() * registration_depth->height());
-        TYMapDepthImageToPoint3d(&color_calib, registration_depth->width(), registration_depth->height()
-            , (uint16_t*)registration_depth->buffer(), &p3d[0], f_depth_scale_unit);
+            TYMapDepthImageToColorCoordinate(
+                &depth_calib,
+                depth_image->width(), depth_image->height(), static_cast<const uint16_t*>(depth_image->buffer()),
+                &color_calib,
+                registration_depth->width(), registration_depth->height(), static_cast<uint16_t*>(registration_depth->buffer()), f_depth_scale_unit
+            );
+            registration_depth->resize(color_image->width(), color_image->height());
+            registration_color = color_image;
+            p3d.resize(registration_depth->width() * registration_depth->height());
+            TYMapDepthImageToPoint3d(&color_calib, registration_depth->width(), registration_depth->height()
+                , (uint16_t*)registration_depth->buffer(), &p3d[0], f_depth_scale_unit);
+        } else {
+            processDepth16(depth_processer->image(), p3d);
+        }
     } else {
-        processDepth16(depth, p3d);
+        processDepth16(depth_processer->image(), p3d);
     }
 }
 
-void P3DCamera::processXYZ48(const std::shared_ptr<TYImage>&  depth, const std::shared_ptr<TYImage>&  color, std::vector<TY_VECT_3F>& p3d, std::shared_ptr<TYImage>& registration_color)
+void P3DCamera::processXYZ48ToPoint3D(const std::shared_ptr<TYImage>&  depth, const std::shared_ptr<TYImage>&  color, std::vector<TY_VECT_3F>& p3d, std::shared_ptr<TYImage>& registration_color)
 {
     if(!depth) return;
     
-    ImageProcesser color_processer = ImageProcesser("color", color, &color_calib);
-    if(TY_STATUS_OK == color_processer.doUndistortion()) {
-        registration_color = color_processer.image();
+    if(color) {
+        color_processer->parse(color);
+        if(TY_STATUS_OK == color_processer->doUndistortion()) {
+            registration_color = color_processer->image();
 
-        processXYZ48(depth, p3d);
+            processXYZ48(depth, p3d);
 
-        TY_CAMERA_EXTRINSIC extri_inv;
-        TYInvertExtrinsic(&color_calib.extrinsic, &extri_inv);
-        TYMapPoint3dToPoint3d(&extri_inv, p3d.data(), p3d.size(), p3d.data());
+            TY_CAMERA_EXTRINSIC extri_inv;
+            TYInvertExtrinsic(&color_calib.extrinsic, &extri_inv);
+            TYMapPoint3dToPoint3d(&extri_inv, p3d.data(), p3d.size(), p3d.data());
 
-        std::vector<uint16_t> mappedDepth(registration_color->width() * registration_color->height());
-        TYMapPoint3dToDepthImage(&color_calib, p3d.data(), depth->width() * depth->height(),  registration_color->width(), registration_color->height(), mappedDepth.data(), f_depth_scale_unit);
-        p3d.resize(registration_color->width() * registration_color->height());
-        TYMapDepthImageToPoint3d(&color_calib, registration_color->width(), registration_color->height()
-            , mappedDepth.data(), &p3d[0], f_depth_scale_unit);
+            std::vector<uint16_t> mappedDepth(registration_color->width() * registration_color->height());
+            TYMapPoint3dToDepthImage(&color_calib, p3d.data(), depth->width() * depth->height(),  registration_color->width(), registration_color->height(), mappedDepth.data(), f_depth_scale_unit);
+            p3d.resize(registration_color->width() * registration_color->height());
+            TYMapDepthImageToPoint3d(&color_calib, registration_color->width(), registration_color->height()
+                , mappedDepth.data(), &p3d[0], f_depth_scale_unit);
+        } else {
+            processXYZ48(depth, p3d);
+        }
     } else {
         processXYZ48(depth, p3d);
     }
@@ -283,27 +298,13 @@ int P3DCamera::process(const std::shared_ptr<TYImage>&  depth, const std::shared
     }
 
     TY_PIXEL_FORMAT fmt = depth->pixelFormat();
-#ifdef OPENCV_DEPENDENCIES
-    if(color) {
-        if(fmt == TY_PIXEL_FORMAT_DEPTH16)
-            processDepth16(depth, color, p3d, registration_color);
-        else if(fmt == TY_PIXEL_FORMAT_XYZ48)
-            processXYZ48(depth, color, p3d, registration_color);
-        else {
-            std::cout << "Invalid depth image format!" << std::endl;
-            return -1;
-        }
-    } else 
-#endif
-    {
-        if(fmt == TY_PIXEL_FORMAT_DEPTH16)
-            processDepth16(depth, p3d);
-        else if(fmt == TY_PIXEL_FORMAT_XYZ48)
-            processXYZ48(depth, p3d);
-        else {
-            std::cout << "Invalid depth image format!" << std::endl;
-            return -1;
-        }
+    if(fmt == TY_PIXEL_FORMAT_DEPTH16)
+        processDepth16ToPoint3D(depth, color, p3d, registration_color);
+    else if(fmt == TY_PIXEL_FORMAT_XYZ48)
+        processXYZ48ToPoint3D(depth, color, p3d, registration_color);
+    else {
+        std::cout << "Invalid depth image format!" << std::endl;
+        return -1;
     }
 
     static int m_frame_cnt = 0;

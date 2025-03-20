@@ -5,68 +5,61 @@
 
 using namespace percipio_layer;
 
-class RGBDRegistrationCamera : public FastCamera
-{
-    public:
-        RGBDRegistrationCamera() : FastCamera() {};
-        ~RGBDRegistrationCamera() {}; 
+class RegistrationParser: public TYFrameParser {
+public:
+    int setCalibInfo(TY_CAMERA_CALIB_INFO &dep, TY_CAMERA_CALIB_INFO &rgb)
+    {
+        memcpy(&depth_calib, &dep, sizeof(dep));
+        memcpy(&color_calib, &rgb, sizeof(dep));
+        return 0;
+    }
+    int doProcess(const std::shared_ptr<TYFrame>& img)
+    {
+        auto depth = img->depthImage();
+        auto color = img->colorImage();
+        auto left_ir = img->leftIRImage();
+        auto right_ir = img->rightIRImage();
 
-        TY_STATUS StreamInit();
-        int StreamRegistreation(TYFrameParser& parser, std::shared_ptr<TYImage>& depth, std::shared_ptr<TYImage>& color, bool map_depth_to_color, std::shared_ptr<TYImage>& dst);
+        if (left_ir) {
+            stream[TY_COMPONENT_IR_CAM_LEFT]->parse(left_ir);
+        }
 
-    private:
-        float f_depth_scale_unit = 1.f;
-        bool depth_needUndistort = false;
-        bool color_needUndistort = false;
-        TY_CAMERA_CALIB_INFO depth_calib, color_calib;
+        if (right_ir) {
+            stream[TY_COMPONENT_IR_CAM_RIGHT]->parse(right_ir);
+        }
+        
+        if (color) {
+            stream[TY_COMPONENT_RGB_CAM]->parse(color);
+            if (color_needUndistort) {
+                stream[TY_COMPONENT_RGB_CAM]->doUndistortion();
+            }
+        }
+
+        if (depth) {
+            stream[TY_COMPONENT_DEPTH_CAM]->parse(depth);
+            if (depth_needUndistort) {
+                stream[TY_COMPONENT_DEPTH_CAM]->doUndistortion();
+            }
+        }
+        if(color && depth) {
+            doRegistration(depth, color);
+        }
+        return 0;
+    }
+    virtual int doRegistration(const std::shared_ptr<TYImage>& dep, const std::shared_ptr<TYImage>& rgb) = 0;
+
+    TY_CAMERA_CALIB_INFO depth_calib, color_calib;
+    float f_depth_scale_unit = 1.f;
+    bool depth_needUndistort = false;
+    bool color_needUndistort = false;
 };
 
-TY_STATUS RGBDRegistrationCamera::StreamInit()
-{
-    TY_STATUS status;
-    status = stream_enable(stream_color);
-    if(status != TY_STATUS_OK) return status;
-
-    status = stream_enable(stream_depth);
-    if(status != TY_STATUS_OK) return status;
-    
-    TYGetFloat(handle(), TY_COMPONENT_DEPTH_CAM, TY_FLOAT_SCALE_UNIT, &f_depth_scale_unit);
-    
-    TYHasFeature(handle(), TY_COMPONENT_DEPTH_CAM, TY_STRUCT_CAM_DISTORTION, &depth_needUndistort);
-    TYHasFeature(handle(), TY_COMPONENT_RGB_CAM, TY_STRUCT_CAM_DISTORTION, &color_needUndistort);
-
-    TYGetStruct(handle(), TY_COMPONENT_DEPTH_CAM, TY_STRUCT_CAM_CALIB_DATA, &depth_calib, sizeof(depth_calib));
-    TYGetStruct(handle(), TY_COMPONENT_RGB_CAM, TY_STRUCT_CAM_CALIB_DATA, &color_calib, sizeof(color_calib));
-
-    return TY_STATUS_OK;
-}
-
-int RGBDRegistrationCamera::StreamRegistreation(TYFrameParser& parser, std::shared_ptr<TYImage>& depth, std::shared_ptr<TYImage>& color, bool map_depth_to_color, std::shared_ptr<TYImage>& dst)
-{
-    std::shared_ptr<ImageProcesser> depth_process = std::shared_ptr<ImageProcesser>(new ImageProcesser("depth", depth, &depth_calib));
-    std::shared_ptr<ImageProcesser> color_process = std::shared_ptr<ImageProcesser>(new ImageProcesser("undistortion RGB", color, &color_calib));
-
-    if(depth_needUndistort) depth_process->doUndistortion();
-    if(color_needUndistort) color_process->doUndistortion();
-
-    depth = depth_process->image();
-    color = color_process->image();
-
-    if(map_depth_to_color) {
-        dst = std::shared_ptr<TYImage>(new TYImage(color->width(), color->height(), depth->componentID(), TY_PIXEL_FORMAT_DEPTH16, sizeof(uint16_t) * color->width() * color->height()));
-        TYMapDepthImageToColorCoordinate(
-                  &depth_calib,
-                  depth->width(), depth->height(), static_cast<const uint16_t*>(depth->buffer()),
-                  &color_calib,
-                  color->width(), color->height(), static_cast<uint16_t*>(dst->buffer()),
-                  f_depth_scale_unit);
-
-        parser.update(color_process);
-
-        std::shared_ptr<ImageProcesser> remap_depth_process = std::shared_ptr<ImageProcesser>(new ImageProcesser("remap_depth", dst, &color_calib));
-        parser.update(remap_depth_process);
-    } else {
+class RGB2DepParser: public RegistrationParser {
+public:
+    int doRegistration(const std::shared_ptr<TYImage>& depth, const std::shared_ptr<TYImage>& color)
+    {
         TY_PIXEL_FORMAT color_fmt = color->pixelFormat();
+        std::shared_ptr<TYImage> dst;
         switch(color_fmt)
         {
             case TY_PIXEL_FORMAT_RGB:
@@ -113,13 +106,67 @@ int RGBDRegistrationCamera::StreamRegistreation(TYFrameParser& parser, std::shar
             default:
                 break;
         }
-
-        parser.update(depth_process);
-
-        std::shared_ptr<ImageProcesser> remap_color_process = std::shared_ptr<ImageProcesser>(new ImageProcesser("remap_color", dst, &depth_calib));
-        parser.update(remap_color_process);
+        stream[TY_COMPONENT_RGB_CAM]->parse(dst);
+        return 0;
     }
-    return 0;
+};
+
+class Dep2RGBParser: public RegistrationParser {
+public:
+    int doRegistration(const std::shared_ptr<TYImage>& depth, const std::shared_ptr<TYImage>& color)
+    {
+        int dstW = depth->width();
+        int dstH = depth->width() * color->height() / color->width();
+        std::shared_ptr<TYImage> dst;
+        dst = std::shared_ptr<TYImage>(new TYImage(dstW, dstH, depth->componentID(), TY_PIXEL_FORMAT_DEPTH16, sizeof(uint16_t) * dstW * dstH));
+        TYMapDepthImageToColorCoordinate(
+                  &depth_calib,
+                  depth->width(), depth->height(), static_cast<const uint16_t*>(depth->buffer()),
+                  &color_calib,
+                  dstW, dstH, static_cast<uint16_t*>(dst->buffer()),
+                  f_depth_scale_unit);
+        dst->resize(color->width(), color->height());
+        stream[TY_COMPONENT_DEPTH_CAM]->parse(dst);
+        return 0;
+    }
+};
+
+class RGBDRegistrationCamera : public FastCamera
+{
+    public:
+        RGBDRegistrationCamera() : FastCamera() {};
+        ~RGBDRegistrationCamera() {}; 
+
+        TY_STATUS StreamInit(RegistrationParser *parser,  bool depth_to_color);
+};
+
+TY_STATUS RGBDRegistrationCamera::StreamInit(RegistrationParser *p, bool depth_to_color)
+{
+    TY_STATUS status;
+    status = stream_enable(stream_color);
+    if(status != TY_STATUS_OK) return status;
+
+    status = stream_enable(stream_depth);
+    if(status != TY_STATUS_OK) return status;
+    
+    TYGetFloat(handle(), TY_COMPONENT_DEPTH_CAM, TY_FLOAT_SCALE_UNIT, &p->f_depth_scale_unit);
+    
+    TYHasFeature(handle(), TY_COMPONENT_DEPTH_CAM, TY_STRUCT_CAM_DISTORTION, &p->depth_needUndistort);
+    TYHasFeature(handle(), TY_COMPONENT_RGB_CAM, TY_STRUCT_CAM_DISTORTION, &p->color_needUndistort);
+
+    TYGetStruct(handle(), TY_COMPONENT_DEPTH_CAM, TY_STRUCT_CAM_CALIB_DATA, &p->depth_calib, sizeof(p->depth_calib));
+    TYGetStruct(handle(), TY_COMPONENT_RGB_CAM, TY_STRUCT_CAM_CALIB_DATA, &p->color_calib, sizeof(p->color_calib));
+    std::string dep_win_name = "remap_depth";
+    std::string rgb_win_name = "undistortion_RGB";
+    if (!depth_to_color) { 
+        dep_win_name = "depth";
+        rgb_win_name = "remap_color";
+    } 
+    p->setImageProcesser(TY_COMPONENT_DEPTH_CAM,
+        std::shared_ptr<ImageProcesser>(new ImageProcesser(dep_win_name.c_str(), &p->depth_calib)));
+    p->setImageProcesser(TY_COMPONENT_RGB_CAM,
+        std::shared_ptr<ImageProcesser>(new ImageProcesser(rgb_win_name.c_str(), &p->color_calib)));
+    return TY_STATUS_OK;
 }
 
 int main(int argc, char* argv[])
@@ -140,20 +187,25 @@ int main(int argc, char* argv[])
         return -1;
     }
 
-    if(TY_STATUS_OK != camera.StreamInit()) {
-        std::cout << "Camera stream init failed!" << std::endl;
-        return -1;
-    }
-
     bool process_exit = false;
 
-    TYFrameParser parser;
-    parser.RegisterKeyBoardEventCallback([](int key, void* data) {
+    RegistrationParser *parser = nullptr;
+    if (MAP_DEPTH_TO_COLOR) {
+        parser = new Dep2RGBParser();
+    } else {
+        parser = new RGB2DepParser();
+    }
+    parser->RegisterKeyBoardEventCallback([](int key, void* data) {
         if(key == 'q' || key == 'Q') {
             *(bool*)data = true;
             std::cout << "Exit..." << std::endl; 
         }
     }, &process_exit);
+
+    if(TY_STATUS_OK != camera.StreamInit(parser, MAP_DEPTH_TO_COLOR)) {
+        std::cout << "Camera stream init failed!" << std::endl;
+        return -1;
+    }
 
     if(TY_STATUS_OK != camera.start()) {
         std::cout << "stream start failed!" << std::endl;
@@ -165,16 +217,11 @@ int main(int argc, char* argv[])
     while(!process_exit) {
         auto frame = camera.tryGetFrames(2000);
         if(frame) {
-            auto color = frame->colorImage();
-            auto depth = frame->depthImage();
-            if(color && depth) {
-                std::shared_ptr<TYImage> remap_image;
-                if(camera.StreamRegistreation(parser, depth, color, MAP_DEPTH_TO_COLOR, remap_image) < 0) {
-                    process_exit = true;
-                }
-            }
+            parser->update(frame);
         }
     }
+    delete parser;
+    parser = nullptr;
     
     std::cout << "Main done!" << std::endl;
     return 0;
